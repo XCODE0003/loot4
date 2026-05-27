@@ -17,7 +17,6 @@ const formError = ref('')
 
 const methods = [
   { value: 'card', tkey: 'checkout.card' },
-  { value: 'paypal', tkey: 'checkout.paypal' },
 ]
 
 function money(value) {

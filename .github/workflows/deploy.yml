@@ -1,0 +1,57 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate wayfinder files
+        run: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php --quiet
+          php composer.phar install --no-dev --ignore-platform-reqs --no-interaction --no-progress --quiet
+          php artisan wayfinder:generate --with-form
+
+      - name: Sync files to server
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: >-
+            -avz --delete
+            --exclude='.git'
+            --exclude='node_modules'
+            --exclude='vendor'
+            --exclude='.env'
+            --exclude='storage/logs'
+            --exclude='storage/framework/cache'
+            --exclude='storage/framework/sessions'
+            --exclude='storage/framework/views'
+            --exclude='public/storage'
+            --exclude='public/hot'
+          path: ./
+          remote_path: /var/www/loot4you
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: root
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Build & restart containers
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 30m
+          script: |
+            set -e
+            cd /var/www/loot4you
+            docker compose -f docker-compose.prod.yml build --no-cache app queue
+            docker compose -f docker-compose.prod.yml up -d
+            docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force
+            docker compose -f docker-compose.prod.yml exec -T app php artisan config:cache
+            docker compose -f docker-compose.prod.yml exec -T app php artisan route:cache
+            docker compose -f docker-compose.prod.yml exec -T app php artisan view:cache
+            echo "✅ Deploy complete"

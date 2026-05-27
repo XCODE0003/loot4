@@ -73,7 +73,7 @@ class CheckoutController extends Controller
             'items.*.qty' => ['required', 'integer', 'min:1'],
             'items.*.option' => ['nullable', 'string'],
             'coupon' => ['nullable', 'string'],
-            'method' => ['nullable', 'string', 'in:card,paypal'],
+            'method' => ['nullable', 'string', 'in:card'],
         ]);
 
         $method = $data['method'] ?? 'card';

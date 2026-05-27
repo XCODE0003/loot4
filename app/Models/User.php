@@ -58,7 +58,7 @@ class User extends Authenticatable implements FilamentUser, PasskeyUser
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->status !== UserStatus::Banned
-            && $this->hasAnyRole(['Super Admin', 'Admin', 'Manager', 'Support', 'Finance']);
+            && $this->hasAnyRole(['super_admin', 'Super Admin', 'Admin', 'Manager', 'Support', 'Finance']);
     }
 
     /** @return HasMany<Order, $this> */
