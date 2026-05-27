@@ -1,0 +1,209 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link "Loot4you" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Loot4you" [ref=e7]
+      - generic [ref=e8]:
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - link "Главная" [ref=e11] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e12]:
+            - link "Выбрать игру" [ref=e13] [cursor=pointer]:
+              - /url: /game
+              - text: Выбрать игру
+              - img [ref=e14]
+          - listitem [ref=e16]:
+            - link "Контакты" [ref=e17] [cursor=pointer]:
+              - /url: /#footer
+          - listitem [ref=e18]:
+            - link "Продать нам" [ref=e19] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e20]:
+            - link "Отзывы" [ref=e21] [cursor=pointer]:
+              - /url: /
+        - generic [ref=e22]:
+          - button "RU" [ref=e24] [cursor=pointer]:
+            - text: RU
+            - img [ref=e25]
+          - button "$" [ref=e28] [cursor=pointer]:
+            - text: $
+            - img [ref=e29]
+        - button "Open cart" [ref=e31] [cursor=pointer]:
+          - img [ref=e32]
+          - generic [ref=e36]: "1"
+        - generic [ref=e37]:
+          - link "Super Admin" [ref=e38] [cursor=pointer]:
+            - /url: /account
+          - button "Выйти" [ref=e39] [cursor=pointer]
+  - main [ref=e40]:
+    - generic [ref=e42]:
+      - heading "Оформление" [level=1] [ref=e43]
+      - generic [ref=e44]:
+        - generic [ref=e46]:
+          - img "Doloribus Qui Voluptates" [ref=e47]
+          - generic [ref=e48]:
+            - paragraph [ref=e49]: Doloribus Qui Voluptates
+            - paragraph [ref=e50]: PS5
+            - paragraph [ref=e51]: "Товаров: 1"
+          - generic [ref=e52]: $68.37
+        - generic [ref=e53]:
+          - heading "Сводка заказа" [level=2] [ref=e54]
+          - generic [ref=e55]:
+            - generic [ref=e56]: Товаров
+            - generic [ref=e57]: "1"
+          - generic [ref=e58]:
+            - generic [ref=e59]: Сумма
+            - generic [ref=e60]: $68.37
+          - generic [ref=e61]:
+            - generic [ref=e62]: Итого
+            - generic [ref=e63]: $68.37
+          - generic [ref=e64]: Email для доставки
+          - textbox "Email для доставки" [ref=e65]:
+            - /placeholder: you@example.com
+          - generic [ref=e66]: Способ оплаты
+          - generic [ref=e67]:
+            - generic [ref=e68] [cursor=pointer]:
+              - radio "Банковская карта" [checked] [ref=e69]
+              - generic [ref=e70]: Банковская карта
+            - generic [ref=e71] [cursor=pointer]:
+              - radio "PayPal" [ref=e72]
+              - generic [ref=e73]: PayPal
+          - button "Оплатить $68.37" [ref=e74] [cursor=pointer]
+          - paragraph [ref=e75]: Оплата через IceNox Pay. Вы будете перенаправлены для завершения оплаты.
+  - contentinfo [ref=e76]:
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - link [ref=e80] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e82]:
+          - link [ref=e83] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e84]
+          - link [ref=e86] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e87]
+          - link [ref=e93] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e94]
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - heading "Get in Touch" [level=4] [ref=e100]
+          - list [ref=e101]:
+            - listitem [ref=e102]:
+              - img [ref=e103]
+              - text: 1111B S Governors Ave STE 27835
+              - text: Dover, DE 19904
+              - text: United States
+            - listitem [ref=e105]:
+              - img [ref=e106]
+              - text: +41 91 239 14 85
+            - listitem [ref=e109]:
+              - img [ref=e110]
+              - text: hello@evomi.com
+        - generic [ref=e112]:
+          - heading "Explore" [level=4] [ref=e113]
+          - list [ref=e114]:
+            - listitem [ref=e115]:
+              - link "About Us" [ref=e116] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e117]:
+              - link "Ethics" [ref=e118] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e119]:
+              - link "Blog" [ref=e120] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e121]:
+              - link "FAQs" [ref=e122] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e123]:
+              - link "Docs" [ref=e124] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e125]:
+              - link "Partners" [ref=e126] [cursor=pointer]:
+                - /url: "#!"
+        - generic [ref=e127]:
+          - heading "Products" [level=4] [ref=e128]
+          - list [ref=e129]:
+            - listitem [ref=e130]:
+              - link "Residential Proxies" [ref=e131] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e132]:
+              - link "Premium Residential Proxies" [ref=e133] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e134]:
+              - link "Datacenter Proxies" [ref=e135] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e136]:
+              - link "Mobile Proxies" [ref=e137] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e138]:
+              - link "APIs - Coming Soon" [ref=e139] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e140]:
+              - link "Partners" [ref=e141] [cursor=pointer]:
+                - /url: "#!"
+        - generic [ref=e142]:
+          - heading "Use Cases" [level=4] [ref=e143]
+          - list [ref=e144]:
+            - listitem [ref=e145]:
+              - link "All Use Cases" [ref=e146] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e147]:
+              - link "AI Training" [ref=e148] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e149]:
+              - link "Search Engine Monitoring" [ref=e150] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e151]:
+              - link "Data Extraction" [ref=e152] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e153]:
+              - link "AdTech" [ref=e154] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e155]:
+              - link "Market Research" [ref=e156] [cursor=pointer]:
+                - /url: "#!"
+        - generic [ref=e157]:
+          - heading "Legal" [level=4] [ref=e158]
+          - list [ref=e159]:
+            - listitem [ref=e160]:
+              - link "Terms of Service" [ref=e161] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e162]:
+              - link "Privacy Policy" [ref=e163] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e164]:
+              - link "Refund Policy" [ref=e165] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e166]:
+              - link "Law Enforcement Inquiries" [ref=e167] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e168]:
+              - link "Service Level Agreement" [ref=e169] [cursor=pointer]:
+                - /url: "#!"
+      - generic [ref=e171]:
+        - paragraph [ref=e173]: © 2025 loot4you. All rights reserved.
+        - generic [ref=e175]:
+          - link [ref=e176] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e177]
+          - link [ref=e179] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e180]
+          - link [ref=e183] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e184]
+          - link [ref=e187] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e188]
+          - link [ref=e191] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e192]
+          - link [ref=e195] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e196]
+          - link [ref=e198] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e199]

@@ -1,0 +1,20 @@
+[    1026ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8040/_boost/browser-logs @ http://127.0.0.1:8040/game:170
+[    1564ms] [WARNING] [Vue warn]: Hydration node mismatch:
+- rendered on server: JSHandle@node  
+- expected on client: Symbol(v-cmt) 
+  at <BaseTransition appear=false persisted=false mode=undefined  ... > 
+  at <Transition name="cart-fade" > 
+  at <CartDrawer> 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: ee392a27457c9eeb2d982614bf66d311, sharedProps: Array(4)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://127.0.0.1:8040/game:229
+[    1564ms] [ERROR] Hydration completed but contains mismatches. @ http://127.0.0.1:8040/game:229
+[    1565ms] [WARNING] [Vue warn]: Hydration node mismatch:
+- rendered on server: JSHandle@node  
+- expected on client: Symbol(v-cmt) 
+  at <BaseTransition appear=false persisted=false mode=undefined  ... > 
+  at <Transition name="cart-slide" > 
+  at <CartDrawer> 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: ee392a27457c9eeb2d982614bf66d311, sharedProps: Array(4)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://127.0.0.1:8040/game:229

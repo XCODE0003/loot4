@@ -1,0 +1,223 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link "Loot4you" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Loot4you" [ref=e7]
+      - generic [ref=e8]:
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - link "Home" [ref=e11] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e12]:
+            - link "Choose Game" [ref=e13] [cursor=pointer]:
+              - /url: /game
+              - text: Choose Game
+              - img [ref=e14]
+          - listitem [ref=e16]:
+            - link "Contact Us" [ref=e17] [cursor=pointer]:
+              - /url: /#footer
+          - listitem [ref=e18]:
+            - link "Sell to Us" [ref=e19] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e20]:
+            - link "Reviews" [ref=e21] [cursor=pointer]:
+              - /url: /
+        - generic [ref=e22]:
+          - button "EN" [ref=e24] [cursor=pointer]:
+            - text: EN
+            - img [ref=e25]
+          - button "$" [ref=e28] [cursor=pointer]:
+            - text: $
+            - img [ref=e29]
+        - button "Open cart" [ref=e31] [cursor=pointer]:
+          - img [ref=e32]
+        - generic [ref=e36]:
+          - link "Super Admin" [ref=e37] [cursor=pointer]:
+            - /url: /account
+          - button "Logout" [ref=e38] [cursor=pointer]
+  - main [ref=e39]:
+    - generic [ref=e41]:
+      - heading "Profile" [level=1] [ref=e42]
+      - generic [ref=e43]:
+        - complementary [ref=e44]:
+          - generic [ref=e45]:
+            - generic [ref=e46]: S
+            - generic [ref=e47]:
+              - paragraph [ref=e48]: Super Admin
+              - paragraph [ref=e49]: admin@loot4you.test
+          - navigation [ref=e50]:
+            - link "Overview" [ref=e51] [cursor=pointer]:
+              - /url: /account
+              - img [ref=e52]
+              - text: Overview
+            - link "My Orders" [ref=e54] [cursor=pointer]:
+              - /url: /account/orders
+              - img [ref=e55]
+              - text: My Orders
+            - link "Profile" [ref=e57] [cursor=pointer]:
+              - /url: /account/profile
+              - img [ref=e58]
+              - text: Profile
+            - button "Logout" [ref=e60] [cursor=pointer]:
+              - img [ref=e61]
+              - text: Logout
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - heading "Profile information" [level=2] [ref=e65]
+            - generic [ref=e66]:
+              - generic [ref=e67]:
+                - generic [ref=e68]: Name
+                - textbox "Name" [ref=e69]: Super Admin
+              - generic [ref=e70]:
+                - generic [ref=e71]: Email
+                - textbox "Email" [ref=e72]: admin@loot4you.test
+              - button "Save changes" [ref=e74] [cursor=pointer]
+          - generic [ref=e75]:
+            - heading "Change password" [level=2] [ref=e76]
+            - generic [ref=e77]:
+              - generic [ref=e78]:
+                - generic [ref=e79]: Current password
+                - textbox "Current password" [ref=e80]
+              - generic [ref=e81]:
+                - generic [ref=e82]: New password
+                - textbox "New password" [ref=e83]
+              - generic [ref=e84]:
+                - generic [ref=e85]: Confirm new password
+                - textbox "Confirm new password" [ref=e86]
+              - button "Update password" [ref=e88] [cursor=pointer]
+  - contentinfo [ref=e89]:
+    - generic [ref=e90]:
+      - generic [ref=e91]:
+        - link [ref=e93] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e95]:
+          - link [ref=e96] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e97]
+          - link [ref=e99] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e100]
+          - link [ref=e106] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e107]
+      - generic [ref=e111]:
+        - generic [ref=e112]:
+          - heading "Get in Touch" [level=4] [ref=e113]
+          - list [ref=e114]:
+            - listitem [ref=e115]:
+              - img [ref=e116]
+              - text: 1111B S Governors Ave STE 27835
+              - text: Dover, DE 19904
+              - text: United States
+            - listitem [ref=e118]:
+              - img [ref=e119]
+              - text: +41 91 239 14 85
+            - listitem [ref=e122]:
+              - img [ref=e123]
+              - text: hello@evomi.com
+        - generic [ref=e125]:
+          - heading "Explore" [level=4] [ref=e126]
+          - list [ref=e127]:
+            - listitem [ref=e128]:
+              - link "About Us" [ref=e129] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e130]:
+              - link "Ethics" [ref=e131] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e132]:
+              - link "Blog" [ref=e133] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e134]:
+              - link "FAQs" [ref=e135] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e136]:
+              - link "Docs" [ref=e137] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e138]:
+              - link "Partners" [ref=e139] [cursor=pointer]:
+                - /url: "#!"
+        - generic [ref=e140]:
+          - heading "Products" [level=4] [ref=e141]
+          - list [ref=e142]:
+            - listitem [ref=e143]:
+              - link "Residential Proxies" [ref=e144] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e145]:
+              - link "Premium Residential Proxies" [ref=e146] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e147]:
+              - link "Datacenter Proxies" [ref=e148] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e149]:
+              - link "Mobile Proxies" [ref=e150] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e151]:
+              - link "APIs - Coming Soon" [ref=e152] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e153]:
+              - link "Partners" [ref=e154] [cursor=pointer]:
+                - /url: "#!"
+        - generic [ref=e155]:
+          - heading "Use Cases" [level=4] [ref=e156]
+          - list [ref=e157]:
+            - listitem [ref=e158]:
+              - link "All Use Cases" [ref=e159] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e160]:
+              - link "AI Training" [ref=e161] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e162]:
+              - link "Search Engine Monitoring" [ref=e163] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e164]:
+              - link "Data Extraction" [ref=e165] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e166]:
+              - link "AdTech" [ref=e167] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e168]:
+              - link "Market Research" [ref=e169] [cursor=pointer]:
+                - /url: "#!"
+        - generic [ref=e170]:
+          - heading "Legal" [level=4] [ref=e171]
+          - list [ref=e172]:
+            - listitem [ref=e173]:
+              - link "Terms of Service" [ref=e174] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e175]:
+              - link "Privacy Policy" [ref=e176] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e177]:
+              - link "Refund Policy" [ref=e178] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e179]:
+              - link "Law Enforcement Inquiries" [ref=e180] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e181]:
+              - link "Service Level Agreement" [ref=e182] [cursor=pointer]:
+                - /url: "#!"
+      - generic [ref=e184]:
+        - paragraph [ref=e186]: © 2025 loot4you. All rights reserved.
+        - generic [ref=e188]:
+          - link [ref=e189] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e190]
+          - link [ref=e192] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e193]
+          - link [ref=e196] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e197]
+          - link [ref=e200] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e201]
+          - link [ref=e204] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e205]
+          - link [ref=e208] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e209]
+          - link [ref=e211] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e212]

@@ -1,0 +1,101 @@
+[     846ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8040/_boost/browser-logs @ http://127.0.0.1:8040/game:170
+[     847ms] [ERROR] Not allowed to load local resource: file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/header_logo.svg @ http://127.0.0.1:8040/game:356
+[     847ms] [ERROR] Not allowed to load local resource: file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/background_header.png @ http://127.0.0.1:8040/game:356
+[     847ms] [ERROR] Not allowed to load local resource: file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/intro_trust.png @ http://127.0.0.1:8040/game:356
+[     847ms] [ERROR] Not allowed to load local resource: file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/game_intro_image.png @ http://127.0.0.1:8040/game:356
+[     847ms] [ERROR] Not allowed to load local resource: file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/game_logo.png @ http://127.0.0.1:8040/game:356
+[     848ms] [ERROR] Not allowed to load local resource: file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/intro_trust.png @ http://127.0.0.1:8040/game:356
+[     848ms] [ERROR] Not allowed to load local resource: file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/header_logo.svg @ http://127.0.0.1:8040/game:356
+[    1116ms] [WARNING] [Vue warn]: Hydration attribute mismatch on JSHandle@node 
+  - rendered on server: src="file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/header_logo.svg"
+  - expected on client: src="http://[::1]:5173/resources/js/loot4/assets/img/header_logo.svg"
+  Note: this mismatch is check-only. The DOM will not be rectified in production due to performance overhead.
+  You should fix the source of the mismatch. 
+  at <Link href="/" class="header_logo" onClick=fn<closeMenu> > 
+  at <AppHeader> 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: ee392a27457c9eeb2d982614bf66d311, sharedProps: Array(4)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://127.0.0.1:8040/game:229
+[    1118ms] [ERROR] Hydration completed but contains mismatches. @ http://127.0.0.1:8040/game:229
+[    1121ms] [WARNING] [Vue warn]: Hydration attribute mismatch on JSHandle@node 
+  - rendered on server: src="file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/background_header.png"
+  - expected on client: src="http://[::1]:5173/resources/js/loot4/assets/img/background_header.png"
+  Note: this mismatch is check-only. The DOM will not be rectified in production due to performance overhead.
+  You should fix the source of the mismatch. 
+  at <HeaderBackground> 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: ee392a27457c9eeb2d982614bf66d311, sharedProps: Array(4)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://127.0.0.1:8040/game:229
+[    1123ms] [WARNING] [Vue warn]: Hydration attribute mismatch on JSHandle@node 
+  - rendered on server: src="file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/intro_trust.png"
+  - expected on client: src="http://[::1]:5173/resources/js/loot4/assets/img/intro_trust.png"
+  Note: this mismatch is check-only. The DOM will not be rectified in production due to performance overhead.
+  You should fix the source of the mismatch. 
+  at <Container> 
+  at <GameIntroSection> 
+  at <GameView products= [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] filters= [Object, Object, Object, Object, Object, Object] > 
+  at <Game errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: ee392a27457c9eeb2d982614bf66d311, sharedProps: Array(4)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://127.0.0.1:8040/game:229
+[    1123ms] [WARNING] [Vue warn]: Hydration attribute mismatch on JSHandle@node 
+  - rendered on server: src="file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/game_intro_image.png"
+  - expected on client: src="http://[::1]:5173/resources/js/loot4/assets/img/game_intro_image.png"
+  Note: this mismatch is check-only. The DOM will not be rectified in production due to performance overhead.
+  You should fix the source of the mismatch. 
+  at <Container> 
+  at <GameIntroSection> 
+  at <GameView products= [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] filters= [Object, Object, Object, Object, Object, Object] > 
+  at <Game errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: ee392a27457c9eeb2d982614bf66d311, sharedProps: Array(4)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://127.0.0.1:8040/game:229
+[    1127ms] [WARNING] [Vue warn]: Hydration attribute mismatch on JSHandle@node 
+  - rendered on server: src="file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/game_logo.png"
+  - expected on client: src="http://[::1]:5173/resources/js/loot4/assets/img/game_logo.png"
+  Note: this mismatch is check-only. The DOM will not be rectified in production due to performance overhead.
+  You should fix the source of the mismatch. 
+  at <GameCatalog items= [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] filters= [Object, Object, Object, Object, Object, Object] show-logo="" > 
+  at <Container> 
+  at <GameView products= [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] filters= [Object, Object, Object, Object, Object, Object] > 
+  at <Game errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: ee392a27457c9eeb2d982614bf66d311, sharedProps: Array(4)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://127.0.0.1:8040/game:229
+[    1128ms] [WARNING] [Vue warn]: Hydration attribute mismatch on JSHandle@node 
+  - rendered on server: src="file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/intro_trust.png"
+  - expected on client: src="http://[::1]:5173/resources/js/loot4/assets/img/intro_trust.png"
+  Note: this mismatch is check-only. The DOM will not be rectified in production due to performance overhead.
+  You should fix the source of the mismatch. 
+  at <AppFooter> 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: ee392a27457c9eeb2d982614bf66d311, sharedProps: Array(4)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://127.0.0.1:8040/game:229
+[    1129ms] [WARNING] [Vue warn]: Hydration attribute mismatch on JSHandle@node 
+  - rendered on server: src="file:///Users/nikita/Documents/projects/loot4/resources/js/loot4/assets/img/header_logo.svg"
+  - expected on client: src="http://[::1]:5173/resources/js/loot4/assets/img/header_logo.svg"
+  Note: this mismatch is check-only. The DOM will not be rectified in production due to performance overhead.
+  You should fix the source of the mismatch. 
+  at <Link href="/" class="footer_up_item_logo" > 
+  at <AppFooter> 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: ee392a27457c9eeb2d982614bf66d311, sharedProps: Array(4)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://127.0.0.1:8040/game:229
+[    1131ms] [WARNING] [Vue warn]: Hydration node mismatch:
+- rendered on server: JSHandle@node  
+- expected on client: Symbol(v-cmt) 
+  at <BaseTransition appear=false persisted=false mode=undefined  ... > 
+  at <Transition name="cart-fade" > 
+  at <CartDrawer> 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: ee392a27457c9eeb2d982614bf66d311, sharedProps: Array(4)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://127.0.0.1:8040/game:229
+[    1132ms] [WARNING] [Vue warn]: Hydration node mismatch:
+- rendered on server: JSHandle@node  
+- expected on client: Symbol(v-cmt) 
+  at <BaseTransition appear=false persisted=false mode=undefined  ... > 
+  at <Transition name="cart-slide" > 
+  at <CartDrawer> 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: null}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: ee392a27457c9eeb2d982614bf66d311, sharedProps: Array(4)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://127.0.0.1:8040/game:229

@@ -1,0 +1,290 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link "Loot4you" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Loot4you" [ref=e7]
+      - generic [ref=e8]:
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - link "Home" [ref=e11] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e12]:
+            - link "Choose Game" [ref=e13] [cursor=pointer]:
+              - /url: /game
+              - text: Choose Game
+              - img [ref=e14]
+          - listitem [ref=e16]:
+            - link "Contact Us" [ref=e17] [cursor=pointer]:
+              - /url: /#footer
+          - listitem [ref=e18]:
+            - link "Sell to Us" [ref=e19] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e20]:
+            - link "Reviews" [ref=e21] [cursor=pointer]:
+              - /url: /
+        - generic [ref=e22]:
+          - button "EN" [ref=e24] [cursor=pointer]:
+            - text: EN
+            - img [ref=e25]
+          - button "$" [ref=e28] [cursor=pointer]:
+            - text: $
+            - img [ref=e29]
+        - button "Open cart" [ref=e31] [cursor=pointer]:
+          - img [ref=e32]
+        - generic [ref=e36]:
+          - link "Super Admin" [ref=e37] [cursor=pointer]:
+            - /url: /account
+          - button "Logout" [ref=e38] [cursor=pointer]
+  - main [ref=e39]:
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - link "Home" [ref=e43] [cursor=pointer]:
+          - /url: /
+        - img [ref=e44]
+        - link "Sit Asperiores" [ref=e46] [cursor=pointer]:
+          - /url: /game
+        - img [ref=e47]
+        - paragraph [ref=e49]: Nihil Voluptatem Sed
+      - generic [ref=e50]:
+        - generic [ref=e52]:
+          - paragraph [ref=e53]: We accept
+          - paragraph [ref=e55]: and many more
+        - generic [ref=e56]:
+          - heading "Nihil Voluptatem Sed" [level=1] [ref=e57]
+          - generic [ref=e58]:
+            - paragraph [ref=e59]: Your platform
+            - list [ref=e60]:
+              - listitem [ref=e61]:
+                - generic [ref=e62] [cursor=pointer]:
+                  - radio "PS4" [checked] [ref=e63]
+                  - text: PS4
+              - listitem [ref=e65]:
+                - generic [ref=e66] [cursor=pointer]:
+                  - radio "PS5" [ref=e67]
+                  - text: PS5
+              - listitem [ref=e69]:
+                - generic [ref=e70] [cursor=pointer]:
+                  - radio "PC" [ref=e71]
+                  - text: PC
+          - generic [ref=e74]:
+            - paragraph [ref=e75]: Chose Package
+            - paragraph [ref=e76]:
+              - generic [ref=e77]: Nihil Voluptatem Sed
+              - generic [ref=e78]: "| $30.23"
+            - paragraph [ref=e81]: Add-ons
+          - generic [ref=e83]:
+            - paragraph [ref=e84]:
+              - text: $30.23
+              - generic [ref=e85]: $30.23
+            - button "Buy now" [ref=e86] [cursor=pointer]
+      - paragraph [ref=e87]:
+        - text: Description
+        - text: Eligendi omnis molestias aut necessitatibus accusamus. Numquam et vero et qui beatae dolorum. Earum et repudiandae culpa. Neque et rem tenetur quidem repellendus.
+      - generic [ref=e88]:
+        - heading "Recommended products" [level=4] [ref=e89]
+        - generic [ref=e90]:
+          - generic [ref=e91] [cursor=pointer]:
+            - img "Minima Quis Ut" [ref=e92]
+            - heading "Minima Quis Ut" [level=4] [ref=e93]
+            - generic [ref=e94]:
+              - generic [ref=e95]:
+                - paragraph [ref=e96]: $213.21
+                - paragraph [ref=e97]: $165.28
+              - button "Buy now" [ref=e98]
+          - generic [ref=e99] [cursor=pointer]:
+            - img "Minima Quod Et" [ref=e100]
+            - heading "Minima Quod Et" [level=4] [ref=e101]
+            - generic [ref=e102]:
+              - generic [ref=e103]:
+                - paragraph [ref=e104]: $115.98
+                - paragraph [ref=e105]: $115.98
+              - button "Buy now" [ref=e106]
+          - generic [ref=e107] [cursor=pointer]:
+            - img "Et Accusamus Sequi" [ref=e108]
+            - heading "Et Accusamus Sequi" [level=4] [ref=e109]
+            - generic [ref=e110]:
+              - generic [ref=e111]:
+                - paragraph [ref=e112]: $156.90
+                - paragraph [ref=e113]: $108.21
+              - button "Buy now" [ref=e114]
+          - generic [ref=e115] [cursor=pointer]:
+            - img "Voluptates Doloribus Fugiat" [ref=e116]
+            - heading "Voluptates Doloribus Fugiat" [level=4] [ref=e117]
+            - generic [ref=e118]:
+              - generic [ref=e119]:
+                - paragraph [ref=e120]: $114.72
+                - paragraph [ref=e121]: $79.67
+              - button "Buy now" [ref=e122]
+    - generic [ref=e124]:
+      - paragraph [ref=e125]:
+        - img [ref=e126]
+        - text: FAQ
+      - heading "Frequently asked questions" [level=4] [ref=e129]
+      - paragraph [ref=e130]: Find everything you need to know about our digital keys, accounts, delivery, and guarantees.
+      - generic [ref=e131]:
+        - generic [ref=e133]:
+          - button "yo chat is this digital keys?" [ref=e134] [cursor=pointer]:
+            - heading "yo chat is this digital keys?" [level=4] [ref=e135]
+            - img [ref=e136]
+          - paragraph [ref=e138]: def YESSS CHAT ❤️
+        - generic [ref=e140]:
+          - button "I am a public figure, can I get a personal percentage?" [ref=e141] [cursor=pointer]:
+            - heading "I am a public figure, can I get a personal percentage?" [level=4] [ref=e142]
+            - img [ref=e143]
+          - paragraph: def YESSS CHAT ❤️
+        - generic [ref=e146]:
+          - button "I am a public figure, can I get a personal percentage?" [ref=e147] [cursor=pointer]:
+            - heading "I am a public figure, can I get a personal percentage?" [level=4] [ref=e148]
+            - img [ref=e149]
+          - paragraph: def YESSS CHAT ❤️
+        - generic [ref=e152]:
+          - button "I am a public figure, can I get a personal percentage?" [ref=e153] [cursor=pointer]:
+            - heading "I am a public figure, can I get a personal percentage?" [level=4] [ref=e154]
+            - img [ref=e155]
+          - paragraph: def YESSS CHAT ❤️
+        - generic [ref=e158]:
+          - button "I am a public figure, can I get a personal percentage?" [ref=e159] [cursor=pointer]:
+            - heading "I am a public figure, can I get a personal percentage?" [level=4] [ref=e160]
+            - img [ref=e161]
+          - paragraph: def YESSS CHAT ❤️
+        - generic [ref=e164]:
+          - button "Why is my balance not credited?" [ref=e165] [cursor=pointer]:
+            - heading "Why is my balance not credited?" [level=4] [ref=e166]
+            - img [ref=e167]
+          - paragraph: def YESSS CHAT ❤️
+  - contentinfo [ref=e169]:
+    - generic [ref=e170]:
+      - generic [ref=e171]:
+        - link [ref=e173] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e175]:
+          - link [ref=e176] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e177]
+          - link [ref=e179] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e180]
+          - link [ref=e186] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e187]
+      - generic [ref=e191]:
+        - generic [ref=e192]:
+          - heading "Get in Touch" [level=4] [ref=e193]
+          - list [ref=e194]:
+            - listitem [ref=e195]:
+              - img [ref=e196]
+              - text: 1111B S Governors Ave STE 27835
+              - text: Dover, DE 19904
+              - text: United States
+            - listitem [ref=e198]:
+              - img [ref=e199]
+              - text: +41 91 239 14 85
+            - listitem [ref=e202]:
+              - img [ref=e203]
+              - text: hello@evomi.com
+        - generic [ref=e205]:
+          - heading "Explore" [level=4] [ref=e206]
+          - list [ref=e207]:
+            - listitem [ref=e208]:
+              - link "About Us" [ref=e209] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e210]:
+              - link "Ethics" [ref=e211] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e212]:
+              - link "Blog" [ref=e213] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e214]:
+              - link "FAQs" [ref=e215] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e216]:
+              - link "Docs" [ref=e217] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e218]:
+              - link "Partners" [ref=e219] [cursor=pointer]:
+                - /url: "#!"
+        - generic [ref=e220]:
+          - heading "Products" [level=4] [ref=e221]
+          - list [ref=e222]:
+            - listitem [ref=e223]:
+              - link "Residential Proxies" [ref=e224] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e225]:
+              - link "Premium Residential Proxies" [ref=e226] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e227]:
+              - link "Datacenter Proxies" [ref=e228] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e229]:
+              - link "Mobile Proxies" [ref=e230] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e231]:
+              - link "APIs - Coming Soon" [ref=e232] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e233]:
+              - link "Partners" [ref=e234] [cursor=pointer]:
+                - /url: "#!"
+        - generic [ref=e235]:
+          - heading "Use Cases" [level=4] [ref=e236]
+          - list [ref=e237]:
+            - listitem [ref=e238]:
+              - link "All Use Cases" [ref=e239] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e240]:
+              - link "AI Training" [ref=e241] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e242]:
+              - link "Search Engine Monitoring" [ref=e243] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e244]:
+              - link "Data Extraction" [ref=e245] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e246]:
+              - link "AdTech" [ref=e247] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e248]:
+              - link "Market Research" [ref=e249] [cursor=pointer]:
+                - /url: "#!"
+        - generic [ref=e250]:
+          - heading "Legal" [level=4] [ref=e251]
+          - list [ref=e252]:
+            - listitem [ref=e253]:
+              - link "Terms of Service" [ref=e254] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e255]:
+              - link "Privacy Policy" [ref=e256] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e257]:
+              - link "Refund Policy" [ref=e258] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e259]:
+              - link "Law Enforcement Inquiries" [ref=e260] [cursor=pointer]:
+                - /url: "#!"
+            - listitem [ref=e261]:
+              - link "Service Level Agreement" [ref=e262] [cursor=pointer]:
+                - /url: "#!"
+      - generic [ref=e264]:
+        - paragraph [ref=e266]: © 2025 loot4you. All rights reserved.
+        - generic [ref=e268]:
+          - link [ref=e269] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e270]
+          - link [ref=e272] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e273]
+          - link [ref=e276] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e277]
+          - link [ref=e280] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e281]
+          - link [ref=e284] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e285]
+          - link [ref=e288] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e289]
+          - link [ref=e291] [cursor=pointer]:
+            - /url: "#!"
+            - img [ref=e292]
