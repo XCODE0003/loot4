@@ -17,33 +17,33 @@ jobs:
           php composer.phar install --no-dev --ignore-platform-reqs --no-interaction --no-progress --quiet
           php artisan wayfinder:generate --with-form
 
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
+
       - name: Sync files to server
-        uses: burnett01/rsync-deployments@7.0.1
-        with:
-          switches: >-
-            -avz --delete
-            --exclude='.git'
-            --exclude='node_modules'
-            --exclude='vendor'
-            --exclude='.env'
-            --exclude='storage/logs'
-            --exclude='storage/framework/cache'
-            --exclude='storage/framework/sessions'
-            --exclude='storage/framework/views'
-            --exclude='public/storage'
-            --exclude='public/hot'
-          path: ./
-          remote_path: /var/www/loot4you
-          remote_host: ${{ secrets.SSH_HOST }}
-          remote_user: root
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        env:
+          SSHPASS: ${{ secrets.SSH_PASSWORD }}
+        run: |
+          sshpass -e rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='vendor' \
+            --exclude='.env' \
+            --exclude='storage/logs' \
+            --exclude='storage/framework/cache' \
+            --exclude='storage/framework/sessions' \
+            --exclude='storage/framework/views' \
+            --exclude='public/storage' \
+            --exclude='public/hot' \
+            ./ root@${{ secrets.SSH_HOST }}:/var/www/loot4you
 
       - name: Build & restart containers
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
           username: root
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
           timeout: 30m
           script: |
             set -e
@@ -54,4 +54,4 @@ jobs:
             docker compose -f docker-compose.prod.yml exec -T app php artisan config:cache
             docker compose -f docker-compose.prod.yml exec -T app php artisan route:cache
             docker compose -f docker-compose.prod.yml exec -T app php artisan view:cache
-            echo "✅ Deploy complete"
+            echo "Deploy complete"
