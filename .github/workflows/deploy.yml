@@ -36,6 +36,7 @@ jobs:
             --exclude='storage/framework/views' \
             --exclude='public/storage' \
             --exclude='public/hot' \
+            --exclude='docker/certbot_certs' \
             ./ root@${{ secrets.SSH_HOST }}:/var/www/loot4you
 
       - name: Build & restart containers
@@ -51,7 +52,5 @@ jobs:
             docker compose -f docker-compose.prod.yml build --no-cache app queue
             docker compose -f docker-compose.prod.yml up -d
             docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force
-            docker compose -f docker-compose.prod.yml exec -T app php artisan config:cache
-            docker compose -f docker-compose.prod.yml exec -T app php artisan route:cache
-            docker compose -f docker-compose.prod.yml exec -T app php artisan view:cache
+            docker compose -f docker-compose.prod.yml exec -T --user www-data app php artisan optimize
             echo "Deploy complete"
