@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
+import { useLocale } from '@/loot4/composables/useLocale'
 
 const props = defineProps({
   packages: { type: Array, required: true },
@@ -7,6 +8,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['select'])
+
+const { formatPrice } = useLocale()
 
 const basePackage = computed(() => {
   if (props.basePrice != null) {
@@ -57,7 +60,7 @@ watch(
         <span v-if="i === 0 || i === 2">{{ part }}</span>
         <template v-else>{{ part }} </template>
       </template>
-      <span>| ${{ basePackage.price.toFixed(2) }}</span>
+      <span>| {{ formatPrice(basePackage.price) }}</span>
     </p>
     <div class="product_main_section_chose_select_items">
       <div class="product_main_section_chose_select_items_content">
@@ -81,7 +84,7 @@ watch(
                 <span v-if="i === 0 || i === 2">{{ part }}</span>
                 <template v-else>{{ part }} </template>
               </template>
-              <span>| +${{ pkg.price.toFixed(2) }}</span>
+              <span>| +{{ formatPrice(pkg.price) }}</span>
             </span>
           </label>
         </div>

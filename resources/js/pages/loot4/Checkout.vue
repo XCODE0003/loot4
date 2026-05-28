@@ -55,7 +55,7 @@ function money(value) {
 
 function signedMoney(value) {
   const sign = value < 0 ? '−' : '+'
-  return `${sign}${currency.value}${Math.abs(Number(value)).toFixed(2)}`
+  return `${sign}${formatPrice(Math.abs(Number(value)))}`
 }
 
 async function applyPromo() {
