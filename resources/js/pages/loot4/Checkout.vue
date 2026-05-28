@@ -547,6 +547,7 @@ function placeOrder() {
   padding: 0 22px;
   border-radius: 999px;
   background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
+  box-shadow: inset 0 6px 32px 0 rgba(81, 255, 159, 0.25), inset 0 22px 32px 0 rgba(81, 255, 214, 0.25), inset 0 -4px 6px 0 rgba(0, 0, 0, 0.25);
   color: #fff;
   font-weight: 600;
   border: none;
@@ -568,6 +569,7 @@ function placeOrder() {
   margin-top: 16px;
   border-radius: 999px;
   background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
+  box-shadow: inset 0 6px 32px 0 rgba(81, 255, 159, 0.25), inset 0 22px 32px 0 rgba(81, 255, 214, 0.25), inset 0 -4px 6px 0 rgba(0, 0, 0, 0.25);
   color: #fff;
   font-weight: 700;
   font-size: 16px;
@@ -686,6 +688,7 @@ function placeOrder() {
   padding: 14px 26px;
   border-radius: 999px;
   background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
+  box-shadow: inset 0 6px 32px 0 rgba(81, 255, 159, 0.25), inset 0 22px 32px 0 rgba(81, 255, 214, 0.25), inset 0 -4px 6px 0 rgba(0, 0, 0, 0.25);
   color: #fff;
   font-weight: 600;
   text-decoration: none;
