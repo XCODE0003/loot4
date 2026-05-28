@@ -1,0 +1,741 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - button "Menu" [ref=e7] [cursor=pointer]:
+        - img [ref=e8]
+      - link "Seeded exchange host" [ref=e9] [cursor=pointer]:
+        - /url: /markets
+        - img [ref=e11]
+        - generic [ref=e12]: Seeded exchange host
+    - generic [ref=e13]:
+      - button "Search" [ref=e14] [cursor=pointer]:
+        - img [ref=e15]
+      - link "Sign in" [ref=e19] [cursor=pointer]:
+        - /url: /sign-in
+        - generic [ref=e20]: Sign in
+  - main [ref=e22]:
+    - generic [ref=e23]:
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - heading "Prediction markets" [level=1] [ref=e26]
+          - paragraph [ref=e27]: 2990 active markets
+        - generic [ref=e28]:
+          - button "How it works" [ref=e29] [cursor=pointer]:
+            - img [ref=e31]
+            - generic [ref=e34]: How it works
+          - generic [ref=e35]:
+            - button "By volume" [ref=e36] [cursor=pointer]:
+              - generic [ref=e37]: By volume
+            - button "Closing soon" [ref=e38] [cursor=pointer]:
+              - generic [ref=e39]: Closing soon
+            - button "Newest" [ref=e40] [cursor=pointer]:
+              - generic [ref=e41]: Newest
+      - generic [ref=e43]:
+        - generic [ref=e44]:
+          - article [ref=e45]:
+            - 'link "MLB: 2026 American League Champion" [ref=e46] [cursor=pointer]':
+              - /url: /event/mlb-2026-american-league-champion
+              - 'img "MLB: 2026 American League Champion" [ref=e47]'
+              - generic [ref=e48]:
+                - img [ref=e49]
+                - text: american-league
+            - generic [ref=e51]:
+              - generic [ref=e52]: AMERICAN-LEAGUE
+              - 'heading "MLB: 2026 American League Champion" [level=2] [ref=e53]':
+                - 'link "MLB: 2026 American League Champion" [ref=e54] [cursor=pointer]':
+                  - /url: /event/mlb-2026-american-league-champion
+              - generic [ref=e55]:
+                - generic [ref=e56]:
+                  - img [ref=e57]
+                  - generic [ref=e59]:
+                    - strong [ref=e60]: $3.73M
+                    - generic [ref=e61]: Total volume
+                - generic [ref=e62]:
+                  - img [ref=e63]
+                  - generic [ref=e68]:
+                    - strong [ref=e69]: 18.7K
+                    - generic [ref=e70]: Traders
+                - generic [ref=e71]:
+                  - img [ref=e72]
+                  - generic [ref=e75]:
+                    - strong [ref=e76]: 1 нояб. 2026 г.
+                    - generic [ref=e77]: Resolution date
+            - generic [ref=e78]:
+              - generic [ref=e79]:
+                - generic [ref=e80]:
+                  - generic [ref=e81]: New York Ya…
+                  - generic [ref=e82]: 15%
+                  - img [ref=e83]
+                  - link "Buy 15¢" [ref=e85] [cursor=pointer]:
+                    - /url: /event/mlb-2026-american-league-champion?side=yes
+                - generic [ref=e86]:
+                  - generic [ref=e87]: Seattle Mar…
+                  - generic [ref=e88]: 8%
+                  - img [ref=e89]
+                  - link "Buy 8¢" [ref=e91] [cursor=pointer]:
+                    - /url: /event/mlb-2026-american-league-champion?side=no
+              - link "View market" [ref=e92] [cursor=pointer]:
+                - /url: /event/mlb-2026-american-league-champion
+                - generic [ref=e93]: View market
+                - img [ref=e94]
+          - button "Previous" [ref=e96] [cursor=pointer]:
+            - img [ref=e97]
+          - button "Next" [ref=e99] [cursor=pointer]:
+            - img [ref=e100]
+        - tablist [ref=e102]:
+          - tab "Go to slide 1" [selected] [ref=e103] [cursor=pointer]
+          - tab "Go to slide 2" [ref=e104] [cursor=pointer]
+          - tab "Go to slide 3" [ref=e105] [cursor=pointer]
+          - tab "Go to slide 4" [ref=e106] [cursor=pointer]
+          - tab "Go to slide 5" [ref=e107] [cursor=pointer]
+      - generic [ref=e110]:
+        - generic [ref=e111]:
+          - generic [ref=e112]:
+            - img [ref=e113]
+            - text: TRY A QUICK DEMO
+          - heading "Will Bitcoin close above $100K this week?" [level=3] [ref=e115]
+          - paragraph [ref=e116]: Place a test trade with virtual funds. No risk, just practice.
+          - generic [ref=e121]:
+            - generic [ref=e122]: Yes 52%
+            - generic [ref=e124]: No 48%
+        - generic [ref=e126]:
+          - generic [ref=e127]:
+            - generic [ref=e128]:
+              - generic [ref=e129]: "Yes"
+              - generic [ref=e130]: 52%
+            - img [ref=e131]
+            - generic [ref=e134]: Virtual payout $1.92
+          - generic [ref=e135]:
+            - generic [ref=e136]:
+              - generic [ref=e137]: "No"
+              - generic [ref=e138]: 48%
+            - img [ref=e139]
+            - generic [ref=e142]: Virtual payout $2.08
+        - generic [ref=e143]:
+          - link "Start demo" [ref=e144] [cursor=pointer]:
+            - /url: /how-to-trade
+            - text: Start demo
+            - img [ref=e145]
+          - generic [ref=e147]: It's free
+      - generic [ref=e148]:
+        - generic [ref=e149]:
+          - heading "Live now" [level=2] [ref=e152]
+          - paragraph [ref=e153]: Live trades across every market
+        - generic [ref=e155]:
+          - article [ref=e156]:
+            - img [ref=e158]
+            - generic [ref=e159]: "MLB: 2026 American League Champion"
+            - generic [ref=e160]: $4,645
+            - generic [ref=e161]: bought No · 0x9b…5b
+          - article [ref=e162]:
+            - img [ref=e164]
+            - generic [ref=e165]: Russia x Ukraine ceasefire by May 31, 2026?
+            - generic [ref=e166]: $224
+            - generic [ref=e167]: bought Yes · 0x75…d2
+          - article [ref=e168]:
+            - img [ref=e170]
+            - generic [ref=e171]: Russia x Ukraine ceasefire by June 30, 2026?
+            - generic [ref=e172]: $2,894
+            - generic [ref=e173]: bought Yes · 0xba…de
+          - article [ref=e174]:
+            - img [ref=e176]
+            - generic [ref=e177]: 2026 FIFA World Cup Winner
+            - generic [ref=e178]: $4,759
+            - generic [ref=e179]: bought No · 0xc0…b1
+          - article [ref=e180]:
+            - img [ref=e182]
+            - generic [ref=e183]: When will Bitcoin hit $150k?
+            - generic [ref=e184]: $2,448
+            - generic [ref=e185]: bought Yes · 0x26…70
+          - article [ref=e186]:
+            - img [ref=e188]
+            - generic [ref=e189]: US x Iran permanent peace deal by...?
+            - generic [ref=e190]: $3,591
+            - generic [ref=e191]: bought No · 0xc1…a7
+          - article [ref=e192]:
+            - img [ref=e194]
+            - generic [ref=e195]: Republican Presidential Nominee 2028
+            - generic [ref=e196]: $3,323
+            - generic [ref=e197]: bought No · 0x39…55
+          - article [ref=e198]:
+            - img [ref=e200]
+            - generic [ref=e201]: Democratic Presidential Nominee 2028
+            - generic [ref=e202]: $4,869
+            - generic [ref=e203]: bought No · 0x02…6b
+          - article [ref=e204]:
+            - img [ref=e206]
+            - generic [ref=e207]: 2026 NBA Champion
+            - generic [ref=e208]: $1,576
+            - generic [ref=e209]: bought Yes · 0x6e…f4
+          - article [ref=e210]:
+            - img [ref=e212]
+            - generic [ref=e213]: Presidential Election Winner 2028
+            - generic [ref=e214]: $921
+            - generic [ref=e215]: bought No · 0x24…b7
+          - article [ref=e216]:
+            - img [ref=e218]
+            - generic [ref=e219]: Next French Presidential Election
+            - generic [ref=e220]: $2,213
+            - generic [ref=e221]: bought No · 0xfd…d9
+          - article [ref=e222]:
+            - img [ref=e224]
+            - generic [ref=e225]: Fed Decision in June?
+            - generic [ref=e226]: $4,447
+            - generic [ref=e227]: bought No · 0x2b…ef
+          - article [ref=e228]:
+            - img [ref=e230]
+            - generic [ref=e231]: Hantavirus pandemic in 2026?
+            - generic [ref=e232]: $3,302
+            - generic [ref=e233]: bought Yes · 0x82…98
+          - article [ref=e234]:
+            - img [ref=e236]
+            - generic [ref=e237]: "MLB: 2026 American League Champion"
+            - generic [ref=e238]: $4,645
+            - generic [ref=e239]: bought No · 0x9b…5b
+          - article [ref=e240]:
+            - img [ref=e242]
+            - generic [ref=e243]: Russia x Ukraine ceasefire by May 31, 2026?
+            - generic [ref=e244]: $224
+            - generic [ref=e245]: bought Yes · 0x75…d2
+          - article [ref=e246]:
+            - img [ref=e248]
+            - generic [ref=e249]: Russia x Ukraine ceasefire by June 30, 2026?
+            - generic [ref=e250]: $2,894
+            - generic [ref=e251]: bought Yes · 0xba…de
+          - article [ref=e252]:
+            - img [ref=e254]
+            - generic [ref=e255]: 2026 FIFA World Cup Winner
+            - generic [ref=e256]: $4,759
+            - generic [ref=e257]: bought No · 0xc0…b1
+          - article [ref=e258]:
+            - img [ref=e260]
+            - generic [ref=e261]: When will Bitcoin hit $150k?
+            - generic [ref=e262]: $2,448
+            - generic [ref=e263]: bought Yes · 0x26…70
+          - article [ref=e264]:
+            - img [ref=e266]
+            - generic [ref=e267]: US x Iran permanent peace deal by...?
+            - generic [ref=e268]: $3,591
+            - generic [ref=e269]: bought No · 0xc1…a7
+          - article [ref=e270]:
+            - img [ref=e272]
+            - generic [ref=e273]: Republican Presidential Nominee 2028
+            - generic [ref=e274]: $3,323
+            - generic [ref=e275]: bought No · 0x39…55
+          - article [ref=e276]:
+            - img [ref=e278]
+            - generic [ref=e279]: Democratic Presidential Nominee 2028
+            - generic [ref=e280]: $4,869
+            - generic [ref=e281]: bought No · 0x02…6b
+          - article [ref=e282]:
+            - img [ref=e284]
+            - generic [ref=e285]: 2026 NBA Champion
+            - generic [ref=e286]: $1,576
+            - generic [ref=e287]: bought Yes · 0x6e…f4
+          - article [ref=e288]:
+            - img [ref=e290]
+            - generic [ref=e291]: Presidential Election Winner 2028
+            - generic [ref=e292]: $921
+            - generic [ref=e293]: bought No · 0x24…b7
+          - article [ref=e294]:
+            - img [ref=e296]
+            - generic [ref=e297]: Next French Presidential Election
+            - generic [ref=e298]: $2,213
+            - generic [ref=e299]: bought No · 0xfd…d9
+          - article [ref=e300]:
+            - img [ref=e302]
+            - generic [ref=e303]: Fed Decision in June?
+            - generic [ref=e304]: $4,447
+            - generic [ref=e305]: bought No · 0x2b…ef
+          - article [ref=e306]:
+            - img [ref=e308]
+            - generic [ref=e309]: Hantavirus pandemic in 2026?
+            - generic [ref=e310]: $3,302
+            - generic [ref=e311]: bought Yes · 0x82…98
+      - generic [ref=e314]:
+        - img [ref=e316]
+        - textbox [ref=e319]:
+          - /placeholder: Search by title, category, or outcome…
+      - generic [ref=e321]:
+        - generic [ref=e322]:
+          - generic [ref=e323]:
+            - 'img "MLB: 2026 American League Champion" [ref=e325]'
+            - 'link "MLB: 2026 American League Champion" [ref=e326] [cursor=pointer]':
+              - /url: /event/mlb-2026-american-league-champion
+              - 'heading "MLB: 2026 American League Champion" [level=3] [ref=e327]'
+          - generic [ref=e329]:
+            - link "New York Yankees New York Yankees 15%" [ref=e330] [cursor=pointer]:
+              - /url: /event/mlb-2026-american-league-champion#19060
+              - img "New York Yankees" [ref=e332]
+              - generic [ref=e333]: New York Yankees
+              - generic [ref=e334]: 15%
+            - link "Seattle Mariners Seattle Mariners 8%" [ref=e335] [cursor=pointer]:
+              - /url: /event/mlb-2026-american-league-champion#19071
+              - img "Seattle Mariners" [ref=e337]
+              - generic [ref=e338]: Seattle Mariners
+              - generic [ref=e339]: 8%
+            - link "13 more" [ref=e340] [cursor=pointer]:
+              - /url: /event/mlb-2026-american-league-champion
+          - generic [ref=e341]:
+            - generic [ref=e342]:
+              - generic [ref=e343]:
+                - generic [ref=e344]: $3.73M
+                - generic [ref=e345]: Vol.
+              - generic [ref=e346]:
+                - img [ref=e347]
+                - text: 1 нояб.
+            - generic [ref=e350]: american-league
+          - generic:
+            - generic:
+              - generic: Potential payout
+              - generic:
+                - generic: $25
+                - generic: →
+                - generic: $164
+            - generic:
+              - generic: 59 trading now
+        - generic [ref=e351]:
+          - generic [ref=e352]:
+            - img "Russia x Ukraine ceasefire by May 31, 2026?" [ref=e354]
+            - link "Russia x Ukraine ceasefire by May 31, 2026?" [ref=e355] [cursor=pointer]:
+              - /url: /event/russia-x-ukraine-ceasefire-by-may-31-2026
+              - heading "Russia x Ukraine ceasefire by May 31, 2026?" [level=3] [ref=e356]
+            - generic [ref=e357]:
+              - img [ref=e358]
+              - generic [ref=e361]:
+                - paragraph [ref=e362]: 50%
+                - paragraph [ref=e363]: chance
+          - generic [ref=e365]:
+            - link "Yes" [ref=e366] [cursor=pointer]:
+              - /url: /event/russia-x-ukraine-ceasefire-by-may-31-2026?side=yes
+              - generic [ref=e367]: "Yes"
+            - link "No" [ref=e368] [cursor=pointer]:
+              - /url: /event/russia-x-ukraine-ceasefire-by-may-31-2026?side=no
+              - generic [ref=e369]: "No"
+          - generic [ref=e370]:
+            - generic [ref=e371]:
+              - generic [ref=e372]:
+                - generic [ref=e373]: $107.8M
+                - generic [ref=e374]: Vol.
+              - generic [ref=e375]:
+                - img [ref=e376]
+                - text: 31 мая
+            - generic [ref=e379]: trump
+          - generic:
+            - generic:
+              - generic: Potential payout
+              - generic:
+                - generic: $25
+                - generic: →
+                - generic: $51
+            - generic:
+              - generic: 65 trading now
+        - generic [ref=e380]:
+          - generic [ref=e381]:
+            - img "Russia x Ukraine ceasefire by June 30, 2026?" [ref=e383]
+            - link "Russia x Ukraine ceasefire by June 30, 2026?" [ref=e384] [cursor=pointer]:
+              - /url: /event/russia-x-ukraine-ceasefire-by-june-30-2026
+              - heading "Russia x Ukraine ceasefire by June 30, 2026?" [level=3] [ref=e385]
+            - generic [ref=e386]:
+              - img [ref=e387]
+              - generic [ref=e390]:
+                - paragraph [ref=e391]: 50%
+                - paragraph [ref=e392]: chance
+          - generic [ref=e394]:
+            - link "Yes" [ref=e395] [cursor=pointer]:
+              - /url: /event/russia-x-ukraine-ceasefire-by-june-30-2026?side=yes
+              - generic [ref=e396]: "Yes"
+            - link "No" [ref=e397] [cursor=pointer]:
+              - /url: /event/russia-x-ukraine-ceasefire-by-june-30-2026?side=no
+              - generic [ref=e398]: "No"
+          - generic [ref=e399]:
+            - generic [ref=e400]:
+              - generic [ref=e401]:
+                - generic [ref=e402]: $40.1M
+                - generic [ref=e403]: Vol.
+              - generic [ref=e404]:
+                - img [ref=e405]
+                - text: 30 июн.
+            - generic [ref=e408]: ukraine-peace-deal
+          - generic:
+            - generic:
+              - generic: Potential payout
+              - generic:
+                - generic: $25
+                - generic: →
+                - generic: $51
+            - generic:
+              - generic: 64 trading now
+        - generic [ref=e409]:
+          - generic [ref=e410]:
+            - img "2026 FIFA World Cup Winner" [ref=e412]
+            - link "2026 FIFA World Cup Winner" [ref=e413] [cursor=pointer]:
+              - /url: /event/2026-fifa-world-cup-winner-595
+              - heading "2026 FIFA World Cup Winner" [level=3] [ref=e414]
+          - generic [ref=e416]:
+            - link "France France 9%" [ref=e417] [cursor=pointer]:
+              - /url: /event/2026-fifa-world-cup-winner-595#7
+              - img "France" [ref=e419]
+              - generic [ref=e420]: France
+              - generic [ref=e421]: 9%
+            - link "Spain Spain 8%" [ref=e422] [cursor=pointer]:
+              - /url: /event/2026-fifa-world-cup-winner-595#2
+              - img "Spain" [ref=e424]
+              - generic [ref=e425]: Spain
+              - generic [ref=e426]: 8%
+            - link "58 more" [ref=e427] [cursor=pointer]:
+              - /url: /event/2026-fifa-world-cup-winner-595
+          - generic [ref=e428]:
+            - generic [ref=e429]:
+              - generic [ref=e430]:
+                - generic [ref=e431]: $923.2M
+                - generic [ref=e432]: Vol.
+              - generic [ref=e433]:
+                - img [ref=e434]
+                - text: 20 июл.
+            - generic [ref=e437]: soccer
+          - generic:
+            - generic:
+              - generic: Potential payout
+              - generic:
+                - generic: $25
+                - generic: →
+                - generic: $280
+            - generic:
+              - generic: 80 trading now
+        - generic [ref=e438]:
+          - generic [ref=e439]:
+            - img "When will Bitcoin hit $150k?" [ref=e441]
+            - link "When will Bitcoin hit $150k?" [ref=e442] [cursor=pointer]:
+              - /url: /event/when-will-bitcoin-hit-150k
+              - heading "When will Bitcoin hit $150k?" [level=3] [ref=e443]
+            - generic [ref=e444]:
+              - img [ref=e445]
+              - generic [ref=e448]:
+                - paragraph [ref=e449]: 1%
+                - paragraph [ref=e450]: chance
+          - generic [ref=e452]:
+            - link "Yes" [ref=e453] [cursor=pointer]:
+              - /url: /event/when-will-bitcoin-hit-150k?side=yes
+              - generic [ref=e454]: "Yes"
+            - link "No" [ref=e455] [cursor=pointer]:
+              - /url: /event/when-will-bitcoin-hit-150k?side=no
+              - generic [ref=e456]: "No"
+          - generic [ref=e457]:
+            - generic [ref=e459]:
+              - generic [ref=e460]: $18.4M
+              - generic [ref=e461]: Vol.
+            - generic [ref=e462]: bitcoin
+          - generic:
+            - generic:
+              - generic: Potential payout
+              - generic:
+                - generic: $25
+                - generic: →
+                - generic: $313
+            - generic:
+              - generic: 69 trading now
+        - generic [ref=e463]:
+          - generic [ref=e464]:
+            - img "US x Iran permanent peace deal by...?" [ref=e466]
+            - link "US x Iran permanent peace deal by...?" [ref=e467] [cursor=pointer]:
+              - /url: /event/us-x-iran-permanent-peace-deal-by
+              - heading "US x Iran permanent peace deal by...?" [level=3] [ref=e468]
+          - generic [ref=e470]:
+            - link "December 31 December 31 39%" [ref=e471] [cursor=pointer]:
+              - /url: /event/us-x-iran-permanent-peace-deal-by#47415
+              - img "December 31" [ref=e473]
+              - generic [ref=e474]: December 31
+              - generic [ref=e475]: 39%
+            - link "June 30 June 30 25%" [ref=e476] [cursor=pointer]:
+              - /url: /event/us-x-iran-permanent-peace-deal-by#641
+              - img "June 30" [ref=e478]
+              - generic [ref=e479]: June 30
+              - generic [ref=e480]: 25%
+            - link "1 more" [ref=e481] [cursor=pointer]:
+              - /url: /event/us-x-iran-permanent-peace-deal-by
+          - generic [ref=e482]:
+            - generic [ref=e483]:
+              - generic [ref=e484]:
+                - generic [ref=e485]: $95.3M
+                - generic [ref=e486]: Vol.
+              - generic [ref=e487]:
+                - img [ref=e488]
+                - text: 31 дек.
+            - generic [ref=e491]: iran
+          - generic:
+            - generic:
+              - generic: Potential payout
+              - generic:
+                - generic: $25
+                - generic: →
+                - generic: $65
+            - generic:
+              - generic: 63 trading now
+        - generic [ref=e492]:
+          - generic [ref=e493]:
+            - img "Republican Presidential Nominee 2028" [ref=e495]
+            - link "Republican Presidential Nominee 2028" [ref=e496] [cursor=pointer]:
+              - /url: /event/republican-presidential-nominee-2028
+              - heading "Republican Presidential Nominee 2028" [level=3] [ref=e497]
+          - generic [ref=e499]:
+            - link "Robert F. Kennedy Jr. Robert F. Kennedy Jr. 25%" [ref=e500] [cursor=pointer]:
+              - /url: /event/republican-presidential-nominee-2028#555
+              - img "Robert F. Kennedy Jr." [ref=e502]
+              - generic [ref=e503]: Robert F. Kennedy Jr.
+              - generic [ref=e504]: 25%
+            - link "J.D. Vance J.D. Vance 19%" [ref=e505] [cursor=pointer]:
+              - /url: /event/republican-presidential-nominee-2028#493
+              - img "J.D. Vance" [ref=e507]
+              - generic [ref=e508]: J.D. Vance
+              - generic [ref=e509]: 19%
+            - link "126 more" [ref=e510] [cursor=pointer]:
+              - /url: /event/republican-presidential-nominee-2028
+          - generic [ref=e511]:
+            - generic [ref=e512]:
+              - generic [ref=e513]:
+                - generic [ref=e514]: $611.2M
+                - generic [ref=e515]: Vol.
+              - generic [ref=e516]:
+                - img [ref=e517]
+                - text: 7 нояб.
+            - generic [ref=e520]: politics
+          - generic:
+            - generic:
+              - generic: Potential payout
+              - generic:
+                - generic: $25
+                - generic: →
+                - generic: $102
+            - generic:
+              - generic: 72 trading now
+        - generic [ref=e521]:
+          - generic [ref=e522]:
+            - img "Democratic Presidential Nominee 2028" [ref=e524]
+            - link "Democratic Presidential Nominee 2028" [ref=e525] [cursor=pointer]:
+              - /url: /event/democratic-presidential-nominee-2028
+              - heading "Democratic Presidential Nominee 2028" [level=3] [ref=e526]
+          - generic [ref=e528]:
+            - link "Gavin Newsom Gavin Newsom 12%" [ref=e529] [cursor=pointer]:
+              - /url: /event/democratic-presidential-nominee-2028#405
+              - img "Gavin Newsom" [ref=e531]
+              - generic [ref=e532]: Gavin Newsom
+              - generic [ref=e533]: 12%
+            - link "Kamala Harris Kamala Harris 5%" [ref=e534] [cursor=pointer]:
+              - /url: /event/democratic-presidential-nominee-2028#390
+              - img "Kamala Harris" [ref=e536]
+              - generic [ref=e537]: Kamala Harris
+              - generic [ref=e538]: 5%
+            - link "126 more" [ref=e539] [cursor=pointer]:
+              - /url: /event/democratic-presidential-nominee-2028
+          - generic [ref=e540]:
+            - generic [ref=e541]:
+              - generic [ref=e542]:
+                - generic [ref=e543]: $1135.0M
+                - generic [ref=e544]: Vol.
+              - generic [ref=e545]:
+                - img [ref=e546]
+                - text: 7 нояб.
+            - generic [ref=e549]: world-elections
+          - generic:
+            - generic:
+              - generic: Potential payout
+              - generic:
+                - generic: $25
+                - generic: →
+                - generic: $203
+            - generic:
+              - generic: 84 trading now
+        - generic [ref=e550]:
+          - generic [ref=e551]:
+            - img "2026 NBA Champion" [ref=e553]
+            - link "2026 NBA Champion" [ref=e554] [cursor=pointer]:
+              - /url: /event/2026-nba-champion
+              - heading "2026 NBA Champion" [level=3] [ref=e555]
+          - generic [ref=e557]:
+            - link "Oklahoma City Thunder Oklahoma City Thunder 30%" [ref=e558] [cursor=pointer]:
+              - /url: /event/2026-nba-champion#195
+              - img "Oklahoma City Thunder" [ref=e560]
+              - generic [ref=e561]: Oklahoma City Thunder
+              - generic [ref=e562]: 30%
+            - link "San Antonio Spurs San Antonio Spurs 10%" [ref=e563] [cursor=pointer]:
+              - /url: /event/2026-nba-champion#208
+              - img "San Antonio Spurs" [ref=e565]
+              - generic [ref=e566]: San Antonio Spurs
+              - generic [ref=e567]: 10%
+            - link "28 more" [ref=e568] [cursor=pointer]:
+              - /url: /event/2026-nba-champion
+          - generic [ref=e569]:
+            - generic [ref=e570]:
+              - generic [ref=e571]:
+                - generic [ref=e572]: $374.8M
+                - generic [ref=e573]: Vol.
+              - generic [ref=e574]:
+                - img [ref=e575]
+                - text: 1 июл.
+            - generic [ref=e578]: sports
+          - generic:
+            - generic:
+              - generic: Potential payout
+              - generic:
+                - generic: $25
+                - generic: →
+                - generic: $83
+            - generic:
+              - generic: 71 trading now
+        - generic [ref=e579]:
+          - generic [ref=e580]:
+            - img "Presidential Election Winner 2028" [ref=e582]
+            - link "Presidential Election Winner 2028" [ref=e583] [cursor=pointer]:
+              - /url: /event/presidential-election-winner-2028
+              - heading "Presidential Election Winner 2028" [level=3] [ref=e584]
+          - generic [ref=e586]:
+            - link "JD Vance JD Vance 9%" [ref=e587] [cursor=pointer]:
+              - /url: /event/presidential-election-winner-2028#105
+              - img "JD Vance" [ref=e589]
+              - generic [ref=e590]: JD Vance
+              - generic [ref=e591]: 9%
+            - link "Gavin Newsom Gavin Newsom 8%" [ref=e592] [cursor=pointer]:
+              - /url: /event/presidential-election-winner-2028#112
+              - img "Gavin Newsom" [ref=e594]
+              - generic [ref=e595]: Gavin Newsom
+              - generic [ref=e596]: 8%
+            - link "126 more" [ref=e597] [cursor=pointer]:
+              - /url: /event/presidential-election-winner-2028
+          - generic [ref=e598]:
+            - generic [ref=e599]:
+              - generic [ref=e600]:
+                - generic [ref=e601]: $575.3M
+                - generic [ref=e602]: Vol.
+              - generic [ref=e603]:
+                - img [ref=e604]
+                - text: 7 нояб.
+            - generic [ref=e607]: world-elections
+          - generic:
+            - generic:
+              - generic: Potential payout
+              - generic:
+                - generic: $25
+                - generic: →
+                - generic: $267
+            - generic:
+              - generic: 83 trading now
+        - generic [ref=e608]:
+          - generic [ref=e609]:
+            - img "Next French Presidential Election" [ref=e611]
+            - link "Next French Presidential Election" [ref=e612] [cursor=pointer]:
+              - /url: /event/next-french-presidential-election
+              - heading "Next French Presidential Election" [level=3] [ref=e613]
+          - generic [ref=e615]:
+            - link "Jordan Bardella Jordan Bardella 12%" [ref=e616] [cursor=pointer]:
+              - /url: /event/next-french-presidential-election#898
+              - img "Jordan Bardella" [ref=e618]
+              - generic [ref=e619]: Jordan Bardella
+              - generic [ref=e620]: 12%
+            - link "Édouard Philippe Édouard Philippe 10%" [ref=e621] [cursor=pointer]:
+              - /url: /event/next-french-presidential-election#899
+              - img "Édouard Philippe" [ref=e623]
+              - generic [ref=e624]: Édouard Philippe
+              - generic [ref=e625]: 10%
+            - link "126 more" [ref=e626] [cursor=pointer]:
+              - /url: /event/next-french-presidential-election
+          - generic [ref=e627]:
+            - generic [ref=e628]:
+              - generic [ref=e629]:
+                - generic [ref=e630]: $66.1M
+                - generic [ref=e631]: Vol.
+              - generic [ref=e632]:
+                - img [ref=e633]
+                - text: 30 апр.
+            - generic [ref=e636]: elections
+          - generic:
+            - generic:
+              - generic: Potential payout
+              - generic:
+                - generic: $25
+                - generic: →
+                - generic: $213
+            - generic:
+              - generic: 69 trading now
+        - generic [ref=e637]:
+          - generic [ref=e638]:
+            - img "Fed Decision in June?" [ref=e640]
+            - link "Fed Decision in June?" [ref=e641] [cursor=pointer]:
+              - /url: /event/fed-decision-in-june-825
+              - heading "Fed Decision in June?" [level=3] [ref=e642]
+          - generic [ref=e644]:
+            - link "No change No change 49%" [ref=e645] [cursor=pointer]:
+              - /url: /event/fed-decision-in-june-825#1142
+              - img "No change" [ref=e647]
+              - generic [ref=e648]: No change
+              - generic [ref=e649]: 49%
+            - link "50+ bps increase 50+ bps increase 1%" [ref=e650] [cursor=pointer]:
+              - /url: /event/fed-decision-in-june-825#1143
+              - img "50+ bps increase" [ref=e652]
+              - generic [ref=e653]: 50+ bps increase
+              - generic [ref=e654]: 1%
+            - link "3 more" [ref=e655] [cursor=pointer]:
+              - /url: /event/fed-decision-in-june-825
+          - generic [ref=e656]:
+            - generic [ref=e657]:
+              - generic [ref=e658]:
+                - generic [ref=e659]: $22.0M
+                - generic [ref=e660]: Vol.
+              - generic [ref=e661]:
+                - img [ref=e662]
+                - text: 17 июн.
+            - generic [ref=e665]: economic-policy
+          - generic:
+            - generic:
+              - generic: Potential payout
+              - generic:
+                - generic: $25
+                - generic: →
+                - generic: $51
+            - generic:
+              - generic: 66 trading now
+        - generic [ref=e666]:
+          - generic [ref=e667]:
+            - img "Hantavirus pandemic in 2026?" [ref=e669]
+            - link "Hantavirus pandemic in 2026?" [ref=e670] [cursor=pointer]:
+              - /url: /event/hantavirus-pandemic-in-2026
+              - heading "Hantavirus pandemic in 2026?" [level=3] [ref=e671]
+            - generic [ref=e672]:
+              - img [ref=e673]
+              - generic [ref=e676]:
+                - paragraph [ref=e677]: 4%
+                - paragraph [ref=e678]: chance
+          - generic [ref=e680]:
+            - link "Yes" [ref=e681] [cursor=pointer]:
+              - /url: /event/hantavirus-pandemic-in-2026?side=yes
+              - generic [ref=e682]: "Yes"
+            - link "No" [ref=e683] [cursor=pointer]:
+              - /url: /event/hantavirus-pandemic-in-2026?side=no
+              - generic [ref=e684]: "No"
+          - generic [ref=e685]:
+            - generic [ref=e686]:
+              - generic [ref=e687]:
+                - generic [ref=e688]: $4.63M
+                - generic [ref=e689]: Vol.
+              - generic [ref=e690]:
+                - img [ref=e691]
+                - text: 31 дек.
+            - generic [ref=e694]: weather
+          - generic:
+            - generic:
+              - generic: Potential payout
+              - generic:
+                - generic: $25
+                - generic: →
+                - generic: $313
+            - generic:
+              - generic: 66 trading now
+    - generic "Legal" [ref=e696]:
+      - link "Terms of Use" [ref=e697] [cursor=pointer]:
+        - /url: /terms
+      - generic [ref=e698]: ·
+      - link "AML / KYC" [ref=e699] [cursor=pointer]:
+        - /url: /aml
+      - generic [ref=e700]: ·
+      - link "Privacy Policy" [ref=e701] [cursor=pointer]:
+        - /url: /policy

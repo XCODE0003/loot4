@@ -1954,7 +1954,7 @@ color: #fff;
   }
   .header_login {
     margin-left: 0;
-    margin-top: 28px;
+    margin-top: 24px;
     width: 100%;
     max-width: 100%;
   }
@@ -2248,15 +2248,25 @@ color: #fff;
     padding: 14px 28px;
   }
   .game_cards_block_title {
-    font-size: 28px;
+    font-size: 20px;
+    margin-top: 16px;
   }
   .game_cards_block_bottom {
+    margin-top: 16px;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 12px;
+  }
+  .game_cards_block_bottom_price_new {
+    font-size: 20px;
+  }
+  .game_cards_block_bottom_price_old {
+    font-size: 16px;
   }
   .game_cards_block_bottom_button {
     margin-left: 0;
     width: 100%;
+    font-size: 15px;
+    padding: 13px 24px;
   }
   .product_main_navs_link,
   .product_main_navs_text {
@@ -2334,6 +2344,16 @@ color: #fff;
   .game_cards_up_item_button {
     font-size: 14px;
     padding: 12px 20px;
+  }
+  .game_cards_block_title {
+    font-size: 18px;
+  }
+  .game_cards_blocks {
+    grid-column-gap: 14px;
+    grid-row-gap: 28px;
+  }
+  .discover_blocks {
+    gap: 14px;
   }
   .faq_block_title {
     font-size: 18px;

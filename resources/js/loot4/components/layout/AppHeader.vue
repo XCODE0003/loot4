@@ -117,7 +117,8 @@ onBeforeUnmount(() => {
               </div>
             </li>
           </ul>
-          <div class="header_locale">
+          <div class="header_tools">
+            <div class="header_locale">
             <div class="header_pick">
               <button type="button" class="header_pick_btn">
                 {{ lang }}
@@ -159,6 +160,7 @@ onBeforeUnmount(() => {
             </svg>
             <span v-if="cartCount" class="header_cart_badge">{{ cartCount }}</span>
           </button>
+          </div>
           <Link v-if="!user" href="/login" class="header_login" @click="closeMenu">{{ $t('header.login') }}</Link>
           <div v-else class="header_account">
             <Link href="/account" class="header_account_name" @click="closeMenu">{{ user.name }}</Link>
@@ -172,6 +174,10 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+/* wrapper keeps desktop layout untouched, becomes a row on mobile */
+.header_tools {
+  display: contents;
+}
 .header_locale {
   display: flex;
   align-items: center;
@@ -346,7 +352,15 @@ onBeforeUnmount(() => {
   transition: opacity 0.2s ease, transform 0.2s ease;
   z-index: 20;
 }
-.header_nav_item--dropdown:hover .header_nav_dropdown,
+/* only hover-capable devices open on hover; touch relies on .is-open
+   so tapping the chevron again actually closes the dropdown */
+@media (hover: hover) {
+  .header_nav_item--dropdown:hover .header_nav_dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+}
 .header_nav_item--dropdown.is-open .header_nav_dropdown {
   opacity: 1;
   visibility: visible;
@@ -382,5 +396,22 @@ onBeforeUnmount(() => {
   height: 34px;
   border-radius: 8px;
   object-fit: cover;
+}
+
+/* mobile menu: EN/USD + cart share a single row instead of stacking */
+@media (max-width: 1100px) {
+  .header_tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 28px;
+  }
+  .header_locale {
+    margin-left: 0;
+  }
+  .header_cart {
+    margin: 0;
+  }
 }
 </style>

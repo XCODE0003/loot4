@@ -1,100 +1,228 @@
 <script setup>
-import { useId } from 'vue'
 import { Link } from '@inertiajs/vue3'
-import { footerColumns } from '@/loot4/data/footer'
+import { footerColumns, footerPayments } from '@/loot4/data/footer'
 import { asset } from '@/loot4/utils/asset'
-import FooterUpSocial from '@/loot4/components/layout/footer/FooterUpSocial.vue'
-import FooterBottomSocial from '@/loot4/components/layout/footer/FooterBottomSocial.vue'
 
-const uid = useId().replace(/:/g, '')
-const clipPhone = `clip-${uid}-1129`
+const year = new Date().getFullYear()
 </script>
 
 <template>
-  <footer id="footer">
-    <div class="container">
-      <div class="footer_up">
-        <div class="footer_up_item">
-          <img :src="asset('intro_trust.png')" alt="" class="footer_up_item_trust" />
-          <Link href="/" class="footer_up_item_logo">
-            <img :src="asset('header_logo.svg')" alt="" />
+  <footer id="footer" class="footer">
+    <div class="footer_glow" aria-hidden="true" />
+    <div class="container footer_inner">
+      <div class="footer_grid">
+        <div class="footer_brand">
+          <Link href="/" class="footer_brand_logo">
+            <img :src="asset('header_logo.svg')" alt="Loot4You" />
           </Link>
+          <p class="footer_brand_text">
+            The fastest, safest way to buy gaming credits and coins.
+            <span class="footer_brand_text_accent">Delivered in minutes — every time.</span>
+          </p>
+          <div class="footer_socials">
+            <a class="footer_social" href="#" aria-label="Discord" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                <path fill="currentColor" d="M524.5 133.8C485.6 115.6 445.3 103.1 404 96c-.7-.1-1.4.2-1.8 1-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.4-.7-1.1-1.1-1.8-1-41.3 7.1-81.6 19.6-119.7 37.1-.3.1-.6.4-.8.7C39.1 247.5 18.2 358.6 28.4 468.2c0 .3.2.6.5.8 44.4 32.9 94 58 146.8 74.2.7.2 1.5 0 1.9-.6 11.3-15.4 21.4-31.8 30-48.8.5-1-.1-2.2-1.1-2.6-16.5-6.3-32.2-13.9-47.3-22.8-1.1-.6-1.2-2.2-.2-3 3.2-2.4 6.4-4.9 9.4-7.4.5-.4 1.2-.5 1.8-.2 99.2 45.3 206.6 45.3 304.6 0 .6-.3 1.3-.2 1.8.2 3 2.5 6.1 5 9.4 7.4 1 .8.9 2.4-.2 3-15.1 8.9-30.8 16.5-47.3 22.8-1 .4-1.5 1.6-1 2.6 8.8 17 18.9 33.3 30 48.8.4.6 1.2.8 1.9.6 52.9-16.2 102.6-41.3 147-74.2.3-.2.5-.5.5-.8 12.2-126.7-20.6-236.8-87-341.4-.2-.3-.5-.6-.8-.7zM222.5 401.5c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2zm195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2z" />
+              </svg>
+            </a>
+            <a class="footer_social" href="#" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                <path fill="currentColor" d="M320.3 205C256.8 204.8 205.2 256.2 205 319.7 204.8 383.2 256.2 434.8 319.7 435 383.2 435.2 434.8 383.8 435 320.3 435.2 256.8 383.8 205.2 320.3 205zm-.6 230c-41.2.2-74.7-33.1-74.9-74.3-.2-41.2 33.1-74.7 74.3-74.9 41.2-.2 74.7 33.1 74.9 74.3.2 41.2-33.1 74.7-74.3 74.9zm93.4-200.7c0-14.8 12-26.8 26.8-26.8 14.8 0 26.8 12 26.8 26.8 0 14.8-12 26.8-26.8 26.8-14.8 0-26.8-12-26.8-26.8zm129.7 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1-26.3 26.2-34.4 58-36.2 93.9-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9 26.3 26.2 58 34.4 93.9 36.2 37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM495 452c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.6 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+              </svg>
+            </a>
+            <a class="footer_social" href="#" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
+              <svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+            </a>
+          </div>
         </div>
-        <div class="footer_up_item">
-          <FooterUpSocial />
+
+        <div v-for="column in footerColumns" :key="column.title" class="footer_col">
+          <p class="footer_col_title">{{ column.title }}</p>
+          <nav class="footer_col_links">
+            <a v-for="link in column.links" :key="link.to" :href="link.to" class="footer_col_link">
+              {{ link.label }}
+            </a>
+          </nav>
         </div>
       </div>
-      <div class="footer_main">
-        <div class="footer_main_item">
-          <h4 class="footer_main_item_title">Get in Touch</h4>
-          <ul class="footer_main_contacts">
-            <li class="footer_main_contact">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M5 14.2864C3.14864 15.1031 2 16.2412 2 17.5C2 19.9853 6.47715 22 12 22C17.5228 22 22 19.9853 22 17.5C22 16.2412 20.8514 15.1031 19 14.2864M18 8C18 12.0637 13.5 14 12 17C10.5 14 6 12.0637 6 8C6 4.68629 8.68629 2 12 2C15.3137 2 18 4.68629 18 8ZM13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8Z"
-                  stroke="white"
-                  stroke-opacity="0.54"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              1111B S Governors Ave STE 27835 <br />Dover, DE 19904 <br />United States
-            </li>
-            <li class="footer_main_contact">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g :clip-path="`url(#${clipPhone})`">
-                  <path
-                    d="M8.45059 7.29866C9.14659 8.74828 10.0954 10.1069 11.297 11.3085C12.4985 12.5101 13.8572 13.4589 15.3068 14.1549C15.4315 14.2147 15.4938 14.2447 15.5727 14.2677C15.8531 14.3494 16.1973 14.2907 16.4348 14.1207C16.5016 14.0728 16.5587 14.0157 16.673 13.9014C17.0226 13.5518 17.1975 13.377 17.3732 13.2627C18.0361 12.8317 18.8907 12.8317 19.5536 13.2627C19.7294 13.377 19.9042 13.5518 20.2538 13.9014L20.4486 14.0962C20.9801 14.6277 21.2458 14.8934 21.3902 15.1788C21.6772 15.7463 21.6772 16.4166 21.3902 16.9842C21.2458 17.2695 20.9801 17.5353 20.4486 18.0667L20.291 18.2243C19.7614 18.754 19.4966 19.0188 19.1365 19.221C18.737 19.4455 18.1165 19.6068 17.6583 19.6054C17.2454 19.6042 16.9632 19.5241 16.3987 19.3639C13.3653 18.5029 10.503 16.8785 8.11497 14.4905C5.72699 12.1025 4.10252 9.24014 3.24155 6.20675C3.08134 5.6423 3.00124 5.36008 3.00001 4.94713C2.99864 4.48891 3.16001 3.86842 3.38443 3.46891C3.58668 3.10888 3.85149 2.84407 4.38111 2.31445L4.53874 2.15681C5.07019 1.62537 5.33591 1.35965 5.62129 1.2153C6.18885 0.928232 6.85912 0.928232 7.42668 1.2153C7.71206 1.35965 7.97778 1.62537 8.50922 2.15681L8.70409 2.35168C9.0537 2.70129 9.2285 2.87609 9.34279 3.05187C9.77378 3.71476 9.77378 4.56934 9.34278 5.23223C9.2285 5.40801 9.0537 5.58281 8.70409 5.93242C8.58978 6.04673 8.53262 6.10388 8.48478 6.1707C8.31477 6.40813 8.25607 6.75239 8.33779 7.03274C8.36079 7.11163 8.39072 7.17397 8.45059 7.29866Z"
-                    stroke="white"
-                    stroke-opacity="0.54"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </g>
-                <defs>
-                  <clipPath :id="clipPhone">
-                    <rect width="24" height="24" fill="white" />
-                  </clipPath>
-                </defs>
-              </svg>
-              +41 91 239 14 85
-            </li>
-            <li class="footer_main_contact">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M2 7L10.1649 12.7154C10.8261 13.1783 11.1567 13.4097 11.5163 13.4993C11.8339 13.5785 12.1661 13.5785 12.4837 13.4993C12.8433 13.4097 13.1739 13.1783 13.8351 12.7154L22 7M6.8 20H17.2C18.8802 20 19.7202 20 20.362 19.673C20.9265 19.3854 21.3854 18.9265 21.673 18.362C22 17.7202 22 16.8802 22 15.2V8.8C22 7.11984 22 6.27976 21.673 5.63803C21.3854 5.07354 20.9265 4.6146 20.362 4.32698C19.7202 4 18.8802 4 17.2 4H6.8C5.11984 4 4.27976 4 3.63803 4.32698C3.07354 4.6146 2.6146 5.07354 2.32698 5.63803C2 6.27976 2 7.11984 2 8.8V15.2C2 16.8802 2 17.7202 2.32698 18.362C2.6146 18.9265 3.07354 19.3854 3.63803 19.673C4.27976 20 5.11984 20 6.8 20Z"
-                  stroke="white"
-                  stroke-opacity="0.54"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              hello@evomi.com
-            </li>
-          </ul>
-        </div>
-        <div v-for="column in footerColumns" :key="column.title" class="footer_main_item">
-          <h4 class="footer_main_item_title">{{ column.title }}</h4>
-          <ul class="footer_main_item_navs">
-            <li v-for="link in column.links" :key="link" class="footer_main_item_nav">
-              <a href="#!">{{ link }}</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+
+      <div class="footer_divider" />
+
       <div class="footer_bottom">
-        <div class="footer_bottom_items">
-          <div class="footer_bottom_item">
-            <p class="footer_bottom_item_copy">© 2025 loot4you. All rights reserved.</p>
-          </div>
-          <div class="footer_bottom_item">
-            <FooterBottomSocial />
-          </div>
+        <div class="footer_payments">
+          <img v-for="p in footerPayments" :key="p" :src="asset(p)" alt="" class="footer_payment" />
         </div>
+        <p class="footer_copy">© {{ year }} Loot4You — All rights reserved.</p>
+        <p class="footer_disclaimer">
+          Loot4You is an independent platform not affiliated with, endorsed by, or sponsored by any video
+          game developers or publishers, including Rockstar Games, Take-Two Interactive, Riot Games,
+          Activision Blizzard, Electronic Arts, Epic Games, Tencent, Bungie, Grinding Gear Games, Square
+          Enix, Valve, Battlestate Games, Wargaming.net, Amazon, Jagex, Smilegate RPG, Digital Extremes,
+          and Ubisoft. All trademarks, game titles, logos and images featured on this website are property
+          of their respective publishers and owners. The views and opinions expressed by Loot4You do not
+          reflect those of any game developers or publishers.
+        </p>
       </div>
     </div>
   </footer>
 </template>
+
+<style scoped>
+.footer {
+  position: relative;
+  width: 100%;
+  margin-top: 120px;
+  padding-bottom: 24px;
+  background: #0a0a0b;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+.footer_glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  max-width: 90%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(43, 255, 149, 0.4), rgba(5, 71, 146, 0.3), transparent);
+}
+.footer_inner {
+  padding-top: 56px;
+}
+.footer_grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+}
+.footer_brand_logo {
+  display: inline-flex;
+  transition: opacity 0.3s;
+}
+.footer_brand_logo:hover {
+  opacity: 0.7;
+}
+.footer_brand_logo img {
+  height: 30px;
+  width: auto;
+}
+.footer_brand_text {
+  margin-top: 20px;
+  max-width: 280px;
+  font-family: var(--font-family);
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.38);
+}
+.footer_brand_text_accent {
+  color: rgba(43, 255, 149, 0.6);
+}
+.footer_socials {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+}
+.footer_social {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.32);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.footer_social:hover {
+  color: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+}
+.footer_col_title {
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.28);
+  margin-bottom: 18px;
+}
+.footer_col_links {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.footer_col_link {
+  width: fit-content;
+  font-family: var(--font-family);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.42);
+  transition: color 0.2s;
+}
+.footer_col_link:hover {
+  color: rgba(255, 255, 255, 0.78);
+}
+.footer_divider {
+  height: 1px;
+  margin: 40px 0 0;
+  background: rgba(255, 255, 255, 0.05);
+}
+.footer_bottom {
+  padding-top: 28px;
+}
+.footer_payments {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  opacity: 0.45;
+}
+.footer_payment {
+  height: 24px;
+  width: auto;
+  object-fit: contain;
+}
+.footer_copy {
+  margin-top: 24px;
+  text-align: center;
+  font-family: var(--font-family);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.22);
+}
+.footer_disclaimer {
+  margin-top: 14px;
+  text-align: center;
+  font-family: var(--font-family);
+  font-size: 11px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.13);
+}
+
+@media (max-width: 1000px) {
+  .footer_grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .footer_brand {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 768px) {
+  .footer {
+    margin-top: 80px;
+  }
+  .footer_inner {
+    padding-top: 40px;
+  }
+}
+@media (max-width: 480px) {
+  .footer_grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+</style>

@@ -136,6 +136,16 @@ const { openGameMenuFromAnywhere } = useGameMenu()
 @media (max-width: 760px) {
   .discover_card { height: 340px; }
   .discover_up_title { font-size: 26px; }
-  .discover_grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .discover_grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .discover_card { height: 230px; }
+  .discover_card_label {
+    font-size: 14px;
+    padding: 28px 14px 14px;
+  }
 }
 </style>

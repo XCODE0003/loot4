@@ -1,38 +1,30 @@
 export const footerColumns = [
   {
-    title: 'Explore',
-    links: ['About Us', 'Ethics', 'Blog', 'FAQs', 'Docs', 'Partners'],
-  },
-  {
-    title: 'Products',
+    title: 'Company',
     links: [
-      'Residential Proxies',
-      'Premium Residential Proxies',
-      'Datacenter Proxies',
-      'Mobile Proxies',
-      'APIs - Coming Soon',
-      'Partners',
-    ],
-  },
-  {
-    title: 'Use Cases',
-    links: [
-      'All Use Cases',
-      'AI Training',
-      'Search Engine Monitoring',
-      'Data Extraction',
-      'AdTech',
-      'Market Research',
+      { label: 'About Us', to: '/about' },
+      { label: 'FAQ', to: '/faq' },
+      { label: 'How It Works', to: '/how-it-works' },
+      { label: 'Contact Us', to: '/contact' },
     ],
   },
   {
     title: 'Legal',
     links: [
-      'Terms of Service',
-      'Privacy Policy',
-      'Refund Policy',
-      'Law Enforcement Inquiries',
-      'Service Level Agreement',
+      { label: 'Privacy Policy', to: '/privacy' },
+      { label: 'Terms & Conditions', to: '/terms' },
+      { label: 'Refund Policy', to: '/refunds' },
+      { label: 'Payment Policy', to: '/payment-policy' },
+      { label: 'Shipping Policy', to: '/shipping-policy' },
+      { label: 'Cookies Policy', to: '/cookies-policy' },
     ],
   },
+]
+
+export const footerPayments = [
+  'product_visa.png',
+  'product_master.png',
+  'product_paypal.png',
+  'product_btc.png',
+  'product_china.png',
 ]

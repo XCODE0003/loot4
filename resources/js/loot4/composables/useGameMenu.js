@@ -18,6 +18,10 @@ export function useGameMenu() {
   function openGameMenuFromAnywhere() {
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' })
+      // defer past the current click event so the document handler
+      // in AppHeader doesn't immediately close the menu we just opened
+      setTimeout(openGameMenu, 0)
+      return
     }
     openGameMenu()
   }

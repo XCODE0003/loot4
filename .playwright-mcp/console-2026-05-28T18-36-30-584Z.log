@@ -1,0 +1,3 @@
+[     480ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://localhost:8001/_boost/browser-logs @ http://localhost:8001/game:172
+[     498ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: http://[::1]:5173/resources/js/loot4/assets/fonts/SF-Pro-Display-Regular.otf @ http://localhost:8001/game:358
+[     499ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: http://[::1]:5173/resources/js/loot4/assets/fonts/SF-Pro-Display-Medium.otf @ http://localhost:8001/game:358
