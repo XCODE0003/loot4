@@ -14,7 +14,10 @@ jobs:
       - name: Generate wayfinder files
         run: |
           php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php --quiet
-          php composer.phar install --no-dev --ignore-platform-reqs --no-interaction --no-progress --quiet
+          cp .env.example .env
+          php composer.phar install --no-dev --ignore-platform-reqs --no-interaction --no-progress --quiet --no-scripts
+          php artisan key:generate --force
+          php artisan package:discover --ansi
           php artisan wayfinder:generate --with-form
 
       - name: Install sshpass
