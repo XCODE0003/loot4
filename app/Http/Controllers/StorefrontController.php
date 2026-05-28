@@ -34,11 +34,13 @@ class StorefrontController extends Controller
         $discover = Game::query()
             ->where('status', GameStatus::Active->value)
             ->orderBy('sort_order')
-            ->take(4)
             ->get()
             ->values()
             ->map(fn (Game $game, int $i): array => [
-                'image' => $game->getFirstMediaUrl('image') ?: self::DISCOVER_FALLBACKS[$i % count(self::DISCOVER_FALLBACKS)],
+                'slug' => $game->slug,
+                'image' => $game->getFirstMediaUrl('discover_image')
+                    ?: $game->getFirstMediaUrl('image')
+                    ?: self::DISCOVER_FALLBACKS[$i % count(self::DISCOVER_FALLBACKS)],
                 'alt' => $game->name,
             ]);
 

@@ -34,6 +34,14 @@ class GameForm
                             ->unique(ignoreRecord: true),
                         SpatieMediaLibraryFileUpload::make('image')
                             ->collection('image')
+                            ->label('Main Image')
+                            ->image()
+                            ->imageEditor()
+                            ->columnSpanFull(),
+                        SpatieMediaLibraryFileUpload::make('discover_image')
+                            ->collection('discover_image')
+                            ->label('Discover Slider Image')
+                            ->helperText('Image shown in the homepage game slider. Recommended: 400×560px portrait.')
                             ->image()
                             ->imageEditor()
                             ->columnSpanFull(),

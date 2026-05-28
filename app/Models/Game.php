@@ -44,5 +44,6 @@ class Game extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('image')->singleFile();
+        $this->addMediaCollection('discover_image')->singleFile();
     }
 }

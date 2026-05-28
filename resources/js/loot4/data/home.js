@@ -5,10 +5,10 @@ export const introStats = [
 ]
 
 export const discoverGames = [
-  { image: 'discover_gta.png', alt: 'GTA' },
-  { image: 'discover_arc.png', alt: 'ARC' },
-  { image: 'discover_forza.png', alt: 'Forza' },
-  { image: 'discover_fortnite.png', alt: 'Fortnite' },
+  { slug: null, image: 'discover_gta.png', alt: 'GTA' },
+  { slug: null, image: 'discover_arc.png', alt: 'ARC' },
+  { slug: null, image: 'discover_forza.png', alt: 'Forza' },
+  { slug: null, image: 'discover_fortnite.png', alt: 'Fortnite' },
 ]
 
 export const whyBlocks = [
