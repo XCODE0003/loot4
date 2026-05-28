@@ -10,7 +10,7 @@ COPY . .
 RUN rm -rf public/storage && mkdir -p public/storage && DOCKER_BUILD=1 npm run build
 
 # ── Stage 2: PHP-FPM application ─────────────────────────────────────────────
-FROM php:8.3-fpm-alpine AS app
+FROM php:8.4-fpm-alpine AS app
 WORKDIR /var/www/html
 
 # System deps
@@ -57,7 +57,7 @@ COPY . .
 COPY --from=assets /app/public/build ./public/build
 
 # PHP production deps only
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress --ignore-platform-reqs
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
 # Storage permissions
 RUN chown -R www-data:www-data storage bootstrap/cache \
