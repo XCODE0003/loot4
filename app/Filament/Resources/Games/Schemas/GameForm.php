@@ -78,9 +78,9 @@ class GameForm
                     ]),
 
                 Section::make('Storefront Filters')
+                    ->description('Optional. Configure a product filter tab bar for this game\'s page. Leave blank to hide filters entirely.')
                     ->collapsible()
                     ->collapsed()
-                    ->helperText('Optional. Configure a product filter tab bar for this game\'s page. Leave blank to hide filters entirely.')
                     ->columns(2)
                     ->schema([
                         TextInput::make('game_filters.label')
@@ -94,9 +94,9 @@ class GameForm
                     ]),
 
                 Section::make('Guarantees')
+                    ->description('List of guarantee texts shown on this game\'s storefront page.')
                     ->collapsible()
                     ->collapsed()
-                    ->helperText('List of guarantee texts shown on this game\'s storefront page.')
                     ->schema([
                         Repeater::make('guarantees')
                             ->label('')
