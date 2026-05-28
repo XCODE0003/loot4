@@ -57,7 +57,7 @@ class HandleInertiaRequests extends Middleware
                 ->map(fn (Game $g): array => [
                     'name' => $g->name,
                     'slug' => $g->slug,
-                    'image' => $g->getFirstMediaUrl('image') ?: null,
+                    'icon' => $g->getFirstMediaUrl('icon') ?: $g->getFirstMediaUrl('image') ?: null,
                 ])
                 ->all(),
             // Live USD exchange rates fetched hourly by FetchExchangeRates job.

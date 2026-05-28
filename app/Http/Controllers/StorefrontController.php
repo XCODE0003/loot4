@@ -169,9 +169,9 @@ class StorefrontController extends Controller
             'trustImage' => 'product_trust.png',
             'breadcrumb' => [
                 'game' => $product->game?->name ?? 'Games',
-                'gameTo' => '/game',
+                'gameTo' => $product->game ? '/game/'.$product->game->slug : '/game',
+                'gameIcon' => $product->game?->getFirstMediaUrl('icon') ?: $product->game?->getFirstMediaUrl('image') ?: null,
                 'name' => $product->name,
-                'platformIcon' => 'product_xbox.png',
             ],
             'payments' => self::PAYMENT_ICONS,
             'platforms' => $this->platforms($product),

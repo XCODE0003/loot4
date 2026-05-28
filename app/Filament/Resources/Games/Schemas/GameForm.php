@@ -38,6 +38,13 @@ class GameForm
                             ->image()
                             ->imageEditor()
                             ->columnSpanFull(),
+                        SpatieMediaLibraryFileUpload::make('icon')
+                            ->collection('icon')
+                            ->label('Icon')
+                            ->helperText('Small square icon shown in the header dropdown and breadcrumbs. Recommended: 64×64px.')
+                            ->image()
+                            ->imageEditor()
+                            ->columnSpanFull(),
                         SpatieMediaLibraryFileUpload::make('discover_image')
                             ->collection('discover_image')
                             ->label('Discover Slider Image')

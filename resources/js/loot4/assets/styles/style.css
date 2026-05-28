@@ -1270,6 +1270,11 @@ transition: all .5s;
   vertical-align: middle;
   margin-left: 24px;
   margin-right: 15px;
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
 }
 .product_main_navs_icon {
   vertical-align: middle;

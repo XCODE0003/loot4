@@ -111,7 +111,7 @@ onBeforeUnmount(() => {
                   class="header_nav_dropdown_item"
                   @click="closeGameMenu(); closeMenu()"
                 >
-                  <img v-if="g.image" :src="g.image" :alt="g.name" />
+                  <img v-if="g.icon" :src="g.icon" :alt="g.name" />
                   <span>{{ g.name }}</span>
                 </Link>
               </div>
