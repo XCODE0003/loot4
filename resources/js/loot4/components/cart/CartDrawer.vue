@@ -328,7 +328,7 @@ async function applyPromo() {
   margin-top: 8px;
   padding: 20px;
   border-radius: 16px;
-  background: linear-gradient(110deg, #2bff95 0%, #054792 100%);
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
   color: #fff;
   font-size: 18px;
   font-weight: 700;

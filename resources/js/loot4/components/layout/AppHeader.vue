@@ -277,7 +277,7 @@ onBeforeUnmount(() => {
   margin-left: 0;
   padding: 11px 26px;
   border-radius: 93px;
-  background: linear-gradient(110deg, #2bff95 0%, #054792 100%);
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
   box-shadow: none;
   color: #fff;
   font-family: var(--font-family);

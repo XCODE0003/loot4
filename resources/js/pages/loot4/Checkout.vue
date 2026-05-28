@@ -546,7 +546,7 @@ function placeOrder() {
   height: 48px;
   padding: 0 22px;
   border-radius: 999px;
-  background: linear-gradient(110deg, #2bff95 0%, #054792 100%);
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
   color: #fff;
   font-weight: 600;
   border: none;
@@ -567,7 +567,7 @@ function placeOrder() {
   height: 56px;
   margin-top: 16px;
   border-radius: 999px;
-  background: linear-gradient(110deg, #2bff95 0%, #054792 100%);
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
   color: #fff;
   font-weight: 700;
   font-size: 16px;
@@ -685,7 +685,7 @@ function placeOrder() {
   justify-content: center;
   padding: 14px 26px;
   border-radius: 999px;
-  background: linear-gradient(110deg, #2bff95 0%, #054792 100%);
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
   color: #fff;
   font-weight: 600;
   text-decoration: none;

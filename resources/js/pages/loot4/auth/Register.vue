@@ -117,7 +117,7 @@ defineProps({
   margin-top: 6px;
   padding: 16px;
   border-radius: 14px;
-  background: linear-gradient(110deg, #2bff95 0%, #054792 100%);
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
   color: #fff;
   font-size: 16px;
   font-weight: 700;

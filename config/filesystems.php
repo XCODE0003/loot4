@@ -40,9 +40,17 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => public_path('storage'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'livewire-tmp' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/livewire-tmp'),
+            'serve' => true,
             'throw' => false,
             'report' => false,
         ],

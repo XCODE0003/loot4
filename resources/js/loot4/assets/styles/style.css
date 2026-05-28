@@ -444,7 +444,7 @@ text-align: center;
 color: #fff;
 padding: 17px 37.24px;
 box-shadow: none;
-background: linear-gradient(90deg, #0fa854, #2bff95);
+background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
 border-radius: 93px;
 
 }
