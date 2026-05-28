@@ -1,0 +1,136 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link "Loot4you" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Loot4you" [ref=e7]
+      - generic [ref=e8]:
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - link "Home" [ref=e11] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e12]:
+            - button "Choose Game" [ref=e13] [cursor=pointer]:
+              - text: Choose Game
+              - img [ref=e14]
+          - listitem [ref=e16]:
+            - link "Contact Us" [ref=e17] [cursor=pointer]:
+              - /url: /#footer
+          - listitem [ref=e18]:
+            - link "Sell to Us" [ref=e19] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e20]:
+            - link "Reviews" [ref=e21] [cursor=pointer]:
+              - /url: /
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - button "EN" [ref=e25] [cursor=pointer]:
+              - text: EN
+              - img [ref=e26]
+            - button "USD" [ref=e29] [cursor=pointer]:
+              - text: USD
+              - img [ref=e30]
+          - button "Open cart" [ref=e32] [cursor=pointer]:
+            - img [ref=e33]
+        - generic [ref=e37]:
+          - link "Super Admin" [ref=e38] [cursor=pointer]:
+            - /url: /account
+          - button "Logout" [ref=e39] [cursor=pointer]
+  - main [ref=e40]:
+    - generic [ref=e44]:
+      - heading "Ipsam Dolorem" [level=1] [ref=e45]
+      - list [ref=e47]:
+        - listitem [ref=e48]: Custom guarantee 1
+        - listitem [ref=e49]: Custom guarantee 2
+    - generic [ref=e51]:
+      - generic [ref=e52]:
+        - generic [ref=e53]:
+          - generic [ref=e54]: Platform
+          - generic [ref=e55]:
+            - button "All" [ref=e56] [cursor=pointer]
+            - button "PC" [ref=e57] [cursor=pointer]
+            - button "PS4/5" [ref=e58] [cursor=pointer]
+            - button "Xbox" [ref=e59] [cursor=pointer]
+        - textbox "Search" [ref=e61]
+      - generic [ref=e62]:
+        - generic [ref=e63] [cursor=pointer]:
+          - img "Et Accusamus Sequi" [ref=e64]
+          - heading "Et Accusamus Sequi" [level=4] [ref=e65]
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - paragraph [ref=e68]: $156.90
+              - paragraph [ref=e69]: $108.21
+            - button "Buy now" [ref=e70]
+        - generic [ref=e71] [cursor=pointer]:
+          - img "Doloribus Qui Voluptates" [ref=e72]
+          - heading "Doloribus Qui Voluptates" [level=4] [ref=e73]
+          - generic [ref=e74]:
+            - paragraph [ref=e76]: $68.37
+            - button "Buy now" [ref=e77]
+  - contentinfo [ref=e78]:
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - link "Loot4You" [ref=e82] [cursor=pointer]:
+            - /url: /
+            - img "Loot4You" [ref=e83]
+          - paragraph [ref=e84]: The fastest, safest way to buy gaming credits and coins. Delivered in minutes — every time.
+          - generic [ref=e85]:
+            - paragraph [ref=e86]: Support
+            - generic [ref=e87]:
+              - img [ref=e88]
+              - generic [ref=e91]:
+                - generic [ref=e92]: Mon – Fri, 9:00 AM – 6:00 PM
+                - generic [ref=e93]: Email responses within 12 hours.
+            - generic [ref=e94]:
+              - img [ref=e95]
+              - link "support@loot4you.gg" [ref=e98] [cursor=pointer]:
+                - /url: mailto:support@loot4you.gg
+            - generic [ref=e99]:
+              - img [ref=e100]
+              - link "+44 7455 903679" [ref=e102] [cursor=pointer]:
+                - /url: tel:+447455903679
+            - generic [ref=e103]:
+              - img [ref=e104]
+              - paragraph [ref=e107]:
+                - text: First Floor Office, 3 Hornton Place,
+                - text: London, United Kingdom
+          - generic [ref=e108]:
+            - link "Discord" [ref=e109] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e110]
+            - link "Instagram" [ref=e112] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e113]
+            - link "WhatsApp" [ref=e115] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e116]
+        - generic [ref=e118]:
+          - paragraph [ref=e119]: Company
+          - navigation [ref=e120]:
+            - link "About Us" [ref=e121] [cursor=pointer]:
+              - /url: /about
+            - link "FAQ" [ref=e122] [cursor=pointer]:
+              - /url: /faq
+            - link "How It Works" [ref=e123] [cursor=pointer]:
+              - /url: /how-it-works
+            - link "Contact Us" [ref=e124] [cursor=pointer]:
+              - /url: /contact
+        - generic [ref=e125]:
+          - paragraph [ref=e126]: Legal
+          - navigation [ref=e127]:
+            - link "Privacy Policy" [ref=e128] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms & Conditions" [ref=e129] [cursor=pointer]:
+              - /url: /terms
+            - link "Refund Policy" [ref=e130] [cursor=pointer]:
+              - /url: /refunds
+            - link "Payment Policy" [ref=e131] [cursor=pointer]:
+              - /url: /payment-policy
+            - link "Shipping Policy" [ref=e132] [cursor=pointer]:
+              - /url: /shipping-policy
+            - link "Cookies Policy" [ref=e133] [cursor=pointer]:
+              - /url: /cookies-policy
+      - generic [ref=e135]:
+        - paragraph [ref=e137]: © 2026 Loot4You — All rights reserved.
+        - paragraph [ref=e138]: Loot4You is an independent platform not affiliated with, endorsed by, or sponsored by any video game developers or publishers, including Rockstar Games, Take-Two Interactive, Riot Games, Activision Blizzard, Electronic Arts, Epic Games, Tencent, Bungie, Grinding Gear Games, Square Enix, Valve, Battlestate Games, Wargaming.net, Amazon, Jagex, Smilegate RPG, Digital Extremes, and Ubisoft. All trademarks, game titles, logos and images featured on this website are property of their respective publishers and owners. The views and opinions expressed by Loot4You do not reflect those of any game developers or publishers.
