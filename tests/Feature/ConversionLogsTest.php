@@ -88,7 +88,7 @@ class ConversionLogsTest extends TestCase
         $admin = $this->admin();
         $log = ConversionLog::factory()->create();
 
-        $this->actingAs($admin)->get('/admin/conversion-logs')->assertOk();
-        $this->actingAs($admin)->get('/admin/conversion-logs/'.$log->getKey())->assertOk()->assertSee('Request payload');
+        $this->actingAs($admin)->get('/asdgkzxcnjngjasdajsnjzcxnc/admin/conversion-logs')->assertOk();
+        $this->actingAs($admin)->get('/asdgkzxcnjngjasdajsnjzcxnc/admin/conversion-logs/'.$log->getKey())->assertOk()->assertSee('Request payload');
     }
 }

@@ -45,8 +45,8 @@ class OperationsResourcesTest extends TestCase
         Quote::factory()->create();
 
         foreach (['currencies', 'coupons', 'storage-units', 'users', 'tickets', 'quotes'] as $slug) {
-            $this->actingAs($admin)->get("/admin/{$slug}")->assertOk();
-            $this->actingAs($admin)->get("/admin/{$slug}/create")->assertOk();
+            $this->actingAs($admin)->get("/asdgkzxcnjngjasdajsnjzcxnc/admin/{$slug}")->assertOk();
+            $this->actingAs($admin)->get("/asdgkzxcnjngjasdajsnjzcxnc/admin/{$slug}/create")->assertOk();
         }
     }
 

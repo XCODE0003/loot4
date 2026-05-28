@@ -31,9 +31,9 @@ class CatalogResourcesTest extends TestCase
         $game = Game::factory()->create();
         $admin = $this->admin();
 
-        $this->actingAs($admin)->get('/admin/games')->assertOk()->assertSee($game->name);
-        $this->actingAs($admin)->get('/admin/games/create')->assertOk();
-        $this->actingAs($admin)->get('/admin/games/'.$game->getKey().'/edit')->assertOk()->assertSee('SEO');
+        $this->actingAs($admin)->get('/asdgkzxcnjngjasdajsnjzcxnc/admin/games')->assertOk()->assertSee($game->name);
+        $this->actingAs($admin)->get('/asdgkzxcnjngjasdajsnjzcxnc/admin/games/create')->assertOk();
+        $this->actingAs($admin)->get('/asdgkzxcnjngjasdajsnjzcxnc/admin/games/'.$game->getKey().'/edit')->assertOk()->assertSee('SEO');
     }
 
     public function test_products_pages_render(): void
@@ -41,10 +41,10 @@ class CatalogResourcesTest extends TestCase
         $product = Product::factory()->create();
         $admin = $this->admin();
 
-        $this->actingAs($admin)->get('/admin/products')->assertOk()->assertSee($product->name);
-        $this->actingAs($admin)->get('/admin/products/create')->assertOk()->assertSee('Pricing');
+        $this->actingAs($admin)->get('/asdgkzxcnjngjasdajsnjzcxnc/admin/products')->assertOk()->assertSee($product->name);
+        $this->actingAs($admin)->get('/asdgkzxcnjngjasdajsnjzcxnc/admin/products/create')->assertOk()->assertSee('Pricing');
         $this->actingAs($admin)
-            ->get('/admin/products/'.$product->getKey().'/edit')
+            ->get('/asdgkzxcnjngjasdajsnjzcxnc/admin/products/'.$product->getKey().'/edit')
             ->assertOk()
             ->assertSee('Associations');
     }

@@ -38,7 +38,7 @@ class DashboardWidgetsTest extends TestCase
         // Widgets render lazily via Livewire, so the dashboard HTML returns 200
         // and the widget content is asserted separately in the Livewire tests below.
         $this->actingAs($admin)
-            ->get('/admin')
+            ->get('/asdgkzxcnjngjasdajsnjzcxnc/admin')
             ->assertOk();
     }
 

@@ -45,7 +45,7 @@ class OrderResourceTest extends TestCase
         $order = $this->makeOrder();
 
         $this->actingAs($this->admin())
-            ->get('/admin/orders')
+            ->get('/asdgkzxcnjngjasdajsnjzcxnc/admin/orders')
             ->assertOk()
             ->assertSee($order->order_number);
     }
@@ -55,7 +55,7 @@ class OrderResourceTest extends TestCase
         $order = $this->makeOrder();
 
         $this->actingAs($this->admin())
-            ->get('/admin/orders/'.$order->getKey())
+            ->get('/asdgkzxcnjngjasdajsnjzcxnc/admin/orders/'.$order->getKey())
             ->assertOk()
             ->assertSee($order->email)
             ->assertSee('Attribution / Traffic Source')
@@ -67,7 +67,7 @@ class OrderResourceTest extends TestCase
         $order = $this->makeOrder();
 
         $this->actingAs($this->admin())
-            ->get('/admin/orders/'.$order->getKey().'/edit')
+            ->get('/asdgkzxcnjngjasdajsnjzcxnc/admin/orders/'.$order->getKey().'/edit')
             ->assertOk();
     }
 
