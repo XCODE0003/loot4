@@ -12,32 +12,53 @@ const props = defineProps({
 
 const games = computed(() => props.games ?? fallbackGames)
 
+const VISIBLE = 4
+const GAP = 20
+
+const viewportRef = ref(null)
+const cardWidth = ref(300)
+
+function measureCard() {
+  if (!viewportRef.value) return
+  const w = viewportRef.value.offsetWidth
+  cardWidth.value = Math.floor((w - GAP * (VISIBLE - 1)) / VISIBLE)
+}
+
+let ro = null
+onMounted(() => {
+  measureCard()
+  ro = new ResizeObserver(measureCard)
+  ro.observe(viewportRef.value)
+  timer = setInterval(next, 3500)
+})
+onBeforeUnmount(() => {
+  ro?.disconnect()
+  clearInterval(timer)
+})
+
 const current = ref(0)
 const total = computed(() => games.value.length)
 
-function prev() {
-  current.value = (current.value - 1 + total.value) % total.value
-}
-function next() {
-  current.value = (current.value + 1) % total.value
-}
-
-let timer = null
-onMounted(() => { timer = setInterval(next, 3500) })
-onBeforeUnmount(() => clearInterval(timer))
-
-function pause() { clearInterval(timer) }
-function resume() { timer = setInterval(next, 3500) }
-
+function prev() { current.value = (current.value - 1 + total.value) % total.value }
+function next() { current.value = (current.value + 1) % total.value }
 function goTo(i) { current.value = i }
 
-// How many cards visible at once (CSS handles this, but we use it to cap the offset)
-const VISIBLE = 4
+let timer = null
+function pause() { clearInterval(timer) }
+function resume() { timer = setInterval(next, 3500) }
 
 const offset = computed(() => {
   const max = Math.max(0, total.value - VISIBLE)
   return Math.min(current.value, max)
 })
+
+const trackStyle = computed(() => ({
+  transform: `translateX(-${offset.value * (cardWidth.value + GAP)}px)`,
+}))
+
+const cardStyle = computed(() => ({
+  width: `${cardWidth.value}px`,
+}))
 </script>
 
 <template>
@@ -65,11 +86,8 @@ const offset = computed(() => {
         </div>
       </div>
 
-      <div class="discover_viewport" @mouseenter="pause" @mouseleave="resume">
-        <div
-          class="discover_track"
-          :style="{ transform: `translateX(calc(-${offset} * (var(--card-w) + var(--gap))))` }"
-        >
+      <div ref="viewportRef" class="discover_viewport" @mouseenter="pause" @mouseleave="resume">
+        <div class="discover_track" :style="trackStyle">
           <component
             :is="g.slug ? Link : 'div'"
             v-for="(g, i) in games"
@@ -77,6 +95,7 @@ const offset = computed(() => {
             :href="g.slug ? `/game/${g.slug}` : undefined"
             class="discover_card"
             :class="{ 'is-active': i === current }"
+            :style="cardStyle"
           >
             <img :src="asset(g.image)" :alt="g.alt" class="discover_card_img" />
             <span class="discover_card_label">{{ g.alt }}</span>
@@ -108,9 +127,7 @@ const offset = computed(() => {
   margin-bottom: 32px;
   flex-wrap: wrap;
 }
-.discover_up_texts {
-  flex: 1;
-}
+.discover_up_texts { flex: 1; }
 .discover_up_title {
   color: #fff;
   font-size: 36px;
@@ -139,9 +156,7 @@ const offset = computed(() => {
   cursor: pointer;
   transition: background 0.2s;
 }
-.discover_arrow:hover {
-  background: rgba(255, 255, 255, 0.16);
-}
+.discover_arrow:hover { background: rgba(255, 255, 255, 0.16); }
 .discover_up_more {
   display: flex;
   align-items: center;
@@ -154,29 +169,21 @@ const offset = computed(() => {
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: background 0.2s;
 }
-.discover_up_more:hover {
-  background: rgba(255, 255, 255, 0.06);
-}
+.discover_up_more:hover { background: rgba(255, 255, 255, 0.06); }
 
-.discover_viewport {
-  overflow: hidden;
-  --card-w: 300px;
-  --gap: 20px;
-}
+.discover_viewport { overflow: hidden; }
 .discover_track {
   display: flex;
-  gap: var(--gap);
+  gap: 20px;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
 .discover_card {
   flex-shrink: 0;
-  width: var(--card-w);
   height: 420px;
   border-radius: 20px;
   overflow: hidden;
   position: relative;
-  cursor: pointer;
   display: block;
   transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -206,7 +213,6 @@ const offset = computed(() => {
   letter-spacing: 0.02em;
 }
 
-/* Dots */
 .discover_dots {
   display: flex;
   justify-content: center;
@@ -226,20 +232,8 @@ const offset = computed(() => {
   transform: scale(1.3);
 }
 
-@media (max-width: 1100px) {
-  .discover_viewport {
-    --card-w: 260px;
-  }
-}
 @media (max-width: 760px) {
-  .discover_viewport {
-    --card-w: calc(100vw - 80px);
-  }
-  .discover_card {
-    height: 340px;
-  }
-  .discover_up_title {
-    font-size: 26px;
-  }
+  .discover_card { height: 340px; }
+  .discover_up_title { font-size: 26px; }
 }
 </style>
