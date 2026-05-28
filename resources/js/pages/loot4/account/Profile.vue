@@ -123,7 +123,7 @@ defineProps({
 .pf_btn {
   padding: 13px 26px;
   border-radius: 12px;
-  background: linear-gradient(90deg, #0fa854, #2bff95);
+  background: linear-gradient(110deg, #2bff95 0%, #054792 100%);
   color: #fff;
   font-weight: 700;
   cursor: pointer;
