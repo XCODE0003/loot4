@@ -1,7 +1,6 @@
 <script setup>
 import { router } from '@inertiajs/vue3'
 import { asset } from '@/loot4/utils/asset'
-import { useCart } from '@/loot4/composables/useCart'
 
 const props = defineProps({
   id: { type: String, required: true },
@@ -14,8 +13,6 @@ const props = defineProps({
   hidden: { type: Boolean, default: false },
 })
 
-const { add } = useCart()
-
 function formatPrice(value) {
   return `$${value.toFixed(2)}`
 }
@@ -24,22 +21,13 @@ function productUrl() {
   return props.slug ? `/product/${props.slug}` : '/product'
 }
 
-function goProduct(e) {
-  if (e.target.closest('.game_cards_block_bottom_button')) return
+function goProduct() {
   router.visit(productUrl())
 }
 
 function buy(e) {
   e.stopPropagation()
-  add({
-    id: props.slug || props.id,
-    slug: props.slug,
-    title: props.title,
-    image: props.image,
-    option: '',
-    price: props.priceNew,
-    priceOld: props.priceOld,
-  })
+  router.visit(productUrl())
 }
 </script>
 

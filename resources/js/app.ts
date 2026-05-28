@@ -28,7 +28,8 @@ createInertiaApp({
         }
     },
     setup({ el, App, props, plugin }) {
-        i18n.global.locale.value = 'en';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        i18n.global.locale.value = (props.initialPage?.props as any)?.locale ?? 'en';
 
         const app = createSSRApp({ render: () => h(App, props) });
         app.use(plugin);

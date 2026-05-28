@@ -18,7 +18,7 @@ const items = computed(() => props.products ?? fallbackGames)
   <GameIntroSection :game-page="gamePage" />
   <section class="game_cards">
     <Container>
-      <GameCatalog :items="items" :filters="filters" show-logo />
+      <GameCatalog :items="items" :filters="filters" />
     </Container>
   </section>
 </template>

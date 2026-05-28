@@ -8,10 +8,10 @@ defineProps({
   orders: { type: Array, default: () => [] },
 })
 
-const { currency } = useLocale()
+const { formatPrice } = useLocale()
 
 function money(value) {
-  return `${currency.value}${Number(value).toFixed(2)}`
+  return formatPrice(value)
 }
 
 const statusColors = {

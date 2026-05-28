@@ -1,33 +1,91 @@
 <script setup>
-import { ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Head, Link, router } from '@inertiajs/vue3'
 import '@/loot4/assets/styles/style.css'
-import Container from '@/loot4/components/layout/Container.vue'
 import { useCart } from '@/loot4/composables/useCart'
+
+defineOptions({ layout: null })
 import { useLocale } from '@/loot4/composables/useLocale'
 import { asset } from '@/loot4/utils/asset'
+import headerLogo from '@/loot4/assets/img/header_logo.svg'
+import visaIcon from '@/loot4/assets/img/product_visa.png'
+import masterIcon from '@/loot4/assets/img/product_master.png'
+import paypalIcon from '@/loot4/assets/img/product_paypal.png'
+import payIcon from '@/loot4/assets/img/product_pay.png'
 
-const { items, subtotal, discount, total, coupon, count, checkoutPayload } = useCart()
-const { currency } = useLocale()
+const { t } = useI18n()
+const { items, subtotal, discount, total, coupon, count, remove, applyCoupon, clearCoupon, checkoutPayload, hydrate } = useCart()
+const { formatPrice } = useLocale()
+
+onMounted(() => hydrate())
 
 const email = ref('')
 const method = ref('card')
 const processing = ref(false)
 const formError = ref('')
 
-const methods = [
-  { value: 'card', tkey: 'checkout.card' },
+const promoOpen = ref(false)
+const promoInput = ref(coupon.value?.code ?? '')
+const promoError = ref('')
+const promoLoading = ref(false)
+
+const paymentMethods = [
+  { value: 'card',     label: 'Credit Card',       feeLabel: '(+5%)', icons: [visaIcon, masterIcon, payIcon] },
+  { value: 'applepay', label: 'Apple Pay',         feeLabel: '(+5%)', icons: [payIcon] },
+  { value: 'cashapp',  label: 'Cash App',          feeLabel: '(+5%)', icons: [payIcon] },
+  { value: 'klarna',   label: 'Klarna (US)',       feeLabel: '(+5%)', icons: [paypalIcon] },
+  { value: 'gpay',     label: 'Google Pay',        feeLabel: '(+5%)', icons: [payIcon] },
+  { value: 'amazon',   label: 'Amazon Pay',        feeLabel: '(+5%)', icons: [payIcon] },
+  { value: 'ideal',    label: 'iDEAL',             feeLabel: '(+5%)', icons: [paypalIcon] },
+  { value: 'afterpay', label: 'Afterpay / Clearpay', feeLabel: '(+5%)', icons: [paypalIcon] },
+  { value: 'crypto',   label: 'Crypto',            feeLabel: '(-5%)', extra: '5% off', icons: [visaIcon] },
 ]
 
+const FEE_RATE = 0.05
+
+const activeMethod = computed(() => paymentMethods.find((m) => m.value === method.value) ?? paymentMethods[0])
+const feeMultiplier = computed(() => (method.value === 'crypto' ? -FEE_RATE : FEE_RATE))
+const feeAmount = computed(() => total.value * feeMultiplier.value)
+const grandTotal = computed(() => total.value + feeAmount.value)
+
 function money(value) {
-  return `${currency.value}${Number(value).toFixed(2)}`
+  return formatPrice(value)
+}
+
+function signedMoney(value) {
+  const sign = value < 0 ? '−' : '+'
+  return `${sign}${currency.value}${Math.abs(Number(value)).toFixed(2)}`
+}
+
+async function applyPromo() {
+  const code = promoInput.value.trim()
+  if (!code) return
+  promoError.value = ''
+  promoLoading.value = true
+  try {
+    const res = await fetch(`/cart/coupon?code=${encodeURIComponent(code)}&subtotal=${subtotal.value}`, {
+      headers: { Accept: 'application/json' },
+    })
+    const data = await res.json()
+    if (data.valid) {
+      applyCoupon({ code: data.code, type: data.type, value: data.value })
+      promoError.value = ''
+    } else {
+      clearCoupon()
+      promoError.value = data.message || t('cart.invalid')
+    }
+  } catch {
+    promoError.value = t('cart.invalid')
+  } finally {
+    promoLoading.value = false
+  }
 }
 
 function placeOrder() {
   if (!items.value.length || processing.value) return
   formError.value = ''
   processing.value = true
-  // The cart is cleared on the success page (payment may redirect externally to IceNox).
   router.post('/checkout', { ...checkoutPayload(email.value), method: method.value }, {
     onError: (errors) => {
       formError.value = errors.email || errors.items || errors.payment || 'Please check your details'
@@ -41,227 +99,605 @@ function placeOrder() {
 
 <template>
   <Head title="Checkout — Loot4you" />
-  <section class="checkout">
-    <Container>
-      <h1 class="checkout_title">{{ $t('checkout.title') }}</h1>
+  <section class="co">
+    <div class="co_inner">
+      <header class="co_brand">
+        <Link href="/" aria-label="Loot4you">
+          <img :src="headerLogo" alt="Loot4you" />
+        </Link>
+      </header>
 
-      <div v-if="!items.length" class="checkout_empty">
+      <div v-if="!items.length" class="co_empty">
         <p>{{ $t('checkout.empty') }}</p>
-        <Link href="/game" class="checkout_btn">{{ $t('checkout.browse') }}</Link>
+        <Link href="/game" class="co_btn">{{ $t('checkout.browse') }}</Link>
       </div>
 
-      <div v-else class="checkout_grid">
-        <div class="checkout_items">
-          <div v-for="item in items" :key="item.key" class="checkout_item">
-            <img :src="asset(item.image)" :alt="item.title" />
-            <div class="checkout_item_info">
-              <p class="checkout_item_title">{{ item.title }}</p>
-              <p v-if="item.option" class="checkout_item_option">{{ item.option }}</p>
-              <p class="checkout_item_qty">{{ $t('checkout.items') }}: {{ item.qty }}</p>
+      <div v-else class="co_grid">
+        <div class="co_left">
+          <h1 class="co_title">Secure checkout</h1>
+
+          <div class="co_section">
+            <p class="co_section_label">Customer information</p>
+            <input
+              id="co-email"
+              v-model="email"
+              type="email"
+              class="co_field"
+              placeholder="Email *"
+              @keyup.enter="placeOrder"
+            />
+          </div>
+
+          <div class="co_section">
+            <h2 class="co_section_title">Pay with</h2>
+            <div class="co_methods">
+              <label
+                v-for="m in paymentMethods"
+                :key="m.value"
+                class="co_method"
+                :class="{ 'is-active': method === m.value }"
+              >
+                <input v-model="method" type="radio" name="method" :value="m.value" />
+                <span class="co_method_radio" aria-hidden="true"></span>
+                <span class="co_method_label">
+                  {{ m.label }} {{ m.feeLabel }}
+                  <span v-if="m.extra" class="co_method_extra">{{ m.extra }}</span>
+                </span>
+                <span class="co_method_icons">
+                  <img v-for="(icon, idx) in m.icons" :key="idx" :src="icon" alt="" />
+                </span>
+              </label>
             </div>
-            <span class="checkout_item_price">{{ money(item.price * item.qty) }}</span>
           </div>
         </div>
 
-        <div class="checkout_summary">
-          <h2 class="checkout_summary_title">{{ $t('checkout.summary') }}</h2>
-          <div class="checkout_row"><span>{{ $t('checkout.items') }}</span><span>{{ count }}</span></div>
-          <div class="checkout_row"><span>{{ $t('checkout.subtotal') }}</span><span>{{ money(subtotal) }}</span></div>
-          <div v-if="coupon" class="checkout_row checkout_row--discount">
-            <span>{{ $t('checkout.discount') }} ({{ coupon.code }})</span><span>−{{ money(discount) }}</span>
+        <aside class="co_right">
+          <div class="co_items">
+            <div v-for="item in items" :key="item.key" class="co_item">
+              <button
+                type="button"
+                class="co_item_remove"
+                aria-label="Remove item"
+                @click="remove(item.key)"
+              >
+                <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
+                  <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <img class="co_item_img" :src="asset(item.image)" :alt="item.title" />
+              <div class="co_item_body">
+                <p class="co_item_title">{{ item.title }}</p>
+                <p v-if="item.option" class="co_item_option">{{ item.option }}</p>
+              </div>
+              <div class="co_item_price">
+                <span v-if="item.compareAt && item.compareAt > item.price" class="co_item_price_old">
+                  {{ money(item.compareAt * item.qty) }}
+                </span>
+                <span class="co_item_price_now">{{ money(item.price * item.qty) }}</span>
+              </div>
+            </div>
           </div>
-          <div class="checkout_row checkout_row--total"><span>{{ $t('checkout.total') }}</span><span>{{ money(total) }}</span></div>
 
-          <label class="checkout_label" for="checkout-email">{{ $t('checkout.email') }}</label>
-          <input
-            id="checkout-email"
-            v-model="email"
-            type="email"
-            class="checkout_input"
-            placeholder="you@example.com"
-            @keyup.enter="placeOrder"
-          />
+          <div class="co_summary">
+            <div class="co_row">
+              <span>Total items</span>
+              <span>{{ count }}</span>
+            </div>
+            <div class="co_row">
+              <span>{{ activeMethod.label }} {{ activeMethod.feeLabel }}</span>
+              <span :class="{ 'co_row_pos': feeAmount > 0, 'co_row_neg': feeAmount < 0 }">
+                {{ signedMoney(feeAmount) }}
+              </span>
+            </div>
+            <div v-if="coupon" class="co_row co_row_neg">
+              <span>Discount ({{ coupon.code }})</span>
+              <span>−{{ money(discount) }}</span>
+            </div>
 
-          <label class="checkout_label">{{ $t('checkout.method') }}</label>
-          <div class="checkout_methods">
-            <label
-              v-for="m in methods"
-              :key="m.value"
-              class="checkout_method"
-              :class="{ 'is-active': method === m.value }"
+            <div class="co_promo">
+              <button type="button" class="co_promo_toggle" @click="promoOpen = !promoOpen">
+                <span>I have a promocode</span>
+                <span class="co_promo_sign">{{ promoOpen ? '−' : '+' }}</span>
+              </button>
+              <div v-if="promoOpen" class="co_promo_row">
+                <input
+                  v-model="promoInput"
+                  type="text"
+                  class="co_field co_promo_input"
+                  placeholder="Promocode"
+                  @keyup.enter.prevent="applyPromo"
+                />
+                <button
+                  type="button"
+                  class="co_promo_apply"
+                  :disabled="promoLoading"
+                  @click="applyPromo"
+                >
+                  {{ promoLoading ? '…' : 'Apply' }}
+                </button>
+              </div>
+              <p v-if="promoError" class="co_promo_err">{{ promoError }}</p>
+            </div>
+
+            <div class="co_row co_row_total">
+              <span>Total</span>
+              <span>{{ money(grandTotal) }}</span>
+            </div>
+
+            <p v-if="formError" class="co_error">{{ formError }}</p>
+
+            <button
+              type="button"
+              class="co_pay"
+              :disabled="processing"
+              @click="placeOrder"
             >
-              <input v-model="method" type="radio" name="method" :value="m.value" />
-              <span>{{ $t(m.tkey) }}</span>
-            </label>
+              <svg width="16" height="18" viewBox="0 0 16 18" fill="none" aria-hidden="true">
+                <path d="M8 1l6 2v6c0 4-3 6.5-6 8-3-1.5-6-4-6-8V3l6-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              </svg>
+              <span>{{ processing ? $t('checkout.processing') : `Pay now  ${money(grandTotal)}` }}</span>
+            </button>
+
+            <p class="co_terms">
+              By placing an order on loot4you.com, you agree to our
+              <a href="/legal/terms" target="_blank" rel="noopener">Terms of Service</a>
+              and <a href="/legal/privacy" target="_blank" rel="noopener">Privacy Policy</a>.
+              After completing your purchase, we may send you emails with offers related to similar products or services.
+              You can unsubscribe at any time using the link provided or directly from the email.
+            </p>
+
+            <div class="co_trust">
+              <div class="co_trust_pilot">
+                <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true">
+                  <polygon points="10,1 12.6,7 19,7.5 14,11.8 15.8,18 10,14.5 4.2,18 6,11.8 1,7.5 7.4,7" fill="#00b67a"/>
+                </svg>
+                <span>Trustpilot</span>
+              </div>
+              <div class="co_trust_badges">
+                <span class="co_trust_badge co_trust_mc">
+                  <span class="co_trust_mc_dots">
+                    <span class="co_trust_mc_red"></span>
+                    <span class="co_trust_mc_yellow"></span>
+                  </span>
+                  <span class="co_trust_mc_text">ID Check</span>
+                </span>
+                <span class="co_trust_badge co_trust_visa">
+                  <span class="co_trust_visa_top">Verified by</span>
+                  <span class="co_trust_visa_bot">VISA</span>
+                </span>
+              </div>
+            </div>
           </div>
-
-          <p v-if="formError" class="checkout_error">{{ formError }}</p>
-
-          <button type="button" class="checkout_btn checkout_btn--full" :disabled="processing" @click="placeOrder">
-            {{ processing ? $t('checkout.processing') : $t('checkout.pay', { total: money(total) }) }}
-          </button>
-          <p class="checkout_note">{{ $t('checkout.note') }}</p>
-        </div>
+        </aside>
       </div>
-    </Container>
+    </div>
   </section>
 </template>
 
 <style scoped>
-.checkout {
-  padding: 60px 0 100px;
-  min-height: 60vh;
-}
-.checkout_title {
-  font-size: 36px;
-  font-weight: 700;
+.co {
+  min-height: 100vh;
+  background: #0a0f24;
   color: #fff;
+  padding: 32px 24px 80px;
+}
+.co_inner {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.co_brand {
   margin-bottom: 28px;
 }
-.checkout_empty {
-  color: rgba(255, 255, 255, 0.6);
+.co_brand img {
+  height: 36px;
+  display: block;
+}
+
+.co_empty {
+  color: rgba(255, 255, 255, 0.7);
   display: flex;
   flex-direction: column;
   gap: 18px;
   align-items: flex-start;
 }
-.checkout_grid {
+
+.co_grid {
   display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 80px;
   align-items: start;
 }
-.checkout_items {
+
+.co_title {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 24px;
+  color: #fff;
+}
+
+.co_section {
+  margin-bottom: 28px;
+}
+.co_section_label {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  margin: 0 0 10px;
+}
+.co_section_title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: #fff;
+}
+
+.co_field {
+  width: 100%;
+  height: 52px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: #0f1530;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.co_field::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+.co_field:focus {
+  border-color: rgba(120, 156, 255, 0.55);
+}
+
+.co_methods {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
-.checkout_item {
+.co_method {
   display: grid;
-  grid-template-columns: 72px 1fr auto;
-  gap: 16px;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  padding: 16px;
-  border-radius: 16px;
-  background: #161c33;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: #0f1530;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
-.checkout_item img {
-  width: 72px;
-  height: 72px;
-  object-fit: cover;
-  border-radius: 12px;
+.co_method:hover {
+  border-color: rgba(120, 156, 255, 0.35);
 }
-.checkout_item_title {
+.co_method input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.co_method_radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  display: inline-block;
+  position: relative;
+  flex-shrink: 0;
+}
+.co_method.is-active {
+  background: rgba(56, 102, 235, 0.18);
+  border-color: rgba(96, 140, 255, 0.7);
   color: #fff;
+}
+.co_method.is-active .co_method_radio {
+  border-color: #6f9bff;
+  background: #6f9bff;
+  box-shadow: inset 0 0 0 4px #0f1530;
+}
+.co_method_label {
+  font-size: 15px;
+  font-weight: 500;
+}
+.co_method_extra {
+  color: #4ade80;
   font-weight: 600;
+  margin-left: 8px;
 }
-.checkout_item_option,
-.checkout_item_qty {
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 14px;
-  margin-top: 2px;
+.co_method_icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
-.checkout_item_price {
+.co_method_icons img {
+  height: 18px;
+  width: auto;
+  opacity: 0.85;
+}
+
+/* Right column */
+.co_right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: sticky;
+  top: 32px;
+}
+
+.co_items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.co_item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 18px 14px 14px;
+  border-radius: 16px;
+  background: #11173a;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.co_item_remove {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
   color: #fff;
-  font-weight: 700;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1;
+}
+.co_item_img {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.co_item_title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 15px;
+  color: #fff;
+}
+.co_item_option {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+}
+.co_item_price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
   white-space: nowrap;
 }
-.checkout_summary {
-  padding: 24px;
-  border-radius: 18px;
-  background: #0b1020;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+.co_item_price_old {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  text-decoration: line-through;
 }
-.checkout_summary_title {
+.co_item_price_now {
   color: #fff;
-  font-size: 20px;
   font-weight: 700;
-  margin-bottom: 18px;
+  font-size: 16px;
 }
-.checkout_row {
+
+.co_summary {
+  padding: 4px 2px 0;
+}
+.co_row {
   display: flex;
   justify-content: space-between;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 10px 0;
+  align-items: center;
+  margin: 14px 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 15px;
 }
-.checkout_row--discount {
-  color: #4ade80;
-}
-.checkout_row--total {
-  color: #fff;
-  font-size: 20px;
+.co_row_pos { color: rgba(255, 255, 255, 0.85); }
+.co_row_neg { color: #4ade80; }
+.co_row_total {
+  font-size: 22px;
   font-weight: 700;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 14px;
-  margin-top: 14px;
-}
-.checkout_label {
-  display: block;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 20px 0 8px;
-}
-.checkout_input {
-  width: 100%;
-  padding: 14px 16px;
-  border-radius: 12px;
-  background: rgba(15, 168, 84, 0.1);
-  border: 1px solid rgba(43, 255, 149, 0.2);
   color: #fff;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 18px;
+  margin-top: 8px;
 }
-.checkout_error {
+
+.co_promo {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 14px;
+}
+.co_promo_toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 15px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+.co_promo_sign {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.co_promo_row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  margin-top: 12px;
+}
+.co_promo_input {
+  height: 48px;
+}
+.co_promo_apply {
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3b6bff, #6fa3ff);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+.co_promo_apply:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.co_promo_err {
   color: #ff6b6b;
   font-size: 13px;
   margin-top: 8px;
 }
-.checkout_methods {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.checkout_method {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 13px 16px;
-  border-radius: 12px;
-  border: 1px solid rgba(43, 255, 149, 0.2);
-  background: rgba(15, 168, 84, 0.1);
-  color: rgba(255, 255, 255, 0.85);
-  cursor: pointer;
-}
-.checkout_method.is-active {
-  border-color: #2bff95;
-  background: rgba(15, 168, 84, 0.18);
+
+.co_pay {
+  width: 100%;
+  height: 56px;
+  margin-top: 16px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3b6bff, #6fa3ff);
   color: #fff;
-}
-.checkout_btn {
+  font-weight: 700;
+  font-size: 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 28px;
-  border-radius: 14px;
-  background: linear-gradient(90deg, #0fa854, #2bff95);
-  color: #fff;
-  font-weight: 700;
+  gap: 10px;
+  border: none;
   cursor: pointer;
+  box-shadow: 0 6px 24px rgba(59, 107, 255, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.checkout_btn--full {
-  width: 100%;
-  margin-top: 18px;
+.co_pay:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(59, 107, 255, 0.45);
 }
-.checkout_btn:disabled {
-  opacity: 0.6;
+.co_pay:disabled {
+  opacity: 0.7;
   cursor: default;
 }
-.checkout_note {
-  color: rgba(255, 255, 255, 0.4);
+
+.co_error {
+  color: #ff6b6b;
   font-size: 13px;
-  margin-top: 12px;
+  margin-top: 10px;
   text-align: center;
 }
+
+.co_terms {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 16px 0 0;
+  text-align: center;
+}
+.co_terms a {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: underline;
+}
+
+.co_trust {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+.co_trust_pilot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+  font-weight: 600;
+}
+.co_trust_badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+}
+.co_trust_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.co_trust_mc {
+  flex-direction: column;
+  gap: 2px;
+}
+.co_trust_mc_dots {
+  display: inline-flex;
+}
+.co_trust_mc_red,
+.co_trust_mc_yellow {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.co_trust_mc_red { background: #eb001b; }
+.co_trust_mc_yellow { background: #f79e1b; margin-left: -7px; mix-blend-mode: multiply; }
+.co_trust_mc_text {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 10px;
+}
+.co_trust_visa {
+  flex-direction: column;
+  gap: 0;
+}
+.co_trust_visa_top {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 9px;
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.co_trust_visa_bot {
+  color: #1a1f71;
+  font-size: 16px;
+  font-weight: 800;
+  font-style: italic;
+  background: linear-gradient(180deg, #fff 50%, #f7b600 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.co_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 26px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3b6bff, #6fa3ff);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
 @media (max-width: 900px) {
-  .checkout_grid {
+  .co_grid {
     grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .co_right {
+    position: static;
   }
 }
 </style>

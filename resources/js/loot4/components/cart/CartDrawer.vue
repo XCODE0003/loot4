@@ -9,7 +9,7 @@ import { asset } from '@/loot4/utils/asset'
 const { t } = useI18n()
 
 const { items, isOpen, count, subtotal, discount, total, coupon, remove, close, applyCoupon, clearCoupon } = useCart()
-const { currency } = useLocale()
+const { formatPrice } = useLocale()
 
 // Teleport + Transition is rendered on the client only — SSR has no <body>
 // teleport target, which would otherwise produce a hydration mismatch.
@@ -26,7 +26,7 @@ const promoLoading = ref(false)
 const paymentIcons = ['product_visa.png', 'product_master.png', 'product_paypal.png', 'product_pay.png', 'product_btc.png']
 
 function money(value) {
-  return `${currency.value}${Number(value).toFixed(2)}`
+  return formatPrice(value)
 }
 
 async function applyPromo() {

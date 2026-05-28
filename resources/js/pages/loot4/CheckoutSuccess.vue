@@ -10,14 +10,14 @@ defineProps({
   order: { type: Object, required: true },
 })
 
-const { currency } = useLocale()
+const { formatPrice } = useLocale()
 const { clear } = useCart()
 
 // Order placed — empty the cart once we reach the confirmation page.
 onMounted(() => clear())
 
 function money(value) {
-  return `${currency.value}${Number(value).toFixed(2)}`
+  return formatPrice(value)
 }
 </script>
 

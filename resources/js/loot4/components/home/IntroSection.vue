@@ -1,4 +1,5 @@
 <script setup>
+import { Link } from '@inertiajs/vue3'
 import Container from '@/loot4/components/layout/Container.vue'
 import { introStats } from '@/loot4/data/home'
 import { asset } from '@/loot4/utils/asset'
@@ -19,7 +20,7 @@ function scrollToFooter() {
             Power up your <span>favorite games</span> with <span>premium</span> currency, levels, and elite gear.
           </h2>
           <div class="intro_block_buttons">
-            <button type="button" class="intro_block_button">Login</button>
+            <Link href="/login" class="intro_block_button">Login</Link>
             <button type="button" class="intro_block_button" @click="scrollToFooter">Contacts</button>
           </div>
           <div class="intro_block_stats">
