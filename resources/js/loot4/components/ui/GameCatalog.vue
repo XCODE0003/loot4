@@ -44,7 +44,7 @@ function setGameFilter(value) {
           :class="{ 'is-active': activeGameFilter === 'all' }"
           @click="setGameFilter('all')"
         >
-          All
+          <span class="catalog_filter_opt_text">All</span>
         </button>
         <button
           v-for="val in gameFilters.values"
@@ -54,7 +54,7 @@ function setGameFilter(value) {
           :class="{ 'is-active': activeGameFilter === val }"
           @click="setGameFilter(val)"
         >
-          {{ val }}
+          <span class="catalog_filter_opt_text">{{ val }}</span>
         </button>
       </div>
     </div>
@@ -111,6 +111,7 @@ function setGameFilter(value) {
 .catalog_filter_opt {
   position: relative;
   flex: 1 0 auto;
+  overflow: hidden;
   padding: 14px 28px;
   border: 0;
   border-radius: 11px;
@@ -121,8 +122,9 @@ function setGameFilter(value) {
   color: rgba(255, 255, 255, 0.62);
   white-space: nowrap;
   cursor: pointer;
-  transition: color 0.2s, background 0.2s;
+  transition: color 0.25s;
 }
+/* divider between options */
 .catalog_filter_opt + .catalog_filter_opt::before {
   content: '';
   position: absolute;
@@ -132,6 +134,25 @@ function setGameFilter(value) {
   width: 1px;
   height: 18px;
   background: rgba(255, 255, 255, 0.1);
+  z-index: 1;
+}
+/* the selected pill — sits below the cell and slides up when active */
+.catalog_filter_opt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 11px;
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 6px 18px rgba(43, 255, 149, 0.28);
+  transform: translateY(110%);
+  opacity: 0;
+  z-index: 0;
+  /* leaving: drops straight back down with no delay */
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
+}
+.catalog_filter_opt_text {
+  position: relative;
+  z-index: 2;
 }
 .catalog_filter_opt:hover {
   color: #fff;
@@ -139,9 +160,14 @@ function setGameFilter(value) {
 .catalog_filter_opt.is-active {
   color: #fff;
   font-weight: 600;
-  background: linear-gradient(180deg, #6d4aa8 0%, #3a2168 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 6px 16px rgba(108, 74, 168, 0.35);
 }
+.catalog_filter_opt.is-active::after {
+  transform: translateY(0);
+  opacity: 1;
+  /* entering: waits for the previous pill to drop, then rises up */
+  transition: transform 0.36s cubic-bezier(0.34, 1.3, 0.64, 1) 0.12s, opacity 0.2s ease 0.12s;
+}
+/* hide dividers touching the active pill */
 .catalog_filter_opt.is-active::before,
 .catalog_filter_opt.is-active + .catalog_filter_opt::before {
   display: none;
