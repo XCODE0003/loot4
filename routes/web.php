@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [StorefrontController::class, 'home'])->name('home');
 Route::get('/game', [StorefrontController::class, 'game'])->name('game');
+Route::get('/game/{slug}', [StorefrontController::class, 'gameBySlug'])->name('game.show');
 Route::get('/product/{slug?}', [StorefrontController::class, 'product'])->name('product');
 
 Route::get('/cart/coupon', [CheckoutController::class, 'coupon'])->name('cart.coupon');

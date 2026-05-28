@@ -83,6 +83,43 @@ class StorefrontController extends Controller
         ]);
     }
 
+    public function gameBySlug(string $slug): Response
+    {
+        $game = Game::query()
+            ->where('slug', $slug)
+            ->where('status', GameStatus::Active->value)
+            ->firstOrFail();
+
+        $products = Product::query()
+            ->where('status', ProductStatus::Active->value)
+            ->where('visibility', true)
+            ->where('game_id', $game->id)
+            ->with('game')
+            ->latest()
+            ->get();
+
+        $filters = $products
+            ->map(fn (Product $p): string => $p->type->value)
+            ->unique()
+            ->map(fn (string $type): array => ['label' => ucfirst($type), 'value' => $type])
+            ->prepend(['label' => 'All', 'value' => 'all'])
+            ->values()
+            ->all();
+
+        return Inertia::render('loot4/Game', [
+            'products' => $products->map(fn (Product $p, int $i): array => $this->card($p, $i))->all(),
+            'filters' => $filters,
+            'gamePage' => [
+                'title' => $game->name,
+                'image' => $game->getFirstMediaUrl('image') ?: 'game_intro_image.png',
+                'guarantees' => [
+                    'Money Back Guarantee — we stand firmly behind the quality of our service.',
+                    'Superior Support — our specialists are always available to help you with setup.',
+                ],
+            ],
+        ]);
+    }
+
     public function product(?string $slug = null): Response
     {
         $product = Product::query()

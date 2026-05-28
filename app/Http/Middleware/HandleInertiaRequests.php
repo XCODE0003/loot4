@@ -55,6 +55,7 @@ class HandleInertiaRequests extends Middleware
                 ->get(['id', 'name', 'slug'])
                 ->map(fn (Game $g): array => [
                     'name' => $g->name,
+                    'slug' => $g->slug,
                     'image' => $g->getFirstMediaUrl('image') ?: null,
                 ])
                 ->all(),

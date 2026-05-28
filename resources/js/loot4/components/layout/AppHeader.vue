@@ -57,7 +57,7 @@ const games = computed(() => page.props.navGames ?? [])
                 <Link
                   v-for="g in games"
                   :key="g.name"
-                  href="/game"
+                  :href="g.slug ? `/game/${g.slug}` : '/game'"
                   class="header_nav_dropdown_item"
                   @click="closeMenu"
                 >
