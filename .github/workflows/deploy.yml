@@ -33,6 +33,7 @@ jobs:
             --exclude='node_modules' \
             --exclude='vendor' \
             --exclude='.env' \
+            --exclude='bootstrap/cache' \
             --exclude='storage/logs' \
             --exclude='storage/framework/cache' \
             --exclude='storage/framework/sessions' \

@@ -118,7 +118,7 @@ class Product extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('main')->singleFile();
-        $this->addMediaCollection('gallery');
+        $this->addMediaCollection('main')->singleFile()->useDisk('public');
+        $this->addMediaCollection('gallery')->useDisk('public');
     }
 }
