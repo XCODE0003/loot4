@@ -25,7 +25,7 @@ const messages = {
       subtotal: 'Subtotal', discount: 'Discount', total: 'Total', continue: 'Continue shopping',
     },
     account: {
-      overview: 'Overview', myOrders: 'My Orders', profile: 'Profile', logout: 'Logout',
+      overview: 'Overview', myOrders: 'My Orders', profile: 'Profile', adminPanel: 'Admin Panel', logout: 'Logout',
       orders: 'Orders', totalSpent: 'Total spent', pending: 'Pending',
       recentOrders: 'Recent orders', viewAll: 'View all', noOrders: 'No orders yet.', startShopping: 'Start shopping →',
       order: 'Order', date: 'Date', items: 'Items', status: 'Status', payment: 'Payment', total: 'Total', view: 'View',
@@ -66,7 +66,7 @@ const messages = {
       subtotal: 'Сумма', discount: 'Скидка', total: 'Итого', continue: 'Продолжить покупки',
     },
     account: {
-      overview: 'Обзор', myOrders: 'Мои заказы', profile: 'Профиль', logout: 'Выйти',
+      overview: 'Обзор', myOrders: 'Мои заказы', profile: 'Профиль', adminPanel: 'Админ-панель', logout: 'Выйти',
       orders: 'Заказы', totalSpent: 'Потрачено', pending: 'В ожидании',
       recentOrders: 'Последние заказы', viewAll: 'Все', noOrders: 'Заказов пока нет.', startShopping: 'Начать покупки →',
       order: 'Заказ', date: 'Дата', items: 'Товаров', status: 'Статус', payment: 'Оплата', total: 'Итого', view: 'Открыть',
@@ -107,7 +107,7 @@ const messages = {
       subtotal: 'Zwischensumme', discount: 'Rabatt', total: 'Gesamt', continue: 'Weiter einkaufen',
     },
     account: {
-      overview: 'Übersicht', myOrders: 'Meine Bestellungen', profile: 'Profil', logout: 'Abmelden',
+      overview: 'Übersicht', myOrders: 'Meine Bestellungen', profile: 'Profil', adminPanel: 'Admin-Panel', logout: 'Abmelden',
       orders: 'Bestellungen', totalSpent: 'Ausgegeben', pending: 'Ausstehend',
       recentOrders: 'Letzte Bestellungen', viewAll: 'Alle', noOrders: 'Noch keine Bestellungen.', startShopping: 'Jetzt einkaufen →',
       order: 'Bestellung', date: 'Datum', items: 'Artikel', status: 'Status', payment: 'Zahlung', total: 'Gesamt', view: 'Ansehen',
@@ -148,7 +148,7 @@ const messages = {
       subtotal: 'Subtotal', discount: 'Descuento', total: 'Total', continue: 'Continuar comprando',
     },
     account: {
-      overview: 'Resumen', myOrders: 'Mis Pedidos', profile: 'Perfil', logout: 'Cerrar sesión',
+      overview: 'Resumen', myOrders: 'Mis Pedidos', profile: 'Perfil', adminPanel: 'Panel de Administración', logout: 'Cerrar sesión',
       orders: 'Pedidos', totalSpent: 'Total gastado', pending: 'Pendiente',
       recentOrders: 'Pedidos recientes', viewAll: 'Ver todos', noOrders: 'Sin pedidos aún.', startShopping: 'Empezar a comprar →',
       order: 'Pedido', date: 'Fecha', items: 'Artículos', status: 'Estado', payment: 'Pago', total: 'Total', view: 'Ver',
@@ -189,7 +189,7 @@ const messages = {
       subtotal: 'Subtotaal', discount: 'Korting', total: 'Totaal', continue: 'Doorgaan met winkelen',
     },
     account: {
-      overview: 'Overzicht', myOrders: 'Mijn Bestellingen', profile: 'Profiel', logout: 'Uitloggen',
+      overview: 'Overzicht', myOrders: 'Mijn Bestellingen', profile: 'Profiel', adminPanel: 'Beheerpaneel', logout: 'Uitloggen',
       orders: 'Bestellingen', totalSpent: 'Totaal uitgegeven', pending: 'In afwachting',
       recentOrders: 'Recente bestellingen', viewAll: 'Alle', noOrders: 'Nog geen bestellingen.', startShopping: 'Begin met winkelen →',
       order: 'Bestelling', date: 'Datum', items: 'Artikelen', status: 'Status', payment: 'Betaling', total: 'Totaal', view: 'Bekijken',
@@ -230,7 +230,7 @@ const messages = {
       subtotal: 'المجموع الفرعي', discount: 'الخصم', total: 'المجموع', continue: 'مواصلة التسوق',
     },
     account: {
-      overview: 'نظرة عامة', myOrders: 'طلباتي', profile: 'الملف الشخصي', logout: 'تسجيل الخروج',
+      overview: 'نظرة عامة', myOrders: 'طلباتي', profile: 'الملف الشخصي', adminPanel: 'لوحة الإدارة', logout: 'تسجيل الخروج',
       orders: 'الطلبات', totalSpent: 'إجمالي الإنفاق', pending: 'قيد الانتظار',
       recentOrders: 'الطلبات الأخيرة', viewAll: 'عرض الكل', noOrders: 'لا طلبات بعد.', startShopping: 'ابدأ التسوق →',
       order: 'الطلب', date: 'التاريخ', items: 'العناصر', status: 'الحالة', payment: 'الدفع', total: 'المجموع', view: 'عرض',
@@ -271,7 +271,7 @@ const messages = {
       subtotal: 'Subtotale', discount: 'Sconto', total: 'Totale', continue: 'Continua gli acquisti',
     },
     account: {
-      overview: 'Panoramica', myOrders: 'I Miei Ordini', profile: 'Profilo', logout: 'Esci',
+      overview: 'Panoramica', myOrders: 'I Miei Ordini', profile: 'Profilo', adminPanel: 'Pannello di Amministrazione', logout: 'Esci',
       orders: 'Ordini', totalSpent: 'Totale speso', pending: 'In attesa',
       recentOrders: 'Ordini recenti', viewAll: 'Vedi tutti', noOrders: 'Nessun ordine ancora.', startShopping: 'Inizia gli acquisti →',
       order: 'Ordine', date: 'Data', items: 'Articoli', status: 'Stato', payment: 'Pagamento', total: 'Totale', view: 'Visualizza',
@@ -312,7 +312,7 @@ const messages = {
       subtotal: 'Sous-total', discount: 'Remise', total: 'Total', continue: 'Continuer mes achats',
     },
     account: {
-      overview: 'Aperçu', myOrders: 'Mes Commandes', profile: 'Profil', logout: 'Se déconnecter',
+      overview: 'Aperçu', myOrders: 'Mes Commandes', profile: 'Profil', adminPanel: 'Panneau d\'administration', logout: 'Se déconnecter',
       orders: 'Commandes', totalSpent: 'Total dépensé', pending: 'En attente',
       recentOrders: 'Commandes récentes', viewAll: 'Tout voir', noOrders: 'Aucune commande.', startShopping: 'Commencer →',
       order: 'Commande', date: 'Date', items: 'Articles', status: 'Statut', payment: 'Paiement', total: 'Total', view: 'Voir',

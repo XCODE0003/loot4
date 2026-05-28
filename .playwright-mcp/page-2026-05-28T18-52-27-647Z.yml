@@ -1,0 +1,205 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - button "Collapse sidebar" [ref=e6] [cursor=pointer]:
+        - img [ref=e7]
+      - link "Loot4you Admin" [ref=e9] [cursor=pointer]:
+        - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin
+        - generic [ref=e10]: Loot4you Admin
+    - generic [ref=e11]:
+      - generic [ref=e14]:
+        - generic [ref=e15]: Global search
+        - generic [ref=e16]:
+          - img [ref=e18]
+          - searchbox "Global search" [ref=e21]
+      - button "User menu" [ref=e24] [cursor=pointer]:
+        - img "Avatar of Super Admin" [ref=e25]
+  - generic [ref=e26]:
+    - complementary [ref=e28]:
+      - navigation [ref=e29]:
+        - list [ref=e30]:
+          - listitem [ref=e31]:
+            - list [ref=e32]:
+              - listitem [ref=e33]:
+                - link "Dashboard" [ref=e34] [cursor=pointer]:
+                  - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin
+                  - img [ref=e35]
+                  - generic [ref=e37]: Dashboard
+          - listitem [ref=e38]:
+            - generic [ref=e39] [cursor=pointer]:
+              - generic [ref=e40]: Sales
+              - button "Sales" [expanded] [ref=e41]:
+                - img [ref=e42]
+            - list [ref=e44]:
+              - listitem [ref=e45]:
+                - link "Orders 10" [ref=e46] [cursor=pointer]:
+                  - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin/orders
+                  - img [ref=e47]
+                  - generic [ref=e49]: Orders
+                  - generic [ref=e53]: "10"
+          - listitem [ref=e54]:
+            - generic [ref=e55] [cursor=pointer]:
+              - generic [ref=e56]: Catalog
+              - button "Catalog" [expanded] [ref=e57]:
+                - img [ref=e58]
+            - list [ref=e60]:
+              - listitem [ref=e61]:
+                - link "Games" [ref=e62] [cursor=pointer]:
+                  - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin/games
+                  - img [ref=e63]
+                  - generic [ref=e65]: Games
+              - listitem [ref=e66]:
+                - link "Products" [ref=e67] [cursor=pointer]:
+                  - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin/products
+                  - img [ref=e68]
+                  - generic [ref=e70]: Products
+              - listitem [ref=e71]:
+                - link "Coupons" [ref=e72] [cursor=pointer]:
+                  - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin/coupons
+                  - img [ref=e73]
+                  - generic [ref=e75]: Coupons
+          - listitem [ref=e76]:
+            - generic [ref=e77] [cursor=pointer]:
+              - generic [ref=e78]: Inventory
+              - button "Inventory" [expanded] [ref=e79]:
+                - img [ref=e80]
+            - list [ref=e82]:
+              - listitem [ref=e83]:
+                - link "Storage Units" [ref=e84] [cursor=pointer]:
+                  - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin/storage-units
+                  - img [ref=e85]
+                  - generic [ref=e87]: Storage Units
+          - listitem [ref=e88]:
+            - generic [ref=e89] [cursor=pointer]:
+              - generic [ref=e90]: Support
+              - button "Support" [expanded] [ref=e91]:
+                - img [ref=e92]
+            - list [ref=e94]:
+              - listitem [ref=e95]:
+                - link "Tickets" [ref=e96] [cursor=pointer]:
+                  - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin/tickets
+                  - img [ref=e97]
+                  - generic [ref=e99]: Tickets
+              - listitem [ref=e100]:
+                - link "Quotes" [ref=e101] [cursor=pointer]:
+                  - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin/quotes
+                  - img [ref=e102]
+                  - generic [ref=e104]: Quotes
+          - listitem [ref=e105]:
+            - generic [ref=e106] [cursor=pointer]:
+              - generic [ref=e107]: Analytics
+              - button "Analytics" [expanded] [ref=e108]:
+                - img [ref=e109]
+            - list [ref=e111]:
+              - listitem [ref=e112]:
+                - link "Conversion Logs" [ref=e113] [cursor=pointer]:
+                  - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin/conversion-logs
+                  - img [ref=e114]
+                  - generic [ref=e116]: Conversion Logs
+              - listitem [ref=e117]:
+                - link "Audit Logs" [ref=e118] [cursor=pointer]:
+                  - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin/activities
+                  - img [ref=e119]
+                  - generic [ref=e121]: Audit Logs
+          - listitem [ref=e122]:
+            - generic [ref=e123] [cursor=pointer]:
+              - generic [ref=e124]: System
+              - button "System" [expanded] [ref=e125]:
+                - img [ref=e126]
+            - list [ref=e128]:
+              - listitem [ref=e129]:
+                - link "Currencies" [ref=e130] [cursor=pointer]:
+                  - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin/currencies
+                  - img [ref=e131]
+                  - generic [ref=e133]: Currencies
+              - listitem [ref=e134]:
+                - link "Users" [ref=e135] [cursor=pointer]:
+                  - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin/users
+                  - img [ref=e136]
+                  - generic [ref=e138]: Users
+              - listitem [ref=e139]:
+                - link "Settings" [ref=e140] [cursor=pointer]:
+                  - /url: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin/settings
+                  - img [ref=e141]
+                  - generic [ref=e144]: Settings
+    - main [ref=e146]:
+      - generic [ref=e148]:
+        - heading "Dashboard" [level=1] [ref=e151]
+        - generic [ref=e158]:
+          - generic [ref=e162]:
+            - img "Avatar of Super Admin" [ref=e163]
+            - generic [ref=e164]:
+              - heading "Welcome" [level=2] [ref=e165]
+              - paragraph [ref=e166]: Super Admin
+            - button "Sign out" [ref=e168] [cursor=pointer]:
+              - img [ref=e169]
+              - text: Sign out
+          - generic [ref=e175]:
+            - generic [ref=e176]:
+              - link "Filament" [ref=e177] [cursor=pointer]:
+                - /url: https://filamentphp.com
+                - img "Filament" [ref=e178]
+              - paragraph [ref=e189]: v5.6.5
+            - generic [ref=e190]:
+              - link "Documentation" [ref=e191] [cursor=pointer]:
+                - /url: https://filamentphp.com/docs
+                - img [ref=e192]
+                - text: Documentation
+              - link "GitHub" [ref=e194] [cursor=pointer]:
+                - /url: https://github.com/filamentphp/filament
+                - img [ref=e196]
+                - text: GitHub
+          - generic [ref=e205]:
+            - generic [ref=e209]:
+              - generic [ref=e211]: Revenue (30d)
+              - generic [ref=e212]: $2,582.37
+              - generic [ref=e213]:
+                - generic [ref=e214]: Paid orders, last 30 days
+                - img [ref=e215]
+            - generic [ref=e222]:
+              - generic [ref=e224]: Sales (30d)
+              - generic [ref=e225]: "14"
+              - generic [ref=e226]:
+                - generic [ref=e227]: Paid orders count
+                - img [ref=e228]
+            - generic [ref=e233]:
+              - generic [ref=e235]: New users (30d)
+              - generic [ref=e236]: "33"
+              - generic [ref=e237]:
+                - generic [ref=e238]: Registered, last 30 days
+                - img [ref=e239]
+            - generic [ref=e244]:
+              - generic [ref=e246]: Active stock
+              - generic [ref=e247]: 2,153
+              - generic [ref=e248]:
+                - generic [ref=e249]: Available storage units
+                - img [ref=e250]
+            - generic [ref=e256]:
+              - generic [ref=e258]: Conversion
+              - generic [ref=e259]: 46.7%
+              - generic [ref=e260]:
+                - generic [ref=e261]: Paid / total orders
+                - img [ref=e262]
+            - generic [ref=e267]:
+              - generic [ref=e269]: Avg. order value
+              - generic [ref=e270]: $184.45
+              - generic [ref=e271]:
+                - generic [ref=e272]: Per paid order
+                - img [ref=e273]
+            - generic [ref=e278]:
+              - generic [ref=e280]: Pending orders
+              - generic [ref=e281]: "10"
+              - generic [ref=e282]:
+                - generic [ref=e283]: Awaiting processing
+                - img [ref=e284]
+            - generic [ref=e289]:
+              - generic [ref=e291]: Refunds
+              - generic [ref=e292]: "9"
+              - generic [ref=e293]:
+                - generic [ref=e294]: Refunded orders
+                - img [ref=e295]
+          - heading "Sales (orders per day, 30d)" [level=2] [ref=e301]
+          - heading "Revenue (paid orders per day, 30d)" [level=2] [ref=e311]
+          - heading "Traffic sources" [level=2] [ref=e321]
+  - generic:
+    - status

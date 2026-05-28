@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Enums\GameStatus;
 use App\Models\Game;
+use Filament\Facades\Filament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Middleware;
@@ -38,11 +39,18 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+        $adminPanel = Filament::getPanel('admin');
+        $canAccessAdmin = $user !== null && $user->canAccessPanel($adminPanel);
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
+                'canAccessAdmin' => $canAccessAdmin,
+                // Only leak the obscure admin URL to users who can actually use it.
+                'adminUrl' => $canAccessAdmin ? $adminPanel->getUrl() : null,
             ],
             // Active storefront locale (en/ru/de) — from cookie for SSR-safe i18n.
             'locale' => in_array($request->cookie('locale'), ['en', 'es', 'nl', 'ar', 'de', 'it', 'fr'], true)

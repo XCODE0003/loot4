@@ -27,8 +27,10 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
-            ->login()
+            // Obscure, non-guessable admin path. The Filament login page is
+            // intentionally NOT enabled: authentication happens through the
+            // storefront profile login (Fortify), reusing the same web session.
+            ->path('asdgkzxcnjngjasdajsnjzcxnc/admin')
             ->brandName('Loot4you Admin')
             ->defaultThemeMode(ThemeMode::Dark)
             ->sidebarCollapsibleOnDesktop()

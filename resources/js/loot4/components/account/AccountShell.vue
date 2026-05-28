@@ -10,6 +10,8 @@ defineProps({
 const page = usePage()
 const url = computed(() => page.url.split('?')[0])
 const user = computed(() => page.props.auth?.user ?? null)
+const canAccessAdmin = computed(() => page.props.auth?.canAccessAdmin ?? false)
+const adminUrl = computed(() => page.props.auth?.adminUrl ?? null)
 
 const nav = [
   { tkey: 'account.overview', href: '/account', icon: 'M3 12l9-9 9 9M5 10v10h14V10' },
@@ -48,6 +50,14 @@ function isActive(href) {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path :d="link.icon" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
               {{ $t(link.tkey) }}
             </Link>
+            <a
+              v-if="canAccessAdmin && adminUrl"
+              :href="adminUrl"
+              class="acc_link acc_link--admin"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.4 8.3-8 10-4.6-1.7-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              {{ $t('account.adminPanel') }}
+            </a>
             <Link href="/logout" method="post" as="button" class="acc_link acc_link--logout">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
               {{ $t('account.logout') }}
@@ -149,6 +159,15 @@ function isActive(href) {
 .acc_link.is-active {
   background: rgba(15, 168, 84, 0.2);
   color: #fff;
+}
+.acc_link--admin {
+  margin-top: 8px;
+  color: #2bff95;
+  border: 1px solid rgba(43, 255, 149, 0.25);
+}
+.acc_link--admin:hover {
+  background: rgba(43, 255, 149, 0.12);
+  color: #2bff95;
 }
 .acc_link--logout {
   margin-top: 8px;
