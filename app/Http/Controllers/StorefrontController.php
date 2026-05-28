@@ -48,14 +48,6 @@ class StorefrontController extends Controller
             ->latest()
             ->get();
 
-        $filters = $products
-            ->map(fn (Product $p): string => $p->type->value)
-            ->unique()
-            ->map(fn (string $type): array => ['label' => ucfirst($type), 'value' => $type])
-            ->prepend(['label' => 'All', 'value' => 'all'])
-            ->values()
-            ->all();
-
         $featured = Game::query()
             ->where('status', GameStatus::Active->value)
             ->orderBy('sort_order')
@@ -63,7 +55,6 @@ class StorefrontController extends Controller
 
         return Inertia::render('loot4/Game', [
             'products' => $products->map(fn (Product $p, int $i): array => $this->card($p, $i))->all(),
-            'filters' => $filters,
             'gameFilters' => null,
             'gamePage' => $featured ? [
                 'title' => $featured->name,
@@ -88,17 +79,8 @@ class StorefrontController extends Controller
             ->latest()
             ->get();
 
-        $filters = $products
-            ->map(fn (Product $p): string => $p->type->value)
-            ->unique()
-            ->map(fn (string $type): array => ['label' => ucfirst($type), 'value' => $type])
-            ->prepend(['label' => 'All', 'value' => 'all'])
-            ->values()
-            ->all();
-
         return Inertia::render('loot4/Game', [
             'products' => $products->map(fn (Product $p, int $i): array => $this->card($p, $i))->all(),
-            'filters' => $filters,
             'gameFilters' => $this->gameFilters($game),
             'gamePage' => [
                 'title' => $game->name,

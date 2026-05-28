@@ -21,10 +21,12 @@ export const footerColumns = [
   },
 ]
 
+// Same payment icon set used on the product page ("We accept").
 export const footerPayments = [
   'product_visa.png',
   'product_master.png',
   'product_paypal.png',
+  'product_pay.png',
   'product_btc.png',
   'product_china.png',
 ]

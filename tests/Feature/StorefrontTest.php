@@ -40,7 +40,7 @@ class StorefrontTest extends TestCase
                     ->has('title')
                     ->has('image')
                     ->etc())
-                ->has('filters'),
+                ->has('gameFilters'),
         );
     }
 

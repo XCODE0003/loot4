@@ -1081,51 +1081,9 @@ display: flex;
 .game_cards_up_item:last-child {
   margin-left: auto;
 }
-.game_cards_up_item_title {
-  font-family: var(--font-family);
-font-weight: 400;
-font-size: 18px;
-letter-spacing: -0.02em;
-text-align: center;
-color: rgba(255, 255, 255, 0.54);
-padding: 14px 32px;
-}
-.game_cards_up_item_buttons {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-left: 12px;
-}
-.game_cards_up_item_button {
-  outline: none;
-  border: 1.45px solid rgba(255, 255, 255, 0.03);
-border-radius: 93px;
-padding: 14px 32px;
-background: rgba(27, 27, 32, 0.25);
-font-family: var(--font-family);
-font-weight: 400;
-font-size: 18px;
-letter-spacing: -0.02em;
-text-align: center;
-color: rgba(255, 255, 255, 0.54);
-cursor: pointer;
-transition: all .5s;
-}
 .game_cards_up_item{
   display: flex;
   gap: 12px;
-}
-.game_cards_up_item_button:hover{
-  opacity: .5;
-}
-.game_cards_up_item_button_active {
-  background: #fff;
-  color: rgba(0, 0, 0, 0.8);
-  cursor: pointer;
-  transition: all .5s;
-}
-.game_cards_up_item_button_active:hover{
-  opacity: 1;
 }
 .game_cards_up_item_search {
   outline: none;
@@ -2064,10 +2022,6 @@ color: #fff;
     margin-left: 0;
     width: 100%;
   }
-  .game_cards_up_item_buttons {
-    flex-wrap: wrap;
-    margin-left: 0;
-  }
   .game_cards_up_item_search {
     max-width: 100%;
   }
@@ -2340,10 +2294,6 @@ color: #fff;
   .how_title,
   .faq_title {
     font-size: 28px;
-  }
-  .game_cards_up_item_button {
-    font-size: 14px;
-    padding: 12px 20px;
   }
   .game_cards_block_title {
     font-size: 18px;
