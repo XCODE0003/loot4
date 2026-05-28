@@ -18,8 +18,7 @@ const page = computed(() => props.gamePage ?? fallbackGamePage)
         <div class="game_intro_block">
           <img :src="asset('intro_trust.png')" alt="" class="game_intro_block_trust" />
           <h1 class="game_intro_block_title">{{ page.title }}</h1>
-          <div class="game_intro_block_texts">
-            <p class="game_intro_block_texts_title">{{ $t('common.ourGuarantees') }}</p>
+          <div v-if="page.guarantees && page.guarantees.length" class="game_intro_block_texts">
             <ul class="game_intro_block_texts_items">
               <li v-for="(text, i) in page.guarantees" :key="i" class="game_intro_block_texts_item">{{ text }}</li>
             </ul>

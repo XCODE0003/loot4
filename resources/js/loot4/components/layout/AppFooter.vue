@@ -19,6 +19,41 @@ const year = new Date().getFullYear()
             The fastest, safest way to buy gaming credits and coins.
             <span class="footer_brand_text_accent">Delivered in minutes — every time.</span>
           </p>
+
+          <div class="footer_support">
+            <p class="footer_support_label">Support</p>
+            <div class="footer_support_row">
+              <svg class="footer_support_icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <div class="footer_support_text">
+                <span>Mon – Fri, 9:00 AM – 6:00 PM</span>
+                <span class="footer_support_muted">Email responses within 12 hours.</span>
+              </div>
+            </div>
+            <div class="footer_support_row">
+              <svg class="footer_support_icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+              <a href="mailto:support@loot4you.gg" class="footer_support_link">support@loot4you.gg</a>
+            </div>
+            <div class="footer_support_row">
+              <svg class="footer_support_icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <a href="tel:+447455903679" class="footer_support_link">+44 7455 903679</a>
+            </div>
+            <div class="footer_support_row">
+              <svg class="footer_support_icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <p class="footer_support_text">First Floor Office, 3 Hornton Place,<br />London, United Kingdom</p>
+            </div>
+          </div>
+
           <div class="footer_socials">
             <a class="footer_social" href="#" aria-label="Discord" target="_blank" rel="noopener noreferrer">
               <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
@@ -119,6 +154,54 @@ const year = new Date().getFullYear()
 }
 .footer_brand_text_accent {
   color: rgba(43, 255, 149, 0.6);
+}
+.footer_support {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.footer_support_label {
+  font-family: var(--font-family);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.25);
+  margin-bottom: 2px;
+}
+.footer_support_row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.38);
+}
+.footer_support_icon {
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+  margin-top: 2px;
+  color: rgba(43, 255, 149, 0.55);
+}
+.footer_support_text {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-family);
+  font-size: 11px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.4);
+}
+.footer_support_muted {
+  color: rgba(255, 255, 255, 0.25);
+}
+.footer_support_link {
+  font-family: var(--font-family);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.2s;
+}
+.footer_support_link:hover {
+  color: rgba(43, 255, 149, 0.8);
 }
 .footer_socials {
   display: flex;
