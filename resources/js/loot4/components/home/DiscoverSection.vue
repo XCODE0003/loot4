@@ -43,7 +43,7 @@ const { openGameMenuFromAnywhere } = useGameMenu()
           :href="g.slug ? `/game/${g.slug}` : undefined"
           class="discover_card"
         >
-          <img :src="asset(g.image)" :alt="g.alt" class="discover_card_img" />
+          <img v-if="g.image" :src="asset(g.image)" :alt="g.alt" class="discover_card_img" />
           <span class="discover_card_label">{{ g.alt }}</span>
         </component>
       </div>

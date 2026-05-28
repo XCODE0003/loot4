@@ -59,7 +59,7 @@ function buy() {
 
       <div class="product_main_sections">
         <div class="product_main_section">
-          <img :src="asset(data.image)" alt="" class="product_main_section_image" />
+          <img v-if="data.image" :src="asset(data.image)" alt="" class="product_main_section_image" />
           <div class="product_main_section_payments">
             <p class="product_main_section_payments_text">We accept</p>
             <div class="product_main_section_payments_icons">

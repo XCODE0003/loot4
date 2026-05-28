@@ -27,7 +27,7 @@ const page = computed(() => props.gamePage ?? fallbackGamePage)
 
         </div>
         <div class="game_intro_block">
-          <img :src="asset(page.image)" alt="" class="game_intro_block_image" />
+          <img v-if="page.image" :src="asset(page.image)" alt="" class="game_intro_block_image" />
         </div>
       </div>
     </Container>

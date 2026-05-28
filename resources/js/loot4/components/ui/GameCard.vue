@@ -6,7 +6,7 @@ import { useLocale } from '@/loot4/composables/useLocale'
 const props = defineProps({
   id: { type: String, required: true },
   title: { type: String, required: true },
-  image: { type: String, required: true },
+  image: { type: String, default: null },
   priceOld: { type: Number, required: true },
   priceNew: { type: Number, required: true },
   slug: { type: String, default: '' },
@@ -36,7 +36,7 @@ function buy(e) {
     :class="{ 'is-hidden': hidden }"
     @click="goProduct"
   >
-    <img :src="asset(image)" :alt="title" class="game_cards_block_image" />
+    <img v-if="image" :src="asset(image)" :alt="title" class="game_cards_block_image" />
     <h4 class="game_cards_block_title">{{ title }}</h4>
     <div class="game_cards_block_bottom">
       <div class="game_cards_block_bottom_texts">

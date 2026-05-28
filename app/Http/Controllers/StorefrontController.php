@@ -12,16 +12,7 @@ use Inertia\Response;
 
 class StorefrontController extends Controller
 {
-    /**
-     * Bundled fallback images used when a product/game has no uploaded media,
-     * so the storefront still looks populated with demo data.
-     *
-     * @var list<string>
-     */
-    private const CARD_FALLBACKS = ['game_cashboost.png', 'game_merry.png', 'game_unlock.png'];
-
     /** @var list<string> */
-    private const DISCOVER_FALLBACKS = ['discover_gta.png', 'discover_arc.png', 'discover_forza.png', 'discover_fortnite.png'];
 
     /** @var list<string> */
     private const PAYMENT_ICONS = [
@@ -40,7 +31,7 @@ class StorefrontController extends Controller
                 'slug' => $game->slug,
                 'image' => $game->getFirstMediaUrl('discover_image')
                     ?: $game->getFirstMediaUrl('image')
-                    ?: self::DISCOVER_FALLBACKS[$i % count(self::DISCOVER_FALLBACKS)],
+                    ?: null,
                 'alt' => $game->name,
             ]);
 
@@ -76,7 +67,7 @@ class StorefrontController extends Controller
             'filters' => $filters,
             'gamePage' => $featured ? [
                 'title' => $featured->name,
-                'image' => $featured->getFirstMediaUrl('image') ?: 'game_intro_image.png',
+                'image' => $featured->getFirstMediaUrl('image') ?: null,
                 'guarantees' => [
                     'Money Back Guarantee — we stand firmly behind the quality of our service.',
                     'Superior Support — our specialists are always available to help you with setup.',
@@ -113,7 +104,7 @@ class StorefrontController extends Controller
             'filters' => $filters,
             'gamePage' => [
                 'title' => $game->name,
-                'image' => $game->getFirstMediaUrl('image') ?: 'game_intro_image.png',
+                'image' => $game->getFirstMediaUrl('image') ?: null,
                 'guarantees' => [
                     'Money Back Guarantee — we stand firmly behind the quality of our service.',
                     'Superior Support — our specialists are always available to help you with setup.',
@@ -146,7 +137,7 @@ class StorefrontController extends Controller
             'id' => (string) $product->id,
             'slug' => $product->slug,
             'title' => $product->name,
-            'image' => $product->getFirstMediaUrl('main') ?: self::CARD_FALLBACKS[$index % count(self::CARD_FALLBACKS)],
+            'image' => $product->getFirstMediaUrl('main') ?: null,
             'category' => $product->type->value,
             'priceOld' => (float) ($product->compare_price ?? $product->price),
             'priceNew' => (float) $product->price,
@@ -174,7 +165,7 @@ class StorefrontController extends Controller
         return [
             'slug' => $product->slug,
             'title' => $product->name,
-            'image' => $product->getFirstMediaUrl('main') ?: 'product_image.png',
+            'image' => $product->getFirstMediaUrl('main') ?: null,
             'trustImage' => 'product_trust.png',
             'breadcrumb' => [
                 'game' => $product->game?->name ?? 'Games',
