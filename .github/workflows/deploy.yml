@@ -49,9 +49,10 @@ jobs:
           script: |
             set -e
             cd /var/www/loot4you
-            docker compose -f docker-compose.prod.yml build --no-cache app queue
+            docker compose -f docker-compose.prod.yml build --no-cache app queue scheduler
             docker compose -f docker-compose.prod.yml up -d --force-recreate nginx
             docker compose -f docker-compose.prod.yml up -d
             docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force
             docker compose -f docker-compose.prod.yml exec -T --user www-data app php artisan optimize
+            docker compose -f docker-compose.prod.yml exec -T --user www-data app php artisan exchange-rates:fetch || true
             echo "Deploy complete"

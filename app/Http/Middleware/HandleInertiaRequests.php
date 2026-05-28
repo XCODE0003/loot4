@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Enums\GameStatus;
 use App\Models\Game;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -59,6 +60,8 @@ class HandleInertiaRequests extends Middleware
                     'image' => $g->getFirstMediaUrl('image') ?: null,
                 ])
                 ->all(),
+            // Live USD exchange rates fetched hourly by FetchExchangeRates job.
+            'exchangeRates' => Cache::get('exchange_rates', []),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }
