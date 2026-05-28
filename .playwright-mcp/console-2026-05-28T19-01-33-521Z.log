@@ -1,1 +1,25 @@
 [     294ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://localhost:8001/_boost/browser-logs @ http://localhost:8001/game:173
+[ 1661803ms] [WARNING] [Vue warn]: Property "categoryFiltersList" was accessed during render but is not defined on instance. 
+  at <GameCatalog items= [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] filters= [Object, Object, Object, Object, Object, Object] game-filters=null > 
+  at <Container> 
+  at <GameView products= [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] filters= [Object, Object, Object, Object, Object, Object] game-filters=null  ... > 
+  at <Game errors= {} name="Laravel" auth= {user: Object, canAccessAdmin: true, adminUrl: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin}  ... > 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: Object, canAccessAdmin: true, adminUrl: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: eeeb91532acea0a921b06e4de155c57a, sharedProps: Array(7)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://localhost:8001/game:232
+[ 1661827ms] [WARNING] [Vue warn]: Extraneous non-props attributes (filters) were passed to component but could not be automatically inherited because component renders fragment or text or teleport root nodes. 
+  at <GameCatalog items= [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] filters= [Object, Object, Object, Object, Object, Object] game-filters=null > 
+  at <Container> 
+  at <GameView products= [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] filters= [Object, Object, Object, Object, Object, Object] game-filters=null  ... > 
+  at <Game errors= {} name="Laravel" auth= {user: Object, canAccessAdmin: true, adminUrl: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin}  ... > 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: Object, canAccessAdmin: true, adminUrl: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: eeeb91532acea0a921b06e4de155c57a, sharedProps: Array(7)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://localhost:8001/game:232
+[ 1668236ms] [WARNING] [Vue warn]: Extraneous non-props attributes (filters) were passed to component but could not be automatically inherited because component renders fragment or text or teleport root nodes. 
+  at <GameCatalog items= [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] filters= [Object, Object, Object, Object, Object, Object] game-filters=null > 
+  at <Container> 
+  at <GameView products= [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object] filters= [Object, Object, Object, Object, Object, Object] game-filters=null  ... > 
+  at <Game errors= {} name="Laravel" auth= {user: Object, canAccessAdmin: true, adminUrl: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin}  ... > 
+  at <Loot4Layout errors= {} name="Laravel" auth= {user: Object, canAccessAdmin: true, adminUrl: http://localhost:8001/asdgkzxcnjngjasdajsnjzcxnc/admin}  ... > 
+  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: eeeb91532acea0a921b06e4de155c57a, sharedProps: Array(7)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
+  at <App> @ http://localhost:8001/game:232
