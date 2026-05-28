@@ -277,7 +277,7 @@ function placeOrder() {
 <style scoped>
 .co {
   min-height: 100vh;
-  background: #0a0f24;
+  background: transparent;
   color: #fff;
   padding: 32px 24px 80px;
 }
@@ -335,7 +335,7 @@ function placeOrder() {
   height: 52px;
   padding: 0 22px;
   border-radius: 999px;
-  background: #0f1530;
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: #fff;
   font-size: 15px;
@@ -346,7 +346,7 @@ function placeOrder() {
   color: rgba(255, 255, 255, 0.45);
 }
 .co_field:focus {
-  border-color: rgba(120, 156, 255, 0.55);
+  border-color: rgba(43, 255, 149, 0.5);
 }
 
 .co_methods {
@@ -361,14 +361,14 @@ function placeOrder() {
   gap: 14px;
   padding: 14px 18px;
   border-radius: 14px;
-  background: #0f1530;
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.06);
   color: rgba(255, 255, 255, 0.85);
   cursor: pointer;
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 .co_method:hover {
-  border-color: rgba(120, 156, 255, 0.35);
+  border-color: rgba(43, 255, 149, 0.3);
 }
 .co_method input[type='radio'] {
   position: absolute;
@@ -386,14 +386,14 @@ function placeOrder() {
   flex-shrink: 0;
 }
 .co_method.is-active {
-  background: rgba(56, 102, 235, 0.18);
-  border-color: rgba(96, 140, 255, 0.7);
+  background: rgba(43, 255, 149, 0.08);
+  border-color: rgba(43, 255, 149, 0.5);
   color: #fff;
 }
 .co_method.is-active .co_method_radio {
-  border-color: #6f9bff;
-  background: #6f9bff;
-  box-shadow: inset 0 0 0 4px #0f1530;
+  border-color: #2bff95;
+  background: #2bff95;
+  box-shadow: inset 0 0 0 4px #060b15;
 }
 .co_method_label {
   font-size: 15px;
@@ -437,7 +437,7 @@ function placeOrder() {
   align-items: center;
   padding: 14px 18px 14px 14px;
   border-radius: 16px;
-  background: #11173a;
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 .co_item_remove {
@@ -546,7 +546,7 @@ function placeOrder() {
   height: 48px;
   padding: 0 22px;
   border-radius: 999px;
-  background: linear-gradient(90deg, #3b6bff, #6fa3ff);
+  background: linear-gradient(110deg, #2bff95 0%, #054792 100%);
   color: #fff;
   font-weight: 600;
   border: none;
@@ -567,7 +567,7 @@ function placeOrder() {
   height: 56px;
   margin-top: 16px;
   border-radius: 999px;
-  background: linear-gradient(90deg, #3b6bff, #6fa3ff);
+  background: linear-gradient(110deg, #2bff95 0%, #054792 100%);
   color: #fff;
   font-weight: 700;
   font-size: 16px;
@@ -577,12 +577,12 @@ function placeOrder() {
   gap: 10px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 6px 24px rgba(59, 107, 255, 0.35);
+  box-shadow: 0 6px 24px rgba(43, 255, 149, 0.2);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .co_pay:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 10px 28px rgba(59, 107, 255, 0.45);
+  box-shadow: 0 10px 28px rgba(43, 255, 149, 0.3);
 }
 .co_pay:disabled {
   opacity: 0.7;
@@ -685,7 +685,7 @@ function placeOrder() {
   justify-content: center;
   padding: 14px 26px;
   border-radius: 999px;
-  background: linear-gradient(90deg, #3b6bff, #6fa3ff);
+  background: linear-gradient(110deg, #2bff95 0%, #054792 100%);
   color: #fff;
   font-weight: 600;
   text-decoration: none;
