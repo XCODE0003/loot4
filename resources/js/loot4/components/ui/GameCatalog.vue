@@ -78,21 +78,21 @@ function setGameFilter(value) {
 .catalog_filter {
   display: flex;
   align-items: stretch;
-  flex: 1;
+  flex: 0 1 auto;
   min-width: 0;
   margin-right: 16px;
-  padding: 6px;
+  padding: 4px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
+  border-radius: 12px;
   background: #0a0a12;
 }
 .catalog_filter_label {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  padding: 0 20px;
+  padding: 0 16px;
   font-family: var(--font-family);
-  font-size: 16px;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.5);
   white-space: nowrap;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
@@ -110,15 +110,15 @@ function setGameFilter(value) {
 }
 .catalog_filter_opt {
   position: relative;
-  flex: 1 0 auto;
+  flex: 0 0 auto;
   overflow: hidden;
-  padding: 14px 28px;
+  padding: 9px 20px;
   border: 0;
-  border-radius: 11px;
+  border-radius: 9px;
   background: transparent;
   font-family: var(--font-family);
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.62);
   white-space: nowrap;
   cursor: pointer;
@@ -141,7 +141,7 @@ function setGameFilter(value) {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 11px;
+  border-radius: 9px;
   background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 6px 18px rgba(43, 255, 149, 0.28);
   transform: translateY(110%);
@@ -175,7 +175,7 @@ function setGameFilter(value) {
 
 @media (max-width: 1100px) {
   .catalog_filter {
-    width: 100%;
+    max-width: 100%;
     margin-right: 0;
   }
 }
