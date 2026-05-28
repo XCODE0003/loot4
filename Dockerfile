@@ -13,7 +13,7 @@ RUN rm -rf public/storage && mkdir -p public/storage && DOCKER_BUILD=1 npm run b
 FROM php:8.4-fpm-alpine AS app
 WORKDIR /var/www/html
 
-# System deps
+# System deps + build tools for PHP extensions
 RUN apk add --no-cache \
     bash \
     git \
@@ -26,9 +26,10 @@ RUN apk add --no-cache \
     oniguruma-dev \
     zip \
     unzip \
-    shadow
+    shadow \
+    $PHPIZE_DEPS
 
-# PHP extensions
+# PHP extensions + Redis PECL (all compiled while build tools are present)
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
  && docker-php-ext-install -j"$(nproc)" \
       pdo_mysql \
@@ -39,10 +40,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
       gd \
       zip \
       intl \
-      opcache
-
-# Redis PECL extension
-RUN apk add --no-cache $PHPIZE_DEPS \
+      opcache \
  && pecl install redis \
  && docker-php-ext-enable redis \
  && apk del $PHPIZE_DEPS
