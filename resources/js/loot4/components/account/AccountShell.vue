@@ -93,10 +93,16 @@ function isActive(href) {
   padding-bottom: 18px;
   margin-bottom: 14px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  min-width: 0;
+}
+.acc_user_meta {
+  min-width: 0;
+  flex: 1;
 }
 .acc_avatar {
   display: grid;
   place-items: center;
+  flex-shrink: 0;
   width: 46px;
   height: 46px;
   border-radius: 50%;
@@ -108,11 +114,13 @@ function isActive(href) {
 .acc_user_name {
   color: #fff;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .acc_user_email {
   color: rgba(255, 255, 255, 0.45);
   font-size: 13px;
-  max-width: 160px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
