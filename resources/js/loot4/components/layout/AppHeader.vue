@@ -114,7 +114,7 @@ const games = computed(() => page.props.navGames ?? [])
   display: grid;
   place-items: center;
   border-radius: 10px;
-  background: #2b50d8;
+  background: #0fa854;
   color: #fff;
   font-size: 12px;
   font-weight: 700;
@@ -123,7 +123,7 @@ const games = computed(() => page.props.navGames ?? [])
   margin-left: 0;
   padding: 11px 26px;
   border-radius: 93px;
-  background: linear-gradient(90deg, #2b50d8, #4f7bff);
+  background: linear-gradient(90deg, #0fa854, #2bff95);
   box-shadow: none;
   color: #fff;
   font-family: var(--font-family);

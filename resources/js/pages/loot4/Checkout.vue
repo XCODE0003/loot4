@@ -204,8 +204,8 @@ function placeOrder() {
   width: 100%;
   padding: 14px 16px;
   border-radius: 12px;
-  background: rgba(43, 74, 168, 0.18);
-  border: 1px solid rgba(99, 130, 230, 0.25);
+  background: rgba(15, 168, 84, 0.1);
+  border: 1px solid rgba(43, 255, 149, 0.2);
   color: #fff;
 }
 .checkout_error {
@@ -224,14 +224,14 @@ function placeOrder() {
   gap: 10px;
   padding: 13px 16px;
   border-radius: 12px;
-  border: 1px solid rgba(99, 130, 230, 0.2);
-  background: rgba(43, 74, 168, 0.12);
+  border: 1px solid rgba(43, 255, 149, 0.2);
+  background: rgba(15, 168, 84, 0.1);
   color: rgba(255, 255, 255, 0.85);
   cursor: pointer;
 }
 .checkout_method.is-active {
-  border-color: #4f7bff;
-  background: rgba(79, 123, 255, 0.18);
+  border-color: #2bff95;
+  background: rgba(15, 168, 84, 0.18);
   color: #fff;
 }
 .checkout_btn {
@@ -240,7 +240,7 @@ function placeOrder() {
   justify-content: center;
   padding: 16px 28px;
   border-radius: 14px;
-  background: linear-gradient(90deg, #2b50d8, #4f7bff);
+  background: linear-gradient(90deg, #0fa854, #2bff95);
   color: #fff;
   font-weight: 700;
   cursor: pointer;

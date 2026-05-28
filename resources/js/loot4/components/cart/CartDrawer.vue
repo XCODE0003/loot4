@@ -290,8 +290,8 @@ async function applyPromo() {
   flex: 1;
   padding: 14px 18px;
   border-radius: 12px;
-  background: rgba(43, 74, 168, 0.18);
-  border: 1px solid rgba(99, 130, 230, 0.25);
+  background: rgba(15, 168, 84, 0.1);
+  border: 1px solid rgba(43, 255, 149, 0.2);
   color: #fff;
 }
 .cart_promo_input::placeholder {
@@ -300,7 +300,7 @@ async function applyPromo() {
 .cart_promo_apply {
   padding: 0 26px;
   border-radius: 12px;
-  background: #2b50d8;
+  background: #0fa854;
   color: #fff;
   font-weight: 600;
   cursor: pointer;
@@ -328,7 +328,7 @@ async function applyPromo() {
   margin-top: 8px;
   padding: 20px;
   border-radius: 16px;
-  background: linear-gradient(90deg, #2b50d8, #4f7bff);
+  background: linear-gradient(90deg, #0fa854, #2bff95);
   color: #fff;
   font-size: 18px;
   font-weight: 700;

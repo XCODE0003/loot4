@@ -110,7 +110,7 @@ const statusColors = {
   font-weight: 700;
 }
 .ov_link {
-  color: #6f93ff;
+  color: #2bff95;
 }
 .ov_empty {
   color: rgba(255, 255, 255, 0.55);

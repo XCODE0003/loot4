@@ -100,7 +100,7 @@ function isActive(href) {
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2b50d8, #4f7bff);
+  background: linear-gradient(135deg, #0fa854, #2bff95);
   color: #fff;
   font-weight: 700;
   font-size: 18px;
@@ -139,7 +139,7 @@ function isActive(href) {
   color: #fff;
 }
 .acc_link.is-active {
-  background: rgba(43, 80, 216, 0.25);
+  background: rgba(15, 168, 84, 0.2);
   color: #fff;
 }
 .acc_link--logout {

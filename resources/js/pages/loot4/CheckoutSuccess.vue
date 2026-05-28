@@ -131,7 +131,7 @@ function money(value) {
   justify-content: center;
   padding: 16px 32px;
   border-radius: 14px;
-  background: linear-gradient(90deg, #2b50d8, #4f7bff);
+  background: linear-gradient(90deg, #0fa854, #2bff95);
   color: #fff;
   font-weight: 700;
 }

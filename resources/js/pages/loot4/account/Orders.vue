@@ -71,7 +71,7 @@ const statusColors = {
   padding: 12px 0;
 }
 .ord_link {
-  color: #6f93ff;
+  color: #2bff95;
 }
 .ord_table {
   width: 100%;

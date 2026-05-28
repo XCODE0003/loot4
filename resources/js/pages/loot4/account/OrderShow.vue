@@ -53,7 +53,7 @@ function money(value) {
 <style scoped>
 .os_back {
   display: inline-block;
-  color: #6f93ff;
+  color: #2bff95;
   margin-bottom: 18px;
 }
 .os_grid {

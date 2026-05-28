@@ -107,8 +107,8 @@ defineProps({
   width: 100%;
   padding: 13px 16px;
   border-radius: 12px;
-  background: rgba(43, 74, 168, 0.18);
-  border: 1px solid rgba(99, 130, 230, 0.25);
+  background: rgba(15, 168, 84, 0.1);
+  border: 1px solid rgba(43, 255, 149, 0.2);
   color: #fff;
 }
 .pf_error {
@@ -123,7 +123,7 @@ defineProps({
 .pf_btn {
   padding: 13px 26px;
   border-radius: 12px;
-  background: linear-gradient(90deg, #2b50d8, #4f7bff);
+  background: linear-gradient(90deg, #0fa854, #2bff95);
   color: #fff;
   font-weight: 700;
   cursor: pointer;
