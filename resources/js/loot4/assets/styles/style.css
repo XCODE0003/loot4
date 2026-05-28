@@ -1158,6 +1158,8 @@ padding-left: 62.32px;
 .game_cards_block {
   width: 100%;
   height: auto;
+  display: flex;
+  flex-direction: column;
 }
 .game_cards_block_image {
   vertical-align: middle;
@@ -1167,6 +1169,7 @@ max-width: 100%;
 max-height: 386px;
 width: 100%;
 object-fit: cover;
+flex-shrink: 0;
 }
 .game_cards_block_title {
   margin-top: 24px;
@@ -1176,7 +1179,7 @@ font-size: 36px;
 line-height: 140%;
 letter-spacing: -0.02em;
 color: #fff;
-min-height: 100px;
+flex: 1;
 }
 .game_cards_block_bottom {
   margin-top: 24px;
