@@ -6,7 +6,6 @@ use App\Enums\GameStatus;
 use App\Enums\ProductStatus;
 use App\Models\Game;
 use App\Models\Product;
-use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -65,13 +64,11 @@ class StorefrontController extends Controller
         return Inertia::render('loot4/Game', [
             'products' => $products->map(fn (Product $p, int $i): array => $this->card($p, $i))->all(),
             'filters' => $filters,
+            'gameFilters' => null,
             'gamePage' => $featured ? [
                 'title' => $featured->name,
                 'image' => $featured->getFirstMediaUrl('image') ?: null,
-                'guarantees' => [
-                    'Money Back Guarantee — we stand firmly behind the quality of our service.',
-                    'Superior Support — our specialists are always available to help you with setup.',
-                ],
+                'guarantees' => $this->guarantees($featured),
             ] : null,
         ]);
     }
@@ -102,13 +99,11 @@ class StorefrontController extends Controller
         return Inertia::render('loot4/Game', [
             'products' => $products->map(fn (Product $p, int $i): array => $this->card($p, $i))->all(),
             'filters' => $filters,
+            'gameFilters' => $this->gameFilters($game),
             'gamePage' => [
                 'title' => $game->name,
                 'image' => $game->getFirstMediaUrl('image') ?: null,
-                'guarantees' => [
-                    'Money Back Guarantee — we stand firmly behind the quality of our service.',
-                    'Superior Support — our specialists are always available to help you with setup.',
-                ],
+                'guarantees' => $this->guarantees($game),
             ],
         ]);
     }
@@ -133,14 +128,18 @@ class StorefrontController extends Controller
      */
     private function card(Product $product, int $index = 0): array
     {
+        $price = (float) $product->price;
+        $comparePrice = $product->compare_price !== null ? (float) $product->compare_price : null;
+
         return [
             'id' => (string) $product->id,
             'slug' => $product->slug,
             'title' => $product->name,
             'image' => $product->getFirstMediaUrl('main') ?: null,
             'category' => $product->type->value,
-            'priceOld' => (float) ($product->compare_price ?? $product->price),
-            'priceNew' => (float) $product->price,
+            'filterValues' => $product->filter_values ?? [],
+            'priceOld' => ($comparePrice !== null && $comparePrice !== $price) ? $comparePrice : null,
+            'priceNew' => $price,
         ];
     }
 
@@ -152,8 +151,11 @@ class StorefrontController extends Controller
     private function productDetails(Product $product): array
     {
         $price = (float) $product->price;
+        $comparePrice = $product->compare_price !== null ? (float) $product->compare_price : null;
+
         $recommended = Product::query()
             ->where('status', ProductStatus::Active->value)
+            ->when($product->game_id, fn ($q) => $q->where('game_id', $product->game_id))
             ->whereKeyNot($product->id)
             ->inRandomOrder()
             ->take(4)
@@ -176,10 +178,48 @@ class StorefrontController extends Controller
             'payments' => self::PAYMENT_ICONS,
             'platforms' => $this->platforms($product),
             'price' => $price,
-            'priceOld' => (float) ($product->compare_price ?? $price),
+            'priceOld' => ($comparePrice !== null && $comparePrice !== $price) ? $comparePrice : null,
             'packages' => $this->packages($product, $price),
             'description' => (string) ($product->description ?? ''),
             'recommended' => $recommended,
+        ];
+    }
+
+    /**
+     * Game filter config for the storefront filter tab bar.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function gameFilters(Game $game): ?array
+    {
+        $config = $game->game_filters;
+
+        if (empty($config['label']) || empty($config['values'])) {
+            return null;
+        }
+
+        return [
+            'label' => (string) $config['label'],
+            'values' => array_values(array_filter((array) $config['values'])),
+        ];
+    }
+
+    /**
+     * Guarantee texts for a game. Falls back to the two standard guarantees.
+     *
+     * @return list<string>
+     */
+    private function guarantees(Game $game): array
+    {
+        $saved = array_values(array_filter((array) ($game->guarantees ?? [])));
+
+        if ($saved !== []) {
+            return $saved;
+        }
+
+        return [
+            'Money Back Guarantee — we stand firmly behind the quality of our service.',
+            'Superior Support — our specialists are always available to help you with setup.',
         ];
     }
 
@@ -202,7 +242,7 @@ class StorefrontController extends Controller
                 ->all();
         }
 
-        return ['PS4', 'PS5', 'PC'];
+        return [];
     }
 
     /**
@@ -224,14 +264,6 @@ class StorefrontController extends Controller
                 'price' => round($basePrice + (float) ($o['extra_price'] ?? 0), 2),
             ])
             ->all();
-
-        if ($packages === []) {
-            return [[
-                'id' => 'base',
-                'parts' => [$product->name],
-                'price' => $basePrice,
-            ]];
-        }
 
         return $packages;
     }

@@ -47,6 +47,7 @@ class Product extends Model implements HasMedia
         'meta_description',
         'og_image',
         'sort_order',
+        'filter_values',
     ];
 
     protected function casts(): array
@@ -60,6 +61,7 @@ class Product extends Model implements HasMedia
             'visibility' => 'boolean',
             'featured' => 'boolean',
             'allowed_payment_methods' => 'array',
+            'filter_values' => 'array',
             'sort_order' => 'integer',
         ];
     }

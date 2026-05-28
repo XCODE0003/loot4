@@ -7,8 +7,9 @@ const props = defineProps({
   id: { type: String, required: true },
   title: { type: String, required: true },
   image: { type: String, default: null },
-  priceOld: { type: Number, required: true },
+  priceOld: { type: Number, default: null },
   priceNew: { type: Number, required: true },
+  filterValues: { type: Array, default: () => [] },
   slug: { type: String, default: '' },
   category: { type: String, default: '' },
   hidden: { type: Boolean, default: false },
@@ -40,7 +41,7 @@ function buy(e) {
     <h4 class="game_cards_block_title">{{ title }}</h4>
     <div class="game_cards_block_bottom">
       <div class="game_cards_block_bottom_texts">
-        <p class="game_cards_block_bottom_price_old">{{ formatPrice(priceOld) }}</p>
+        <p v-if="priceOld !== null" class="game_cards_block_bottom_price_old">{{ formatPrice(priceOld) }}</p>
         <p class="game_cards_block_bottom_price_new">{{ formatPrice(priceNew) }}</p>
       </div>
       <button type="button" class="game_cards_block_bottom_button" @click="buy">Buy now</button>

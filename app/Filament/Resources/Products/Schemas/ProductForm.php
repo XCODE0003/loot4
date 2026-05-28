@@ -100,6 +100,11 @@ class ProductForm
                             ->relationship('tags', 'name')
                             ->multiple()
                             ->preload(),
+                        TagsInput::make('filter_values')
+                            ->label('Filter values')
+                            ->helperText('Values used for game-page filters. Must match the filter values configured on the game.')
+                            ->placeholder('EU')
+                            ->columnSpanFull(),
                     ]),
 
                 Section::make('Settings')

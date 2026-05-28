@@ -23,6 +23,8 @@ class Game extends Model implements HasMedia
         'meta_title',
         'meta_description',
         'landing_settings',
+        'game_filters',
+        'guarantees',
     ];
 
     protected function casts(): array
@@ -31,6 +33,8 @@ class Game extends Model implements HasMedia
             'status' => GameStatus::class,
             'tags' => 'array',
             'landing_settings' => 'array',
+            'game_filters' => 'array',
+            'guarantees' => 'array',
             'sort_order' => 'integer',
         ];
     }

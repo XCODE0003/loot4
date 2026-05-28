@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Games\Schemas;
 
 use App\Enums\GameStatus;
 use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TagsInput;
@@ -74,6 +75,39 @@ class GameForm
                     ->schema([
                         TextInput::make('meta_title')->maxLength(255),
                         Textarea::make('meta_description')->rows(2),
+                    ]),
+
+                Section::make('Storefront Filters')
+                    ->collapsible()
+                    ->collapsed()
+                    ->helperText('Optional. Configure a product filter tab bar for this game\'s page. Leave blank to hide filters entirely.')
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('game_filters.label')
+                            ->label('Filter label')
+                            ->helperText('e.g. "Server", "Region", "Platform"')
+                            ->placeholder('Server'),
+                        TagsInput::make('game_filters.values')
+                            ->label('Filter values')
+                            ->helperText('The selectable options, e.g. EU, US, Asia')
+                            ->placeholder('EU'),
+                    ]),
+
+                Section::make('Guarantees')
+                    ->collapsible()
+                    ->collapsed()
+                    ->helperText('List of guarantee texts shown on this game\'s storefront page.')
+                    ->schema([
+                        Repeater::make('guarantees')
+                            ->label('')
+                            ->simple(
+                                TextInput::make('value')
+                                    ->label('Guarantee text')
+                                    ->placeholder('Money Back Guarantee — ...')
+                                    ->required(),
+                            )
+                            ->addActionLabel('Add guarantee')
+                            ->defaultItems(0),
                     ]),
 
                 Section::make('Landing page settings')

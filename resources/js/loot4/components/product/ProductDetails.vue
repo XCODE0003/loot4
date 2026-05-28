@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import Container from '@/loot4/components/layout/Container.vue'
 import ProductPackageSelect from '@/loot4/components/product/ProductPackageSelect.vue'
@@ -15,7 +15,10 @@ const props = defineProps({
 const { add } = useCart()
 const { formatPrice } = useLocale()
 
-const activePlatform = ref(props.data.platforms[0])
+const hasPlatforms = computed(() => props.data.platforms?.length > 0)
+const hasPackages = computed(() => props.data.packages?.length > 0)
+
+const activePlatform = ref(hasPlatforms.value ? props.data.platforms[0] : null)
 const displayPrice = ref(props.data.price)
 const displayPriceOld = ref(props.data.priceOld)
 const selectedOption = ref('')
@@ -77,7 +80,7 @@ function buy() {
         </div>
         <div class="product_main_section">
           <h1 class="product_main_section_title">{{ data.title }}</h1>
-          <div class="product_main_section_platforms">
+          <div v-if="hasPlatforms" class="product_main_section_platforms">
             <p class="product_main_section_platforms_title">Your platform</p>
             <ul class="product_main_section_platforms_items">
               <li v-for="platform in data.platforms" :key="platform">
@@ -98,8 +101,9 @@ function buy() {
               </li>
             </ul>
           </div>
-          <div class="product_main_section_line" />
+          <div v-if="hasPlatforms || hasPackages" class="product_main_section_line" />
           <ProductPackageSelect
+            v-if="hasPackages"
             :packages="data.packages"
             :base-price="data.price"
             @select="onPackageSelect"
@@ -108,7 +112,7 @@ function buy() {
             <div class="product_main_section_price_items">
               <p class="product_main_section_price_new">
                 {{ formatPrice(displayPrice) }}
-                <span>{{ formatPrice(displayPriceOld) }}</span>
+                <span v-if="displayPriceOld !== null">{{ formatPrice(displayPriceOld) }}</span>
               </p>
               <button type="button" class="product_main_section_price_button" @click="buy">Buy now</button>
             </div>
