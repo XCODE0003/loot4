@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { setLocale, labelForCode } from '@/loot4/i18n'
 
-export const langs = ['EN', 'RU', 'DE', 'ES', 'NL', 'AR', 'IT', 'FR']
+export const langs = ['EN', 'ES', 'NL', 'AR', 'DE', 'IT', 'FR']
 
 export const currencyList = [
   { code: 'USD', symbol: '$'   },

@@ -45,7 +45,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             // Active storefront locale (en/ru/de) — from cookie for SSR-safe i18n.
-            'locale' => in_array($request->cookie('locale'), ['en', 'ru', 'de', 'es', 'nl', 'ar', 'it', 'fr'], true)
+            'locale' => in_array($request->cookie('locale'), ['en', 'es', 'nl', 'ar', 'de', 'it', 'fr'], true)
                 ? $request->cookie('locale')
                 : 'en',
             // Active games for the storefront header "Choose Game" dropdown.

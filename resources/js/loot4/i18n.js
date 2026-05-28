@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
 
-export const SUPPORTED = { EN: 'en', RU: 'ru', DE: 'de', ES: 'es', NL: 'nl', AR: 'ar', IT: 'it', FR: 'fr' }
+export const SUPPORTED = { EN: 'en', ES: 'es', NL: 'nl', AR: 'ar', DE: 'de', IT: 'it', FR: 'fr' }
 
 const messages = {
   en: {
