@@ -1,6 +1,7 @@
 <script setup>
 import { router } from '@inertiajs/vue3'
 import { asset } from '@/loot4/utils/asset'
+import { useLocale } from '@/loot4/composables/useLocale'
 
 const props = defineProps({
   id: { type: String, required: true },
@@ -13,9 +14,7 @@ const props = defineProps({
   hidden: { type: Boolean, default: false },
 })
 
-function formatPrice(value) {
-  return `$${value.toFixed(2)}`
-}
+const { formatPrice } = useLocale()
 
 function productUrl() {
   return props.slug ? `/product/${props.slug}` : '/product'

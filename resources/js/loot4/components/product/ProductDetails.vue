@@ -6,21 +6,19 @@ import ProductPackageSelect from '@/loot4/components/product/ProductPackageSelec
 import GameCard from '@/loot4/components/ui/GameCard.vue'
 import { asset } from '@/loot4/utils/asset'
 import { useCart } from '@/loot4/composables/useCart'
+import { useLocale } from '@/loot4/composables/useLocale'
 
 const props = defineProps({
   data: { type: Object, required: true },
 })
 
 const { add } = useCart()
+const { formatPrice } = useLocale()
 
 const activePlatform = ref(props.data.platforms[0])
 const displayPrice = ref(props.data.price)
 const displayPriceOld = ref(props.data.priceOld)
 const selectedOption = ref('')
-
-function formatPrice(value) {
-  return `$${value.toFixed(2)}`
-}
 
 function onPackageSelect({ base, addons, price }) {
   displayPrice.value = price
