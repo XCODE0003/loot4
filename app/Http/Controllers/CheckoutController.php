@@ -210,7 +210,14 @@ class CheckoutController extends Controller
     {
         $raw = $request->getContent();
         $payload = $request->all();
-        Log::info('Payment webhook received', $payload);
+        Log::info('Payment webhook received', [
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'content_type' => $request->header('Content-Type'),
+            'has_signature' => filled($request->header('X-Signature')),
+            'payload' => $payload,
+            'raw' => $raw,
+        ]);
 
         $secret = config('services.icenox.webhook_secret');
         if (filled($secret)) {

@@ -16,6 +16,9 @@ Route::get('/cart/coupon', [CheckoutController::class, 'coupon'])->name('cart.co
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'store']);
 Route::get('/checkout/success/{order:order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
+// Some gateways validate the notification URL with a GET/HEAD before sending —
+// answer 200 so the webhook URL is accepted, while real notifications use POST.
+Route::match(['get', 'head'], '/checkout/webhook', fn () => response()->json(['ok' => true]));
 Route::post('/checkout/webhook', [CheckoutController::class, 'webhook'])->name('checkout.webhook');
 
 // Static content pages (footer + header links).
