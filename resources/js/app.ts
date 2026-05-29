@@ -19,10 +19,6 @@ createInertiaApp({
         switch (true) {
             case name === 'Welcome':
                 return null;
-            // Checkout is a standalone page with its own minimal logo header —
-            // no site chrome, otherwise the layout's header logo duplicates it.
-            case name === 'loot4/Checkout':
-                return null;
             case name.startsWith('loot4/'):
                 return Loot4Layout;
             case name.startsWith('auth/'):

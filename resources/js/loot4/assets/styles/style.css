@@ -1033,8 +1033,10 @@ position: relative;
   vertical-align: middle;
   border-radius: 20px;
   width: 584px;
-  height: 374px;
-  object-fit: cover;
+  max-width: 100%;
+  /* Keep the image's natural aspect ratio so wide banners (GTA, etc.) are
+     not cropped. A fixed height + object-fit:cover cut off the sides. */
+  height: auto;
 }
 .game_intro_block_trust{
 vertical-align: middle;

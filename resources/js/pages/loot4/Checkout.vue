@@ -4,11 +4,8 @@ import { useI18n } from 'vue-i18n'
 import { Head, Link, router } from '@inertiajs/vue3'
 import '@/loot4/assets/styles/style.css'
 import { useCart } from '@/loot4/composables/useCart'
-
-defineOptions({ layout: null })
 import { useLocale } from '@/loot4/composables/useLocale'
 import { asset } from '@/loot4/utils/asset'
-import headerLogo from '@/loot4/assets/img/header_logo.svg'
 
 const { t } = useI18n()
 const { items, subtotal, discount, total, coupon, count, remove, applyCoupon, clearCoupon, checkoutPayload, hydrate } = useCart()
@@ -128,12 +125,6 @@ function placeOrder() {
   <Head title="Checkout — Loot4you" />
   <section class="co">
     <div class="co_inner">
-      <header class="co_brand">
-        <Link href="/" aria-label="Loot4you">
-          <img :src="headerLogo" alt="Loot4you" />
-        </Link>
-      </header>
-
       <div v-if="!items.length" class="co_empty">
         <p>{{ $t('checkout.empty') }}</p>
         <Link href="/game" class="co_btn">{{ $t('checkout.browse') }}</Link>
@@ -294,7 +285,6 @@ function placeOrder() {
 
 <style scoped>
 .co {
-  min-height: 100vh;
   background: transparent;
   color: #fff;
   padding: 32px 24px 80px;
@@ -302,13 +292,6 @@ function placeOrder() {
 .co_inner {
   max-width: 1240px;
   margin: 0 auto;
-}
-.co_brand {
-  margin-bottom: 28px;
-}
-.co_brand img {
-  height: 36px;
-  display: block;
 }
 
 .co_empty {
