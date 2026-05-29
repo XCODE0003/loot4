@@ -425,6 +425,10 @@ background-clip: text;
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
 }
+.intro_block_trustpilot {
+  margin-top: 64px;
+  max-width: 320px;
+}
 .intro_block_buttons {
   margin-top: 80px;
   display: flex;
@@ -1596,6 +1600,32 @@ color: rgba(255, 255, 255, 0.64);
 }
 .product_main_text span{
   color: #fff;
+}
+.product_main_text_label {
+  display: block;
+  color: #fff;
+  margin-bottom: 18px;
+}
+.product_main_text_html {
+  text-align: left;
+}
+.product_main_text_html :first-child {
+  margin-top: 0;
+}
+.product_main_text_html :last-child {
+  margin-bottom: 0;
+}
+.product_main_text_html a {
+  color: #2bff95;
+  text-decoration: underline;
+}
+.product_main_text_html img {
+  max-width: 100%;
+  height: auto;
+}
+.product_main_text_html ul,
+.product_main_text_html ol {
+  padding-left: 1.4em;
 }
 .product_main_recommended {
   width: 100%;

@@ -165,6 +165,7 @@ class StorefrontController extends Controller
             'priceOld' => ($comparePrice !== null && $comparePrice !== $price) ? $comparePrice : null,
             'packages' => $this->packages($product, $price),
             'description' => (string) ($product->description ?? ''),
+            'descriptionHtml' => (string) ($product->html_description ?? ''),
             'recommended' => $recommended,
         ];
     }

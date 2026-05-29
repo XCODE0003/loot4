@@ -120,11 +120,12 @@ function buy() {
         </div>
       </div>
 
-      <p class="product_main_text">
-        <span>Description</span>
-        <br />
-        {{ data.description }}
-      </p>
+      <div class="product_main_text">
+        <span class="product_main_text_label">Description</span>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div v-if="data.descriptionHtml" class="product_main_text_html" v-html="data.descriptionHtml" />
+        <p v-else class="product_main_text_plain">{{ data.description }}</p>
+      </div>
 
       <div class="product_main_recommended product">
         <h4 class="product_main_recommended_title">Recommended products</h4>

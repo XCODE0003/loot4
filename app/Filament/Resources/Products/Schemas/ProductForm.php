@@ -46,8 +46,10 @@ class ProductForm
                         Textarea::make('short_description')
                             ->rows(2)
                             ->columnSpanFull(),
-                        RichEditor::make('html_description')
+                        Textarea::make('html_description')
                             ->label('Description (HTML)')
+                            ->helperText('Raw HTML is allowed and rendered as-is on the product page.')
+                            ->rows(8)
                             ->columnSpanFull(),
                     ]),
 

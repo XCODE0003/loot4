@@ -30,15 +30,15 @@ const promoLoading = ref(false)
 // IceNox payment-method identifiers (pay.icenox.com/docs). Icons for the
 // remaining methods are added once the brand images are provided.
 const paymentMethods = [
-  { value: 'stripe-cards',       label: 'Credit / Debit Card', feeLabel: '(+5%)', icons: ['/payment_methods/cards.svg'] },
-  { value: 'stripe-apple-pay',   label: 'Apple Pay',           feeLabel: '(+5%)', icons: ['/payment_methods/apple-pay.svg'] },
-  { value: 'stripe-google-pay',  label: 'Google Pay',          feeLabel: '(+5%)', icons: ['/payment_methods/google-pay.svg'] },
-  { value: 'stripe-link',        label: 'Link',                feeLabel: '(+5%)', icons: [] },
-  { value: 'stripe-klarna',      label: 'Klarna',              feeLabel: '(+5%)', icons: ['/payment_methods/klarna.svg'] },
-  { value: 'stripe-amazon-pay',  label: 'Amazon Pay',          feeLabel: '(+5%)', icons: ['/payment_methods/amazon-pay-white.svg'] },
-  { value: 'stripe-bancontact',  label: 'Bancontact',          feeLabel: '(+5%)', icons: ['/payment_methods/bancontact.svg'] },
-  { value: 'stripe-eps',         label: 'EPS',                 feeLabel: '(+5%)', icons: ['/payment_methods/eps-white.svg'] },
-  { value: 'stripe-revolut-pay', label: 'Revolut Pay',         feeLabel: '(+5%)', icons: [] },
+  { value: 'stripe-cards',       label: 'Credit / Debit Card', icons: ['/payment_methods/cards.svg'] },
+  { value: 'stripe-apple-pay',   label: 'Apple Pay',           icons: ['/payment_methods/apple-pay.svg'] },
+  { value: 'stripe-google-pay',  label: 'Google Pay',          icons: ['/payment_methods/google-pay.svg'] },
+  { value: 'stripe-link',        label: 'Link',                icons: [] },
+  { value: 'stripe-klarna',      label: 'Klarna',              icons: ['/payment_methods/klarna.svg'] },
+  { value: 'stripe-amazon-pay',  label: 'Amazon Pay',          icons: ['/payment_methods/amazon-pay-white.svg'] },
+  { value: 'stripe-bancontact',  label: 'Bancontact',          icons: ['/payment_methods/bancontact.svg'] },
+  { value: 'stripe-eps',         label: 'EPS',                 icons: ['/payment_methods/eps-white.svg'] },
+  { value: 'stripe-revolut-pay', label: 'Revolut Pay',         icons: [] },
 ]
 
 const FEE_RATE = 0.05
@@ -143,7 +143,7 @@ function placeOrder() {
                 <input v-model="method" type="radio" name="method" :value="m.value" />
                 <span class="co_method_radio" aria-hidden="true"></span>
                 <span class="co_method_label">
-                  {{ m.label }} {{ m.feeLabel }}
+                  {{ m.label }}
                   <span v-if="m.extra" class="co_method_extra">{{ m.extra }}</span>
                 </span>
                 <span class="co_method_icons">
@@ -187,7 +187,7 @@ function placeOrder() {
               <span>{{ count }}</span>
             </div>
             <div class="co_row">
-              <span>{{ activeMethod.label }} {{ activeMethod.feeLabel }}</span>
+              <span>{{ activeMethod.label }}</span>
               <span :class="{ 'co_row_pos': feeAmount > 0, 'co_row_neg': feeAmount < 0 }">
                 {{ signedMoney(feeAmount) }}
               </span>
