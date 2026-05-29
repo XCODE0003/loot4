@@ -1330,6 +1330,10 @@ white-space: nowrap;
   flex-shrink: 0;
   border-radius: 8px;
 }
+.product_main_section_payments_icon[src*='amazon-pay-white.svg'] {
+  height: 22px;
+  max-width: 92px;
+}
 .product_main_section_trust {
   display: block;
   margin: 0 auto;
@@ -2285,6 +2289,10 @@ color: #fff;
   .product_main_section_payments_icon {
     height: 22px;
     max-width: 86px;
+  }
+  .product_main_section_payments_icon[src*='amazon-pay-white.svg'] {
+    height: 18px;
+    max-width: 74px;
   }
   .footer_main {
     flex-direction: column;
