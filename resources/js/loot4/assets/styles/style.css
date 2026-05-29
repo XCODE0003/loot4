@@ -1303,6 +1303,12 @@ margin-left: 24px;
   justify-content: center;
   gap: 14.05px;
 }
+.product_main_section_payments_strip {
+  display: block;
+  width: 100%;
+  max-width: 449px;
+  height: auto;
+}
 .product_main_section_payments_text {
   font-family: var(--font-family);
 font-weight: 400;
@@ -1851,6 +1857,9 @@ color: #fff;
     flex-wrap: wrap;
     gap: 10px;
   }
+  .product_main_section_payments_strip {
+    max-width: 360px;
+  }
   .product_main_section_price_new {
     font-size: 52px;
   }
@@ -2285,6 +2294,9 @@ color: #fff;
   }
   .product_main_section_price_new {
     font-size: 48px;
+  }
+  .product_main_section_payments_strip {
+    max-width: 100%;
   }
   .product_main_section_payments_icon {
     height: 22px;

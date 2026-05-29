@@ -27,18 +27,17 @@ const promoInput = ref(coupon.value?.code ?? '')
 const promoError = ref('')
 const promoLoading = ref(false)
 
-// IceNox payment-method identifiers (pay.icenox.com/docs). Icons for the
-// remaining methods are added once the brand images are provided.
+// IceNox payment-method identifiers (pay.icenox.com/docs).
 const paymentMethods = [
   { value: 'stripe-cards',       label: 'Credit / Debit Card', icons: ['/payment_methods/cards.svg'] },
   { value: 'stripe-apple-pay',   label: 'Apple Pay',           icons: ['/payment_methods/apple-pay.svg'] },
   { value: 'stripe-google-pay',  label: 'Google Pay',          icons: ['/payment_methods/google-pay.svg'] },
-  { value: 'stripe-link',        label: 'Link',                icons: [] },
+  { value: 'stripe-link',        label: 'Link',                icons: ['/payment_methods/link-white.svg'] },
   { value: 'stripe-klarna',      label: 'Klarna',              icons: ['/payment_methods/klarna.svg'] },
   { value: 'stripe-amazon-pay',  label: 'Amazon Pay',          icons: ['/payment_methods/amazon-pay-white.svg'] },
   { value: 'stripe-bancontact',  label: 'Bancontact',          icons: ['/payment_methods/bancontact.svg'] },
   { value: 'stripe-eps',         label: 'EPS',                 icons: ['/payment_methods/eps-white.svg'] },
-  { value: 'stripe-revolut-pay', label: 'Revolut Pay',         icons: [] },
+  { value: 'stripe-revolut-pay', label: 'Revolut Pay',         icons: ['/payment_methods/revolut-white.svg'] },
 ]
 
 const FEE_RATE = 0.05

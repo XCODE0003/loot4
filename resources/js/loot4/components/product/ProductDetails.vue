@@ -65,17 +65,7 @@ function buy() {
         <div class="product_main_section">
           <img v-if="data.image" :src="asset(data.image)" alt="" class="product_main_section_image" />
           <div class="product_main_section_payments">
-            <p class="product_main_section_payments_text">We accept</p>
-            <div class="product_main_section_payments_icons">
-              <img
-                v-for="icon in data.payments"
-                :key="icon"
-                :src="asset(icon)"
-                alt=""
-                class="product_main_section_payments_icon"
-              />
-            </div>
-            <p class="product_main_section_payments_text">and many more</p>
+            <img :src="asset('/payment.svg')" alt="Payment methods" class="product_main_section_payments_strip" />
           </div>
           <div class="product_main_section_trustpilot">
             <TrustpilotWidget />
