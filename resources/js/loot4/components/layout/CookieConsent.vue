@@ -83,9 +83,13 @@ onMounted(() => {
   left: 16px;
   right: 16px;
   bottom: 16px;
-  z-index: 1200;
+  /* Below the cart drawer (1000/1001) and the open mobile menu (1100) so
+     those modals stay usable while the banner is ignored, above page content. */
+  z-index: 999;
   display: flex;
   justify-content: center;
+  /* The full-width wrapper must not swallow clicks on its empty sides. */
+  pointer-events: none;
 }
 .cc_inner {
   width: 100%;
@@ -99,6 +103,7 @@ onMounted(() => {
   background: rgba(10, 10, 14, 0.96);
   backdrop-filter: blur(12px);
   box-shadow: 0 16px 50px rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
 }
 .cc_title {
   color: #fff;
@@ -112,6 +117,7 @@ onMounted(() => {
   line-height: 1.6;
 }
 .cc_link {
+  display: inline;
   color: #2bff95;
   text-decoration: none;
 }

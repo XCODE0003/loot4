@@ -17,10 +17,12 @@ const { formatPrice } = useLocale()
 onMounted(() => hydrate())
 
 const email = ref('')
+const emailInput = ref(null)
+const emailError = ref('')
 const method = ref('stripe-cards')
 const processing = ref(false)
 const formError = ref('')
-const agreed = ref(false)
+const agreed = ref(true)
 
 const promoOpen = ref(false)
 const promoInput = ref(coupon.value?.code ?? '')
@@ -70,8 +72,35 @@ async function applyPromo() {
   }
 }
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+function focusEmail() {
+  const el = emailInput.value
+  if (!el) return
+  el.focus()
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+}
+
+function validateEmail() {
+  const value = email.value.trim()
+  if (!value) {
+    emailError.value = 'The email field is required.'
+    return false
+  }
+  if (!EMAIL_RE.test(value)) {
+    emailError.value = 'Please enter a valid email address.'
+    return false
+  }
+  emailError.value = ''
+  return true
+}
+
 function placeOrder() {
   if (!items.value.length || processing.value) return
+  if (!validateEmail()) {
+    focusEmail()
+    return
+  }
   if (!agreed.value) {
     formError.value = 'Please read and agree to the terms and conditions.'
     return
@@ -80,7 +109,13 @@ function placeOrder() {
   processing.value = true
   router.post('/checkout', { ...checkoutPayload(email.value), method: method.value }, {
     onError: (errors) => {
-      formError.value = errors.email || errors.items || errors.payment || 'Please check your details'
+      if (errors.email) {
+        emailError.value = errors.email
+        formError.value = ''
+        focusEmail()
+      } else {
+        formError.value = errors.items || errors.payment || 'Please check your details'
+      }
     },
     onFinish: () => {
       processing.value = false
@@ -112,12 +147,18 @@ function placeOrder() {
             <p class="co_section_label">Customer information</p>
             <input
               id="co-email"
+              ref="emailInput"
               v-model="email"
               type="email"
               class="co_field"
+              :class="{ 'co_field--error': emailError }"
               placeholder="Email *"
+              aria-label="Email"
+              :aria-invalid="emailError ? 'true' : 'false'"
+              @input="emailError = ''"
               @keyup.enter="placeOrder"
             />
+            <p v-if="emailError" class="co_field_err">{{ emailError }}</p>
           </div>
 
           <div class="co_section">
@@ -244,28 +285,6 @@ function placeOrder() {
               </svg>
               Your payment is encrypted and secure.
             </p>
-
-            <div class="co_trust">
-              <div class="co_trust_pilot">
-                <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true">
-                  <polygon points="10,1 12.6,7 19,7.5 14,11.8 15.8,18 10,14.5 4.2,18 6,11.8 1,7.5 7.4,7" fill="#00b67a"/>
-                </svg>
-                <span>Trustpilot</span>
-              </div>
-              <div class="co_trust_badges">
-                <span class="co_trust_badge co_trust_mc">
-                  <span class="co_trust_mc_dots">
-                    <span class="co_trust_mc_red"></span>
-                    <span class="co_trust_mc_yellow"></span>
-                  </span>
-                  <span class="co_trust_mc_text">ID Check</span>
-                </span>
-                <span class="co_trust_badge co_trust_visa">
-                  <span class="co_trust_visa_top">Verified by</span>
-                  <span class="co_trust_visa_bot">VISA</span>
-                </span>
-              </div>
-            </div>
           </div>
         </aside>
       </div>
@@ -346,6 +365,16 @@ function placeOrder() {
 }
 .co_field:focus {
   border-color: rgba(43, 255, 149, 0.5);
+}
+.co_field--error,
+.co_field--error:focus {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.18);
+}
+.co_field_err {
+  margin: 8px 4px 0;
+  color: #ff6b6b;
+  font-size: 13px;
 }
 
 .co_methods {
@@ -700,77 +729,6 @@ function placeOrder() {
 .co_terms a {
   color: rgba(255, 255, 255, 0.75);
   text-decoration: underline;
-}
-
-.co_trust {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  margin-top: 22px;
-}
-.co_trust_pilot {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 14px;
-  font-weight: 600;
-}
-.co_trust_badges {
-  display: inline-flex;
-  align-items: center;
-  gap: 18px;
-}
-.co_trust_badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 11px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-.co_trust_mc {
-  flex-direction: column;
-  gap: 2px;
-}
-.co_trust_mc_dots {
-  display: inline-flex;
-}
-.co_trust_mc_red,
-.co_trust_mc_yellow {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: inline-block;
-}
-.co_trust_mc_red { background: #eb001b; }
-.co_trust_mc_yellow { background: #f79e1b; margin-left: -7px; mix-blend-mode: multiply; }
-.co_trust_mc_text {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 10px;
-}
-.co_trust_visa {
-  flex-direction: column;
-  gap: 0;
-}
-.co_trust_visa_top {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 9px;
-  font-style: italic;
-  text-transform: none;
-  letter-spacing: 0;
-}
-.co_trust_visa_bot {
-  color: #1a1f71;
-  font-size: 16px;
-  font-weight: 800;
-  font-style: italic;
-  background: linear-gradient(180deg, #fff 50%, #f7b600 50%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 .co_btn {
