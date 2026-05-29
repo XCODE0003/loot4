@@ -11,6 +11,7 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Services\Notifications\OrderNotifier;
 use App\Services\Payments\IceNoxGateway;
 use App\Services\Payments\PaymentException;
 use Illuminate\Http\JsonResponse;
@@ -73,10 +74,10 @@ class CheckoutController extends Controller
             'items.*.qty' => ['required', 'integer', 'min:1'],
             'items.*.option' => ['nullable', 'string'],
             'coupon' => ['nullable', 'string'],
-            'method' => ['nullable', 'string', 'in:card'],
+            'method' => ['nullable', 'string', 'in:'.implode(',', self::PAYMENT_METHODS)],
         ]);
 
-        $method = $data['method'] ?? 'card';
+        $method = $data['method'] ?? self::PAYMENT_METHODS[0];
 
         $lines = [];
         $subtotal = 0.0;
@@ -159,23 +160,42 @@ class CheckoutController extends Controller
 
                 return Inertia::location($result['url']);
             } catch (PaymentException $e) {
+                app(OrderNotifier::class)->failed($order, $e->getMessage());
+
                 return back()->withErrors(['payment' => $e->getMessage()]);
             }
         }
 
-        // No gateway configured — record the order as pending and confirm.
+        // No gateway configured — record the order and treat it as placed.
+        app(OrderNotifier::class)->paid($order);
+
         return redirect()->route('checkout.success', $order->order_number);
     }
+
+    /**
+     * Supported IceNox payment-method identifiers (pay.icenox.com/docs).
+     * The storefront sends these values directly; we just validate them.
+     *
+     * @var list<string>
+     */
+    private const PAYMENT_METHODS = [
+        'stripe-cards',
+        'stripe-apple-pay',
+        'stripe-google-pay',
+        'stripe-link',
+        'stripe-klarna',
+        'stripe-amazon-pay',
+        'stripe-bancontact',
+        'stripe-eps',
+        'stripe-revolut-pay',
+    ];
 
     /**
      * Map a storefront method choice to an IceNox payment-method identifier.
      */
     private function icenoxMethod(string $method): string
     {
-        return match ($method) {
-            'paypal' => 'paypal',
-            default => 'cards',
-        };
+        return in_array($method, self::PAYMENT_METHODS, true) ? $method : self::PAYMENT_METHODS[0];
     }
 
     /**
@@ -198,25 +218,37 @@ class CheckoutController extends Controller
             $order = Order::query()->where('order_number', $payload['orderid'])->first();
         }
 
+        $isFailed = in_array($statusRaw, ['failed', 'fail', 'cancelled', 'canceled', 'declined', 'error', 'expired'], true);
+
         if ($order && $isPaid && $order->payment_status !== PaymentStatus::Paid) {
             $order->update([
                 'payment_status' => PaymentStatus::Paid,
                 'status' => OrderStatus::Processing,
             ]);
             $order->payments()->update(['status' => PaymentStatus::Paid->value]);
+
+            app(OrderNotifier::class)->paid($order);
+        } elseif ($order && $isFailed && $order->payment_status === PaymentStatus::Pending) {
+            app(OrderNotifier::class)->failed($order, $payload['message'] ?? $statusRaw);
         }
 
         return response()->json(['received' => true]);
     }
 
-    public function success(Order $order): Response
+    public function success(Request $request, Order $order): Response
     {
-        $order->load('items');
+        $order->load(['items', 'payments']);
+
+        $method = (string) ($order->payments->first()?->method ?? 'card');
+        $methodLabel = \Illuminate\Support\Str::of($method)->replaceFirst('stripe-', '')->headline()->toString();
 
         return Inertia::render('loot4/CheckoutSuccess', [
             'order' => [
                 'number' => $order->order_number,
                 'email' => $order->email,
+                'name' => $order->user?->name,
+                'date' => $order->created_at?->format('M j, Y'),
+                'paymentMethod' => $methodLabel,
                 'currency' => $order->currency,
                 'subtotal' => (float) $order->subtotal,
                 'discount' => (float) $order->discount,
@@ -224,10 +256,16 @@ class CheckoutController extends Controller
                 'items' => $order->items->map(fn ($item): array => [
                     'name' => $item->product_name,
                     'option' => $item->form_data['option'] ?? null,
+                    'details' => array_filter(
+                        is_array($item->form_data) ? $item->form_data : [],
+                        fn ($v, $k): bool => $k !== 'option' && filled($v) && ! is_array($v),
+                        ARRAY_FILTER_USE_BOTH,
+                    ),
                     'qty' => $item->quantity,
                     'price' => (float) $item->price,
                 ])->all(),
             ],
+            'authed' => $request->user() !== null,
         ]);
     }
 

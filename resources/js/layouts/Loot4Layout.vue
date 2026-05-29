@@ -5,6 +5,7 @@ import AppHeader from '@/loot4/components/layout/AppHeader.vue'
 import HeaderBackground from '@/loot4/components/layout/HeaderBackground.vue'
 import AppFooter from '@/loot4/components/layout/AppFooter.vue'
 import CartDrawer from '@/loot4/components/cart/CartDrawer.vue'
+import CookieConsent from '@/loot4/components/layout/CookieConsent.vue'
 import { useMobileMenu } from '@/loot4/composables/useMobileMenu'
 import { useCart } from '@/loot4/composables/useCart'
 import { setRates } from '@/loot4/composables/useLocale'
@@ -30,4 +31,5 @@ watch(() => page.props.exchangeRates, setRates, { immediate: true })
   </main>
   <AppFooter />
   <CartDrawer />
+  <CookieConsent />
 </template>

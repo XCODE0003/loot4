@@ -31,8 +31,10 @@ class Settings extends Page
     private const KEYS = [
         'site_name', 'site_logo', 'favicon', 'seo_default_title', 'seo_default_description',
         'payment_stripe', 'stripe_key', 'payment_paypal', 'paypal_client_id', 'payment_crypto', 'payment_apple_pay',
-        'facebook_pixel_id', 'tiktok_pixel_id', 'discord_webhook_url', 'telegram_bot_token',
-        'mail_host', 'mail_port', 'mail_username', 'mail_password', 'mail_from_address',
+        'facebook_pixel_id', 'tiktok_pixel_id', 'ga_measurement_id', 'discord_webhook_url',
+        'telegram_bot_token', 'telegram_chat_id', 'telegram_failed_bot_token', 'telegram_failed_chat_id',
+        'mail_host', 'mail_port', 'mail_username', 'mail_password', 'mail_encryption',
+        'mail_from_address', 'mail_from_name', 'order_notify_email',
     ];
 
     /** @var array<string, mixed> */
@@ -79,18 +81,32 @@ class Settings extends Page
                     ->schema([
                         TextInput::make('facebook_pixel_id')->label('Facebook Pixel ID'),
                         TextInput::make('tiktok_pixel_id')->label('TikTok Pixel ID'),
+                        TextInput::make('ga_measurement_id')->label('Google Analytics ID (G-XXXXXXX)')->placeholder('G-XXXXXXXXXX'),
                         TextInput::make('discord_webhook_url')->label('Discord webhook URL')->url(),
-                        TextInput::make('telegram_bot_token')->label('Telegram bot token')->password()->revealable(),
+                    ]),
+
+                Section::make('Telegram notifications')
+                    ->description('New paid orders are sent to the orders bot. Failed/dropped payments are sent to the failed-orders bot (falls back to the orders bot when left empty).')
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('telegram_bot_token')->label('Orders bot token')->password()->revealable(),
+                        TextInput::make('telegram_chat_id')->label('Orders chat ID'),
+                        TextInput::make('telegram_failed_bot_token')->label('Failed-orders bot token')->password()->revealable(),
+                        TextInput::make('telegram_failed_chat_id')->label('Failed-orders chat ID'),
                     ]),
 
                 Section::make('Email (SMTP)')
+                    ->description('Used for the customer order confirmation and the staff new-order email.')
                     ->columns(2)
                     ->schema([
-                        TextInput::make('mail_host'),
-                        TextInput::make('mail_port')->numeric(),
-                        TextInput::make('mail_username'),
-                        TextInput::make('mail_password')->password()->revealable(),
+                        TextInput::make('mail_host')->label('SMTP host'),
+                        TextInput::make('mail_port')->label('SMTP port')->numeric(),
+                        TextInput::make('mail_username')->label('SMTP username'),
+                        TextInput::make('mail_password')->label('SMTP password')->password()->revealable(),
+                        TextInput::make('mail_encryption')->label('Encryption (tls / ssl)'),
                         TextInput::make('mail_from_address')->label('From address')->email(),
+                        TextInput::make('mail_from_name')->label('From name'),
+                        TextInput::make('order_notify_email')->label('Send new-order emails to')->email(),
                     ]),
             ]);
     }

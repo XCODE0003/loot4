@@ -9,10 +9,6 @@ defineOptions({ layout: null })
 import { useLocale } from '@/loot4/composables/useLocale'
 import { asset } from '@/loot4/utils/asset'
 import headerLogo from '@/loot4/assets/img/header_logo.svg'
-import visaIcon from '@/loot4/assets/img/product_visa.png'
-import masterIcon from '@/loot4/assets/img/product_master.png'
-import paypalIcon from '@/loot4/assets/img/product_paypal.png'
-import payIcon from '@/loot4/assets/img/product_pay.png'
 
 const { t } = useI18n()
 const { items, subtotal, discount, total, coupon, count, remove, applyCoupon, clearCoupon, checkoutPayload, hydrate } = useCart()
@@ -21,25 +17,28 @@ const { formatPrice } = useLocale()
 onMounted(() => hydrate())
 
 const email = ref('')
-const method = ref('card')
+const method = ref('stripe-cards')
 const processing = ref(false)
 const formError = ref('')
+const agreed = ref(false)
 
 const promoOpen = ref(false)
 const promoInput = ref(coupon.value?.code ?? '')
 const promoError = ref('')
 const promoLoading = ref(false)
 
+// IceNox payment-method identifiers (pay.icenox.com/docs). Icons for the
+// remaining methods are added once the brand images are provided.
 const paymentMethods = [
-  { value: 'card',     label: 'Credit Card',       feeLabel: '(+5%)', icons: [visaIcon, masterIcon, payIcon] },
-  { value: 'applepay', label: 'Apple Pay',         feeLabel: '(+5%)', icons: [payIcon] },
-  { value: 'cashapp',  label: 'Cash App',          feeLabel: '(+5%)', icons: [payIcon] },
-  { value: 'klarna',   label: 'Klarna (US)',       feeLabel: '(+5%)', icons: [paypalIcon] },
-  { value: 'gpay',     label: 'Google Pay',        feeLabel: '(+5%)', icons: [payIcon] },
-  { value: 'amazon',   label: 'Amazon Pay',        feeLabel: '(+5%)', icons: [payIcon] },
-  { value: 'ideal',    label: 'iDEAL',             feeLabel: '(+5%)', icons: [paypalIcon] },
-  { value: 'afterpay', label: 'Afterpay / Clearpay', feeLabel: '(+5%)', icons: [paypalIcon] },
-  { value: 'crypto',   label: 'Crypto',            feeLabel: '(-5%)', extra: '5% off', icons: [visaIcon] },
+  { value: 'stripe-cards',       label: 'Credit / Debit Card', feeLabel: '(+5%)', icons: ['/payment_methods/cards.svg'] },
+  { value: 'stripe-apple-pay',   label: 'Apple Pay',           feeLabel: '(+5%)', icons: ['/payment_methods/apple-pay.svg'] },
+  { value: 'stripe-google-pay',  label: 'Google Pay',          feeLabel: '(+5%)', icons: ['/payment_methods/google-pay.svg'] },
+  { value: 'stripe-link',        label: 'Link',                feeLabel: '(+5%)', icons: [] },
+  { value: 'stripe-klarna',      label: 'Klarna',              feeLabel: '(+5%)', icons: ['/payment_methods/klarna.svg'] },
+  { value: 'stripe-amazon-pay',  label: 'Amazon Pay',          feeLabel: '(+5%)', icons: ['/payment_methods/amazon-pay-white.svg'] },
+  { value: 'stripe-bancontact',  label: 'Bancontact',          feeLabel: '(+5%)', icons: ['/payment_methods/bancontact.svg'] },
+  { value: 'stripe-eps',         label: 'EPS',                 feeLabel: '(+5%)', icons: ['/payment_methods/eps-white.svg'] },
+  { value: 'stripe-revolut-pay', label: 'Revolut Pay',         feeLabel: '(+5%)', icons: [] },
 ]
 
 const FEE_RATE = 0.05
@@ -84,6 +83,10 @@ async function applyPromo() {
 
 function placeOrder() {
   if (!items.value.length || processing.value) return
+  if (!agreed.value) {
+    formError.value = 'Please read and agree to the terms and conditions.'
+    return
+  }
   formError.value = ''
   processing.value = true
   router.post('/checkout', { ...checkoutPayload(email.value), method: method.value }, {
@@ -224,26 +227,39 @@ function placeOrder() {
               <span>{{ money(grandTotal) }}</span>
             </div>
 
+            <div class="co_consent">
+              <p class="co_consent_text">
+                Your personal data will be used to process your order, support your experience throughout this
+                website, and for other purposes described in our
+                <a href="/privacy" target="_blank" rel="noopener">privacy policy</a>.
+              </p>
+              <label class="co_agree">
+                <input v-model="agreed" type="checkbox" />
+                <span class="co_agree_box" aria-hidden="true"></span>
+                <span class="co_agree_label">
+                  I have read and agree to the website
+                  <a href="/terms" target="_blank" rel="noopener">terms and conditions</a>
+                  <span class="co_agree_req">*</span>
+                </span>
+              </label>
+            </div>
+
             <p v-if="formError" class="co_error">{{ formError }}</p>
 
             <button
               type="button"
               class="co_pay"
-              :disabled="processing"
+              :disabled="processing || !agreed"
               @click="placeOrder"
             >
-              <svg width="16" height="18" viewBox="0 0 16 18" fill="none" aria-hidden="true">
-                <path d="M8 1l6 2v6c0 4-3 6.5-6 8-3-1.5-6-4-6-8V3l6-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-              </svg>
-              <span>{{ processing ? $t('checkout.processing') : `Pay now  ${money(grandTotal)}` }}</span>
+              <span>{{ processing ? $t('checkout.processing') : 'Pay Now' }}</span>
             </button>
 
-            <p class="co_terms">
-              By placing an order on loot4you.com, you agree to our
-              <a href="/legal/terms" target="_blank" rel="noopener">Terms of Service</a>
-              and <a href="/legal/privacy" target="_blank" rel="noopener">Privacy Policy</a>.
-              After completing your purchase, we may send you emails with offers related to similar products or services.
-              You can unsubscribe at any time using the link provided or directly from the email.
+            <p class="co_secure">
+              <svg width="13" height="14" viewBox="0 0 16 18" fill="none" aria-hidden="true">
+                <path d="M8 1l6 2v6c0 4-3 6.5-6 8-3-1.5-6-4-6-8V3l6-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              </svg>
+              Your payment is encrypted and secure.
             </p>
 
             <div class="co_trust">
@@ -596,6 +612,95 @@ function placeOrder() {
   font-size: 13px;
   margin-top: 10px;
   text-align: center;
+}
+
+.co_consent {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.co_consent_text {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.55);
+}
+.co_consent_text a {
+  color: #2bff95;
+  text-decoration: none;
+}
+.co_consent_text a:hover {
+  text-decoration: underline;
+}
+.co_agree {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.co_agree input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.co_agree_box {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  position: relative;
+  transition: border-color 0.15s, background 0.15s;
+}
+.co_agree input:checked + .co_agree_box {
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
+  border-color: transparent;
+}
+.co_agree input:checked + .co_agree_box::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.co_agree input:focus-visible + .co_agree_box {
+  outline: 2px solid rgba(43, 255, 149, 0.6);
+  outline-offset: 2px;
+}
+.co_agree_label {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+}
+.co_agree_label a {
+  color: #2bff95;
+  text-decoration: none;
+}
+.co_agree_label a:hover {
+  text-decoration: underline;
+}
+.co_agree_req {
+  color: #ff6b6b;
+  margin-left: 2px;
+}
+.co_secure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .co_terms {

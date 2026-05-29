@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\StorefrontController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +18,19 @@ Route::post('/checkout', [CheckoutController::class, 'store']);
 Route::get('/checkout/success/{order:order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
 Route::post('/checkout/webhook', [CheckoutController::class, 'webhook'])->name('checkout.webhook');
 
+// Static content pages (footer + header links).
+Route::get('/about', [PageController::class, 'about'])->name('pages.about');
+Route::get('/faq', [PageController::class, 'faq'])->name('pages.faq');
+Route::get('/how-it-works', [PageController::class, 'howItWorks'])->name('pages.how-it-works');
+Route::get('/contact', [PageController::class, 'contact'])->name('pages.contact');
+Route::get('/sell', [PageController::class, 'sell'])->name('pages.sell');
+Route::get('/privacy', [PageController::class, 'privacy'])->name('pages.privacy');
+Route::get('/terms', [PageController::class, 'terms'])->name('pages.terms');
+Route::get('/refunds', [PageController::class, 'refunds'])->name('pages.refunds');
+Route::get('/payment-policy', [PageController::class, 'paymentPolicy'])->name('pages.payment-policy');
+Route::get('/shipping-policy', [PageController::class, 'shippingPolicy'])->name('pages.shipping-policy');
+Route::get('/cookies-policy', [PageController::class, 'cookiesPolicy'])->name('pages.cookies-policy');
+
 // Customer account area (storefront-styled personal cabinet).
 Route::middleware('auth')->prefix('account')->name('account.')->group(function () {
     Route::get('/', [AccountController::class, 'index'])->name('index');
@@ -25,6 +40,12 @@ Route::middleware('auth')->prefix('account')->name('account.')->group(function (
     Route::patch('/profile', [AccountController::class, 'updateProfile'])->name('profile.update');
     Route::put('/password', [AccountController::class, 'updatePassword'])->name('password.update');
 });
+
+// Social login (Google / Discord OAuth2).
+Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])
+    ->whereIn('provider', ['google', 'discord'])->name('oauth.redirect');
+Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])
+    ->whereIn('provider', ['google', 'discord'])->name('oauth.callback');
 
 // Keep the legacy dashboard route name pointing at the new account area.
 Route::middleware('auth')->get('dashboard', fn () => redirect()->route('account.index'))->name('dashboard');

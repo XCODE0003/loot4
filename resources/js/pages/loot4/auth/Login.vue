@@ -1,12 +1,17 @@
 <script setup>
-import { Form, Head, Link } from '@inertiajs/vue3'
+import { computed } from 'vue'
+import { Form, Head, Link, usePage } from '@inertiajs/vue3'
 import '@/loot4/assets/styles/style.css'
 import Container from '@/loot4/components/layout/Container.vue'
+import SocialAuth from '@/loot4/components/auth/SocialAuth.vue'
 
 defineProps({
   status: { type: String, default: null },
   canResetPassword: { type: Boolean, default: false },
 })
+
+const page = usePage()
+const oauthError = computed(() => page.props.errors?.oauth ?? null)
 </script>
 
 <template>
@@ -18,6 +23,7 @@ defineProps({
         <p class="auth_sub">{{ $t('auth.loginSub') }}</p>
 
         <p v-if="status" class="auth_status">{{ status }}</p>
+        <p v-if="oauthError" class="auth_error auth_error--block">{{ oauthError }}</p>
 
         <Form action="/login" method="post" :reset-on-success="['password']" v-slot="{ errors, processing }" class="auth_form">
           <div class="auth_field">
@@ -44,6 +50,8 @@ defineProps({
             {{ processing ? $t('auth.loggingIn') : $t('auth.login') }}
           </button>
         </Form>
+
+        <SocialAuth />
 
         <p class="auth_alt">
           {{ $t('auth.noAccount') }}
@@ -114,6 +122,13 @@ defineProps({
 .auth_error {
   color: #ff6b6b;
   font-size: 13px;
+}
+.auth_error--block {
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.25);
 }
 .auth_remember {
   display: flex;

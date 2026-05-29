@@ -1,0 +1,388 @@
+[     792ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://localhost:8001/_boost/browser-logs @ http://localhost:8001/login:194
+[     815ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: http://[::1]:5173/resources/js/loot4/assets/fonts/SF-Pro-Display-Regular.otf @ http://localhost:8001/login:380
+[     815ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: http://[::1]:5173/resources/js/loot4/assets/fonts/SF-Pro-Display-Medium.otf @ http://localhost:8001/login:380
+[   53003ms] [ERROR] Access to font at 'http://localhost:8001/fonts/filament/filament/inter/inter-latin-wght-normal-NRMW37G5.woff2' from origin 'null' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ about:srcdoc:0
+[   53003ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/fonts/filament/filament/inter/inter-latin-wght-normal-NRMW37G5.woff2:0
+[   53080ms] SecurityError: Failed to read the 'localStorage' property from 'Window': The document is sandboxed and lacks the 'allow-same-origin' flag.
+    at about:srcdoc:90:17
+[   53081ms] Failed to read the 'localStorage' property from 'Window': The document is sandboxed and lacks the 'allow-same-origin' flag.
+[   53188ms] SecurityError: Failed to read the 'localStorage' property from 'Window': The document is sandboxed and lacks the 'allow-same-origin' flag.
+    at about:srcdoc:2636:17
+[   53209ms] Uncaught SecurityError: Failed to read the 'localStorage' property from 'Window': The document is sandboxed and lacks the 'allow-same-origin' flag.
+    at dispatch2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1701:14)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1736:4)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53196ms] [ERROR] SecurityError: Failed to read the 'localStorage' property from 'Window': The document is sandboxed and lacks the 'allow-same-origin' flag.
+    at Object.get (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:8523:61)
+    at j (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:1:6770)
+    at HTMLDocument.<anonymous> (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:1:11800)
+    at dispatch2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1702:15)
+    at Object.start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1737:5)
+    at Object.start2 [as start] (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13944:20)
+    at HTMLDocument.<anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15787:17) @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:8494
+[   53197ms] [WARNING] Alpine: $persist is using temporary storage since localStorage is unavailable. @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:8495
+[   53197ms] [ERROR] SecurityError: Failed to read the 'localStorage' property from 'Window': The document is sandboxed and lacks the 'allow-same-origin' flag.
+    at Object.get (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:8523:61)
+    at j (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:1:6824)
+    at HTMLDocument.<anonymous> (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:1:11800)
+    at dispatch2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1702:15)
+    at Object.start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1737:5)
+    at Object.start2 [as start] (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13944:20)
+    at HTMLDocument.<anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15787:17) @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:8494
+[   53198ms] [WARNING] Alpine: $persist is using temporary storage since localStorage is unavailable. @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:8495
+[   53198ms] [ERROR] SecurityError: Failed to read the 'localStorage' property from 'Window': The document is sandboxed and lacks the 'allow-same-origin' flag.
+    at Object.get (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:8523:61)
+    at j (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:1:6887)
+    at HTMLDocument.<anonymous> (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:1:11800)
+    at dispatch2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1702:15)
+    at Object.start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1737:5)
+    at Object.start2 [as start] (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13944:20)
+    at HTMLDocument.<anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15787:17) @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:8494
+[   53198ms] [WARNING] Alpine: $persist is using temporary storage since localStorage is unavailable. @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:8495
+[   53259ms] [WARNING] Alpine Expression Error: Failed to read the 'localStorage' property from 'Window': The document is sandboxed and lacks the 'allow-same-origin' flag.
+
+Expression: "
+        $watch('theme', () => {
+            $dispatch('theme-changed', theme)
+        })
+
+        theme = localStorage.getItem('theme') || 'dark'    "
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53260ms] [WARNING] Alpine Expression Error: Cannot read properties of undefined (reading 'includes')
+
+Expression: "{ 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) }"
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53260ms] [WARNING] Alpine Expression Error: Cannot read properties of undefined (reading 'includes')
+
+Expression: "{ 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) }"
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53260ms] [WARNING] Alpine Expression Error: Cannot read properties of undefined (reading 'includes')
+
+Expression: "! $store.sidebar.groupIsCollapsed(label)"
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53260ms] [WARNING] Alpine Expression Error: Cannot read properties of undefined (reading 'includes')
+
+Expression: "{ 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) }"
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53260ms] [WARNING] Alpine Expression Error: Cannot read properties of undefined (reading 'includes')
+
+Expression: "! $store.sidebar.groupIsCollapsed(label)"
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53260ms] [WARNING] Alpine Expression Error: Cannot read properties of undefined (reading 'includes')
+
+Expression: "{ 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) }"
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53260ms] [WARNING] Alpine Expression Error: Cannot read properties of undefined (reading 'includes')
+
+Expression: "! $store.sidebar.groupIsCollapsed(label)"
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53260ms] [WARNING] Alpine Expression Error: Cannot read properties of undefined (reading 'includes')
+
+Expression: "{ 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) }"
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53260ms] [WARNING] Alpine Expression Error: Cannot read properties of undefined (reading 'includes')
+
+Expression: "! $store.sidebar.groupIsCollapsed(label)"
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53260ms] [WARNING] Alpine Expression Error: Cannot read properties of undefined (reading 'includes')
+
+Expression: "{ 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) }"
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53260ms] [WARNING] Alpine Expression Error: Cannot read properties of undefined (reading 'includes')
+
+Expression: "! $store.sidebar.groupIsCollapsed(label)"
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53260ms] [WARNING] Alpine Expression Error: Cannot read properties of undefined (reading 'includes')
+
+Expression: "{ 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) }"
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53260ms] [WARNING] Alpine Expression Error: Cannot read properties of undefined (reading 'includes')
+
+Expression: "! $store.sidebar.groupIsCollapsed(label)"
+
+ JSHandle@node @ http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1392
+[   53441ms] Uncaught SecurityError: Failed to read the 'localStorage' property from 'Window': The document is sandboxed and lacks the 'allow-same-origin' flag.
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at evaluate (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1409:33)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3902:36)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2231:57)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53441ms] Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+    at groupIsCollapsed (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:0:7871)
+    at [Alpine] { 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) } (:2:64)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:18)
+    at reactiveEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2755:17)
+    at effect2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2730:6)
+    at effect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:987:34)
+    at wrappedEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1003:28)
+    at handler2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:4)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53441ms] Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+    at groupIsCollapsed (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:0:7871)
+    at [Alpine] { 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) } (:2:64)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:18)
+    at reactiveEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2755:17)
+    at effect2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2730:6)
+    at effect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:987:34)
+    at wrappedEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1003:28)
+    at handler2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:4)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53441ms] Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+    at groupIsCollapsed (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:0:7871)
+    at [Alpine] ! $store.sidebar.groupIsCollapsed(label) (:2:48)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:18)
+    at reactiveEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2755:17)
+    at effect2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2730:6)
+    at effect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:987:34)
+    at wrappedEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1003:28)
+    at handler2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:4)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53441ms] Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+    at groupIsCollapsed (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:0:7871)
+    at [Alpine] { 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) } (:2:64)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:18)
+    at reactiveEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2755:17)
+    at effect2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2730:6)
+    at effect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:987:34)
+    at wrappedEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1003:28)
+    at handler2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:4)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53441ms] Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+    at groupIsCollapsed (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:0:7871)
+    at [Alpine] ! $store.sidebar.groupIsCollapsed(label) (:2:48)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:18)
+    at reactiveEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2755:17)
+    at effect2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2730:6)
+    at effect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:987:34)
+    at wrappedEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1003:28)
+    at handler2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:4)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53441ms] Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+    at groupIsCollapsed (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:0:7871)
+    at [Alpine] { 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) } (:2:64)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:18)
+    at reactiveEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2755:17)
+    at effect2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2730:6)
+    at effect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:987:34)
+    at wrappedEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1003:28)
+    at handler2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:4)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53441ms] Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+    at groupIsCollapsed (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:0:7871)
+    at [Alpine] ! $store.sidebar.groupIsCollapsed(label) (:2:48)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:18)
+    at reactiveEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2755:17)
+    at effect2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2730:6)
+    at effect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:987:34)
+    at wrappedEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1003:28)
+    at handler2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:4)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53441ms] Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+    at groupIsCollapsed (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:0:7871)
+    at [Alpine] { 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) } (:2:64)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:18)
+    at reactiveEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2755:17)
+    at effect2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2730:6)
+    at effect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:987:34)
+    at wrappedEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1003:28)
+    at handler2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:4)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53441ms] Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+    at groupIsCollapsed (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:0:7871)
+    at [Alpine] ! $store.sidebar.groupIsCollapsed(label) (:2:48)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:18)
+    at reactiveEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2755:17)
+    at effect2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2730:6)
+    at effect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:987:34)
+    at wrappedEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1003:28)
+    at handler2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:4)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53441ms] Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+    at groupIsCollapsed (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:0:7871)
+    at [Alpine] { 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) } (:2:64)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:18)
+    at reactiveEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2755:17)
+    at effect2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2730:6)
+    at effect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:987:34)
+    at wrappedEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1003:28)
+    at handler2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:4)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53441ms] Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+    at groupIsCollapsed (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:0:7871)
+    at [Alpine] ! $store.sidebar.groupIsCollapsed(label) (:2:48)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:18)
+    at reactiveEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2755:17)
+    at effect2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2730:6)
+    at effect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:987:34)
+    at wrappedEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1003:28)
+    at handler2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:4)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53441ms] Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+    at groupIsCollapsed (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:0:7871)
+    at [Alpine] { 'fi-collapsed': $store.sidebar.groupIsCollapsed(label) } (:2:64)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:18)
+    at reactiveEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2755:17)
+    at effect2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2730:6)
+    at effect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:987:34)
+    at wrappedEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1003:28)
+    at handler2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:4)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[   53441ms] Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+    at groupIsCollapsed (http://localhost:8001/js/filament/filament/app.js?v=5.6.5.0:0:7871)
+    at [Alpine] ! $store.sidebar.groupIsCollapsed(label) (:2:48)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1477:27)
+    at tryCatch (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1375:13)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:18)
+    at reactiveEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2755:17)
+    at effect2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:2730:6)
+    at effect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:987:34)
+    at wrappedEffect (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1003:28)
+    at handler2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:3946:4)
+    at flushHandlers (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1594:47)
+    at stopDeferring (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1599:6)
+    at deferHandlingDirectives (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1602:4)
+    at initTree (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1800:4)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1746:6)
+    at start (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:1745:96)
+    at start2 (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:13943:19)
+    at <anonymous> (http://localhost:8001/livewire-481ebc71/livewire.js?id=ab6b028c:15786:16)
+[  665871ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://localhost:8001/_boost/browser-logs @ http://localhost:8001/account:194
+[  665887ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: http://[::1]:5173/resources/js/loot4/assets/fonts/SF-Pro-Display-Regular.otf @ http://localhost:8001/account:380
+[  665887ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: http://[::1]:5173/resources/js/loot4/assets/fonts/SF-Pro-Display-Medium.otf @ http://localhost:8001/account:380
+[  818159ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://localhost:8001/_boost/browser-logs @ http://localhost:8001/account:194
+[  818183ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: http://[::1]:5173/resources/js/loot4/assets/fonts/SF-Pro-Display-Regular.otf @ http://localhost:8001/account:380
+[  818183ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: http://[::1]:5173/resources/js/loot4/assets/fonts/SF-Pro-Display-Medium.otf @ http://localhost:8001/account:380
+[  866235ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://localhost:8001/_boost/browser-logs @ http://localhost:8001/account:194
+[  866239ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: http://[::1]:5173/resources/js/loot4/assets/fonts/SF-Pro-Display-Regular.otf @ http://localhost:8001/account:380
+[  866239ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: http://[::1]:5173/resources/js/loot4/assets/fonts/SF-Pro-Display-Medium.otf @ http://localhost:8001/account:380
+[  886824ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://localhost:8001/_boost/browser-logs @ http://localhost:8001/account:194

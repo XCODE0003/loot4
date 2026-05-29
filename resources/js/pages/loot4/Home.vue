@@ -9,6 +9,6 @@ defineProps({
 </script>
 
 <template>
-  <Head title="Loot4you" />
+  <Head title="Loot4You - Your Trusted Marketplace for Digital Gaming Products" />
   <HomeView :discover-games="discoverGames" />
 </template>

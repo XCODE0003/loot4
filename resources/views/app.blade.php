@@ -33,6 +33,28 @@
         <link rel="icon" href="/favicon.ico" sizes="any">
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        @php
+            try { $customFavicon = \App\Models\Setting::get('favicon'); } catch (\Throwable $e) { $customFavicon = null; }
+        @endphp
+        @if($customFavicon)
+            <link rel="icon" href="{{ $customFavicon }}">
+        @endif
+
+        {{-- Base SEO / social sharing defaults (per-page <Head> may override the title) --}}
+        @php($seoDescription = 'Unlock premium in-game assets, rare accounts, and exclusive items with Loot4You. Experience a secure, fast, and simple purchasing process for all your gaming needs.')
+        @php($seoTitle = 'Loot4You - Your Trusted Marketplace for Digital Gaming Products')
+        @php($seoImage = url('/preview.png'))
+        <meta name="description" content="{{ $seoDescription }}">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="Loot4You">
+        <meta property="og:title" content="{{ $seoTitle }}">
+        <meta property="og:description" content="{{ $seoDescription }}">
+        <meta property="og:image" content="{{ $seoImage }}">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $seoTitle }}">
+        <meta name="twitter:description" content="{{ $seoDescription }}">
+        <meta name="twitter:image" content="{{ $seoImage }}">
 
         @fonts
 

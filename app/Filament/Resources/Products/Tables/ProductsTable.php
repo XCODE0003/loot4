@@ -20,7 +20,10 @@ class ProductsTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->defaultSort('created_at', 'desc')
+            // Manual display position: drag rows to set the order shown in the
+            // storefront catalog. Filter by game/type first, then reorder.
+            ->reorderable('sort_order')
+            ->defaultSort('sort_order')
             ->columns([
                 SpatieMediaLibraryImageColumn::make('main')
                     ->collection('main')

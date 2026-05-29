@@ -77,8 +77,18 @@ onBeforeUnmount(() => {
                 'is-open': link.hasIcon && gameMenuOpen,
               }"
             >
+              <a
+                v-if="link.external"
+                :href="link.to"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="header_nav_link"
+                @click="closeMenu"
+              >
+                {{ $t(link.tkey) }}
+              </a>
               <Link
-                v-if="!link.hasIcon"
+                v-else-if="!link.hasIcon"
                 :href="link.to"
                 class="header_nav_link"
                 @click="closeMenu"

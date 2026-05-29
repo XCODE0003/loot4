@@ -9,10 +9,12 @@ import { initializeFlashToast } from '@/lib/flashToast';
 // @ts-expect-error - plain JS i18n module
 import { i18n } from '@/loot4/i18n';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'Loot4You';
 
 createInertiaApp({
-    title: (title) => (title ? `${title} - ${appName}` : appName),
+    // Pages already include the brand in their own <Head> titles, so use the
+    // page title verbatim and fall back to the brand name on the home page.
+    title: (title) => title || appName,
     layout: (name) => {
         switch (true) {
             case name === 'Welcome':

@@ -68,6 +68,8 @@ class HandleInertiaRequests extends Middleware
                     'icon' => $g->getFirstMediaUrl('icon') ?: $g->getFirstMediaUrl('image') ?: null,
                 ])
                 ->all(),
+            // Google Analytics measurement ID (loaded only after cookie consent).
+            'gaId' => \App\Models\Setting::get('ga_measurement_id'),
             // Live USD exchange rates fetched hourly by FetchExchangeRates job.
             'exchangeRates' => Cache::get('exchange_rates', []),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',

@@ -42,7 +42,7 @@ class IceNoxPaymentTest extends TestCase
         $response = $this->post('/checkout', [
             'email' => 'buyer@example.com',
             'items' => [['slug' => 'gta-cash', 'qty' => 1]],
-            'method' => 'card',
+            'method' => 'stripe-cards',
         ]);
 
         $response->assertRedirect('https://imp.icenox.com/v1/payment/get/pay_abc123');
@@ -52,7 +52,7 @@ class IceNoxPaymentTest extends TestCase
         $this->assertSame('pay_abc123', $order->payments()->first()->transaction_id);
 
         Http::assertSent(fn ($request) => str_contains($request->url(), '/api/payment/create/')
-            && $request['paymentmethod'] === 'cards'
+            && $request['paymentmethod'] === 'stripe-cards'
             && $request->hasHeader('Authorization', 'Bearer test-key'));
     }
 
@@ -68,7 +68,7 @@ class IceNoxPaymentTest extends TestCase
         $this->post('/checkout', [
             'email' => 'x@y.com',
             'items' => [['slug' => 'p1', 'qty' => 1]],
-            'method' => 'card',
+            'method' => 'stripe-cards',
         ])->assertSessionHasErrors('payment');
     }
 

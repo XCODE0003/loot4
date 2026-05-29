@@ -41,4 +41,15 @@ return [
         'url' => env('ICENOX_URL', 'https://imp.icenox.com'),
     ],
 
+    // Social login (OAuth2). Set the client id/secret in .env to enable each button.
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+    ],
+
+    'discord' => [
+        'client_id' => env('DISCORD_CLIENT_ID'),
+        'client_secret' => env('DISCORD_CLIENT_SECRET'),
+    ],
+
 ];

@@ -45,7 +45,8 @@ class StorefrontController extends Controller
             ->where('status', ProductStatus::Active->value)
             ->where('visibility', true)
             ->with('game')
-            ->latest()
+            ->orderBy('sort_order')
+            ->orderBy('id')
             ->get();
 
         $featured = Game::query()
@@ -76,7 +77,8 @@ class StorefrontController extends Controller
             ->where('visibility', true)
             ->where('game_id', $game->id)
             ->with('game')
-            ->latest()
+            ->orderBy('sort_order')
+            ->orderBy('id')
             ->get();
 
         return Inertia::render('loot4/Game', [

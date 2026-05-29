@@ -2,6 +2,7 @@
 import { Form, Head, Link } from '@inertiajs/vue3'
 import '@/loot4/assets/styles/style.css'
 import Container from '@/loot4/components/layout/Container.vue'
+import SocialAuth from '@/loot4/components/auth/SocialAuth.vue'
 
 defineProps({
   passwordRules: { type: String, default: null },
@@ -51,6 +52,8 @@ defineProps({
             {{ processing ? $t('auth.creating') : $t('auth.createBtn') }}
           </button>
         </Form>
+
+        <SocialAuth />
 
         <p class="auth_alt">
           {{ $t('auth.haveAccount') }}

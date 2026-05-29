@@ -1028,8 +1028,8 @@ position: relative;
 .game_intro_block_image {
   vertical-align: middle;
   border-radius: 20px;
-  max-width: 584px;
-  max-height: 374px;
+  width: 584px;
+  height: 374px;
   object-fit: cover;
 }
 .game_intro_block_trust{
