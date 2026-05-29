@@ -1948,6 +1948,12 @@ color: #fff;
     overflow-y: auto;
     z-index: 1002;
   }
+  /* The panel/overlay live inside .header (z-index:5), so their high
+     z-index is capped to that context. Lift the whole header above page
+     content (and the cart) while the menu is open so nothing shows through. */
+  body.menu-open .header {
+    z-index: 1100;
+  }
   body.menu-open .header_menu {
     transform: translateX(0);
   }

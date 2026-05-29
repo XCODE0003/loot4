@@ -613,6 +613,7 @@ function placeOrder() {
   color: rgba(255, 255, 255, 0.55);
 }
 .co_consent_text a {
+  display: inline;
   color: #2bff95;
   text-decoration: none;
 }
@@ -668,6 +669,7 @@ function placeOrder() {
   color: rgba(255, 255, 255, 0.75);
 }
 .co_agree_label a {
+  display: inline;
   color: #2bff95;
   text-decoration: none;
 }
