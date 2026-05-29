@@ -42,6 +42,9 @@ return [
         // Secret used to verify the webhook X-Signature: base64(sha256(secret + body)).
         // When empty, signature verification is skipped.
         'webhook_secret' => env('ICENOX_WEBHOOK_SECRET'),
+        // Override the webhook URL sent to IceNox (e.g. a Cloudflare-bypassing
+        // subdomain). Falls back to the checkout.webhook route when empty.
+        'notification_url' => env('ICENOX_NOTIFICATION_URL'),
     ],
 
     // Social login (OAuth2). Set the client id/secret in .env to enable each button.

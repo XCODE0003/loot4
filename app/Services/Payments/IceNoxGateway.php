@@ -33,6 +33,10 @@ class IceNoxGateway
      */
     public function createPayment(Order $order, string $method): array
     {
+        // Webhook URL is overridable via config (e.g. a Cloudflare-bypassing
+        // subdomain like hooks.loot4you.gg); falls back to the app route.
+        $notificationUrl = config('services.icenox.notification_url') ?: route('checkout.webhook');
+
         $response = Http::withToken($this->apiKey)
             ->acceptJson()
             ->asJson()
@@ -51,7 +55,7 @@ class IceNoxGateway
                 'customerid' => (string) ($order->user_id ?? ''),
                 // Custom integration: status webhook is POSTed to notification_url.
                 'notification_mode' => 'default',
-                'notification_url' => route('checkout.webhook'),
+                'notification_url' => $notificationUrl,
                 'redirect_url' => route('checkout.success', $order->order_number),
             ]);
 
@@ -71,7 +75,7 @@ class IceNoxGateway
             'order' => $order->order_number,
             'paymentid' => $data['paymentid'] ?? null,
             'returned_orderid' => $data['orderid'] ?? null,
-            'notification_url' => route('checkout.webhook'),
+            'notification_url' => $notificationUrl,
         ]);
 
         return [
