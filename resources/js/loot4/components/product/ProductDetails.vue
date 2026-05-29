@@ -4,6 +4,7 @@ import { Link } from '@inertiajs/vue3'
 import Container from '@/loot4/components/layout/Container.vue'
 import ProductPackageSelect from '@/loot4/components/product/ProductPackageSelect.vue'
 import GameCard from '@/loot4/components/ui/GameCard.vue'
+import TrustpilotWidget from '@/loot4/components/ui/TrustpilotWidget.vue'
 import { asset } from '@/loot4/utils/asset'
 import { useCart } from '@/loot4/composables/useCart'
 import { useLocale } from '@/loot4/composables/useLocale'
@@ -76,7 +77,9 @@ function buy() {
             </div>
             <p class="product_main_section_payments_text">and many more</p>
           </div>
-          <img :src="asset(data.trustImage)" alt="" class="product_main_section_trust" />
+          <div class="product_main_section_trustpilot">
+            <TrustpilotWidget />
+          </div>
         </div>
         <div class="product_main_section">
           <h1 class="product_main_section_title">{{ data.title }}</h1>

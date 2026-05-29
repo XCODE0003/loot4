@@ -53,7 +53,11 @@ const getStoredAppearance = () => {
         return null;
     }
 
-    return localStorage.getItem('appearance') as Appearance | null;
+    try {
+        return localStorage.getItem('appearance') as Appearance | null;
+    } catch {
+        return null;
+    }
 };
 
 const prefersDark = (): boolean => {
@@ -80,16 +84,32 @@ export function initializeTheme(): void {
     updateTheme(savedAppearance || 'system');
 
     // Set up system theme change listener...
-    mediaQuery()?.addEventListener('change', handleSystemThemeChange);
+    const query = mediaQuery();
+    if (!query) {
+        return;
+    }
+
+    if (typeof query.addEventListener === 'function') {
+        query.addEventListener('change', handleSystemThemeChange);
+        return;
+    }
+
+    // Safari fallback for older MediaQueryList API.
+    if (typeof query.addListener === 'function') {
+        query.addListener(handleSystemThemeChange);
+    }
 }
 
 const appearance = ref<Appearance>('system');
 
 export function useAppearance(): UseAppearanceReturn {
     onMounted(() => {
-        const savedAppearance = localStorage.getItem(
-            'appearance',
-        ) as Appearance | null;
+        let savedAppearance: Appearance | null = null;
+        try {
+            savedAppearance = localStorage.getItem('appearance') as Appearance | null;
+        } catch {
+            savedAppearance = null;
+        }
 
         if (savedAppearance) {
             appearance.value = savedAppearance;
@@ -108,7 +128,11 @@ export function useAppearance(): UseAppearanceReturn {
         appearance.value = value;
 
         // Store in localStorage for client-side persistence...
-        localStorage.setItem('appearance', value);
+        try {
+            localStorage.setItem('appearance', value);
+        } catch {
+            // Ignore storage errors (private mode / quota exceeded).
+        }
 
         // Store in cookie for SSR...
         setCookie('appearance', value);

@@ -1329,6 +1329,19 @@ white-space: nowrap;
   margin-top: 30px;
 
 }
+.product_main_section_trustpilot {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+.product_main_section_trustpilot .catalog-hero__trustpilot-mobile {
+  margin-top: 0;
+}
+.product_main_section_trustpilot .catalog-hero__trustpilot {
+  width: 100%;
+  max-width: 360px;
+  justify-content: center;
+}
 .product_main_section_title {
   font-family: var(--font-family);
 font-weight: 400;

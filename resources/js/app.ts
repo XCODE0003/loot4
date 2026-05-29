@@ -48,8 +48,15 @@ createInertiaApp({
     },
 });
 
-// This will set light / dark mode on page load...
-initializeTheme();
+// Keep startup resilient on strict mobile browsers (Safari private mode, etc).
+try {
+    initializeTheme();
+} catch (error) {
+    console.error('Theme init failed', error);
+}
 
-// This will listen for flash toast data from the server...
-initializeFlashToast();
+try {
+    initializeFlashToast();
+} catch (error) {
+    console.error('Flash toast init failed', error);
+}
