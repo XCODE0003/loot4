@@ -1322,6 +1322,13 @@ white-space: nowrap;
 }
 .product_main_section_payments_icon {
   vertical-align: middle;
+  display: block;
+  width: auto;
+  height: 28px;
+  max-width: 112px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 8px;
 }
 .product_main_section_trust {
   display: block;
@@ -2274,6 +2281,10 @@ color: #fff;
   }
   .product_main_section_price_new {
     font-size: 48px;
+  }
+  .product_main_section_payments_icon {
+    height: 22px;
+    max-width: 86px;
   }
   .footer_main {
     flex-direction: column;
