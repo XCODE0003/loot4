@@ -1033,10 +1033,10 @@ position: relative;
   vertical-align: middle;
   border-radius: 20px;
   width: 584px;
-  max-width: 100%;
-  /* Keep the image's natural aspect ratio so wide banners (GTA, etc.) are
-     not cropped. A fixed height + object-fit:cover cut off the sides. */
-  height: auto;
+  height: 374px;
+  /* Always fill the Fortnite-sized box: stretch smaller / odd-ratio art to fit
+     instead of cropping it (object-fit:cover) or shrinking it (height:auto). */
+  object-fit: fill;
 }
 .game_intro_block_trust{
 vertical-align: middle;
