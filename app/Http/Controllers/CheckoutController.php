@@ -199,26 +199,47 @@ class CheckoutController extends Controller
     }
 
     /**
-     * Payment status webhook (IceNox notification_url). CSRF-exempt.
+     * Payment status webhook (gateway notification_url / webhook_url). CSRF-exempt.
+     *
+     * Handles the Nox gateway payload shape ({ status: "PAID", code, txid, amount })
+     * as well as legacy field names. When a webhook secret is configured the
+     * X-Signature header is verified — base64(sha256(secret + raw_body)) — and
+     * unsigned/forged calls are rejected.
      */
     public function webhook(Request $request): JsonResponse
     {
+        $raw = $request->getContent();
         $payload = $request->all();
-        Log::info('IceNox webhook received', $payload);
+        Log::info('Payment webhook received', $payload);
 
-        $paymentId = $payload['paymentid'] ?? $payload['payment_id'] ?? $payload['id'] ?? null;
-        $statusRaw = strtolower((string) ($payload['status'] ?? $payload['state'] ?? $payload['payment_status'] ?? ''));
-        $isPaid = ($payload['success'] ?? null) === true
-            || in_array($statusRaw, ['paid', 'success', 'successful', 'completed', 'complete', '1', 'true'], true);
+        $secret = config('services.icenox.webhook_secret');
+        if (filled($secret)) {
+            $expected = base64_encode(hash('sha256', $secret.$raw, true));
+            $provided = (string) $request->header('X-Signature', '');
 
-        $payment = $paymentId ? Payment::query()->where('transaction_id', $paymentId)->first() : null;
-        $order = $payment?->order;
+            if ($provided === '' || ! hash_equals($expected, $provided)) {
+                Log::warning('Payment webhook signature mismatch', [
+                    'reference' => $payload['code'] ?? $payload['orderid'] ?? null,
+                ]);
 
-        if (! $order && ! empty($payload['orderid'])) {
-            $order = Order::query()->where('order_number', $payload['orderid'])->first();
+                return response()->json(['received' => false, 'error' => 'invalid signature'], 401);
+            }
         }
 
-        $isFailed = in_array($statusRaw, ['failed', 'fail', 'cancelled', 'canceled', 'declined', 'error', 'expired'], true);
+        // Gateway transaction id (Nox: "txid") and our own order reference (Nox: "code").
+        $txid = $payload['txid'] ?? $payload['paymentid'] ?? $payload['payment_id'] ?? $payload['id'] ?? null;
+        $reference = $payload['code'] ?? $payload['orderid'] ?? null;
+
+        $statusRaw = strtolower((string) ($payload['status'] ?? $payload['state'] ?? $payload['payment_status'] ?? ''));
+        $isPaid = ($payload['success'] ?? null) === true
+            || in_array($statusRaw, ['paid', 'pay', 'success', 'successful', 'completed', 'complete', '1', 'true'], true);
+        $isFailed = in_array($statusRaw, ['failed', 'fail', 'cancelled', 'canceled', 'declined', 'error', 'expired', 'refused', 'chargeback'], true);
+
+        $order = $txid ? Payment::query()->where('transaction_id', $txid)->first()?->order : null;
+
+        if (! $order && filled($reference)) {
+            $order = Order::query()->where('order_number', $reference)->first();
+        }
 
         if ($order && $isPaid && $order->payment_status !== PaymentStatus::Paid) {
             $order->update([

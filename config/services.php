@@ -39,6 +39,9 @@ return [
         'key' => env('ICENOX_API_KEY'),
         'merchant' => env('ICENOX_MERCHANT_ID'),
         'url' => env('ICENOX_URL', 'https://imp.icenox.com'),
+        // Secret used to verify the webhook X-Signature: base64(sha256(secret + body)).
+        // When empty, signature verification is skipped.
+        'webhook_secret' => env('ICENOX_WEBHOOK_SECRET'),
     ],
 
     // Social login (OAuth2). Set the client id/secret in .env to enable each button.
