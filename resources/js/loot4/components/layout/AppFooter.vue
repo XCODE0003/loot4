@@ -1,6 +1,6 @@
 <script setup>
 import { Link } from '@inertiajs/vue3'
-import { footerColumns, footerPayments } from '@/loot4/data/footer'
+import { footerColumns } from '@/loot4/data/footer'
 import { asset } from '@/loot4/utils/asset'
 
 const year = new Date().getFullYear()
@@ -87,7 +87,7 @@ const year = new Date().getFullYear()
 
       <div class="footer_bottom">
         <div class="footer_payments">
-          <img v-for="p in footerPayments" :key="p" :src="asset(p)" alt="" class="footer_payment" />
+          <img src="/payment.svg" alt="Accepted payment methods" class="footer_payment_strip" loading="lazy" />
         </div>
         <p class="footer_copy">© {{ year }} Loot4You — All rights reserved.</p>
         <p class="footer_disclaimer">
@@ -153,7 +153,10 @@ const year = new Date().getFullYear()
   color: rgba(255, 255, 255, 0.38);
 }
 .footer_brand_text_accent {
-  color: rgba(43, 255, 149, 0.6);
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #2f8bff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .footer_support {
   margin-top: 24px;
@@ -258,15 +261,14 @@ const year = new Date().getFullYear()
 }
 .footer_payments {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  opacity: 0.45;
+  opacity: 0.55;
 }
-.footer_payment {
-  height: 24px;
+.footer_payment_strip {
+  height: 26px;
   width: auto;
+  max-width: 100%;
   object-fit: contain;
 }
 .footer_copy {

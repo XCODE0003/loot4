@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import Container from '@/loot4/components/layout/Container.vue'
+import TrustpilotWidget from '@/loot4/components/ui/TrustpilotWidget.vue'
 import { gamePage as fallbackGamePage } from '@/loot4/data/catalog'
 import { asset } from '@/loot4/utils/asset'
 
@@ -16,7 +17,9 @@ const page = computed(() => props.gamePage ?? fallbackGamePage)
     <Container>
       <div class="game_intro_blocks">
         <div class="game_intro_block">
-          <img :src="asset('intro_trust.png')" alt="" class="game_intro_block_trust" />
+          <div class="game_intro_block_trustpilot">
+            <TrustpilotWidget />
+          </div>
           <h1 class="game_intro_block_title">{{ page.title }}</h1>
           <div v-if="page.guarantees && page.guarantees.length" class="game_intro_block_texts">
             <ul class="game_intro_block_texts_items">

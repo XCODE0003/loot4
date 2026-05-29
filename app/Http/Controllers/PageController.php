@@ -161,7 +161,17 @@ class PageController extends Controller
     public function paymentPolicy(): Response
     {
         return $this->render('Payment Policy', 'Last Updated: March 2024', [
-            ['type' => 'p', 'text' => 'We accept payments via Stripe (Visa, Mastercard, Apple Pay, Google Pay, Amex, JCB, Klarna, EPS, PayPal, Link, Bancontact, Revolut). Click on the "Buy Now" button to be redirected to the checkout form.'],
+            ['type' => 'h', 'text' => 'How to Purchase an Account Boost'],
+            ['type' => 'lead', 'text' => 'This is a detailed guide of all events that happen while purchasing an Account Boost for PS4/5 or XBOX. Click on the "Order Now" button so you can be redirected to the checkout form. We accept payments via Stripe (Visa, Mastercard, Apple Pay, Google Pay, Amex, JCB, Klarna, EPS, PayPal, Link, Bancontact, Revolut).'],
+            ['type' => 'h', 'text' => 'Step 1'],
+            ['type' => 'p', 'text' => 'Select the product which you wish to purchase.'],
+            ['type' => 'image', 'src' => '/assets/payment_policy/screen1.png', 'alt' => 'Step 1 — select the product you wish to purchase'],
+            ['type' => 'h', 'text' => 'Step 2'],
+            ['type' => 'p', 'text' => 'Select the amount of money you wish to purchase.'],
+            ['type' => 'image', 'src' => '/assets/payment_policy/screen2.png', 'alt' => 'Step 2 — select the amount you wish to purchase'],
+            ['type' => 'h', 'text' => 'Step 3'],
+            ['type' => 'p', 'text' => 'We fill in billing and contact information, and place an order.'],
+            ['type' => 'image', 'src' => '/assets/payment_policy/screen3.png', 'alt' => 'Step 3 — fill in billing and contact information, then place your order'],
             ['type' => 'h', 'text' => '1. Accepted Payment Methods'],
             ['type' => 'p', 'text' => 'Loot4You accepts a wide range of payment methods to ensure a convenient checkout experience for all customers, including:'],
             ['type' => 'list', 'items' => [

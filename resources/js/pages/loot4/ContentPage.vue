@@ -29,6 +29,10 @@ defineProps({
             <li v-for="(item, j) in block.items" :key="j">{{ item }}</li>
           </ul>
 
+          <figure v-else-if="block.type === 'image'" class="page_figure">
+            <img :src="block.src" :alt="block.alt || ''" loading="lazy" />
+          </figure>
+
           <div v-else-if="block.type === 'steps'" class="page_steps">
             <div v-for="(step, j) in block.items" :key="j" class="page_step">
               <span class="page_step_n">{{ step.n }}</span>
@@ -129,6 +133,16 @@ defineProps({
   height: 7px;
   border-radius: 50%;
   background: #2bff95;
+}
+.page_figure {
+  margin: 4px 0 30px;
+}
+.page_figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .page_steps {
   display: flex;

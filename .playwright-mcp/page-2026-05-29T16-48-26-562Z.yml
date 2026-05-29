@@ -1,0 +1,152 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - paragraph [ref=e6]: Cookie preferences
+      - paragraph [ref=e7]: We use cookies and similar technologies to measure traffic and improve your experience. Analytics (Google) and advertising cookies are only used if you accept.
+    - generic [ref=e8]:
+      - button "Reject" [ref=e9] [cursor=pointer]
+      - button "Accept" [ref=e10] [cursor=pointer]
+  - main [ref=e11]:
+    - navigation [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - link "BroLooting" [ref=e16] [cursor=pointer]:
+            - /url: /
+            - img "BroLooting" [ref=e17]
+          - generic [ref=e19]:
+            - link "Home" [ref=e20] [cursor=pointer]:
+              - /url: /
+            - link "Choose Game" [ref=e21] [cursor=pointer]:
+              - /url: /shop
+              - text: Choose Game
+              - img [ref=e22]
+            - link "Contact Us" [ref=e24] [cursor=pointer]:
+              - /url: /contact
+            - link "Sell to Us" [ref=e25] [cursor=pointer]:
+              - /url: /sell
+            - link "Reviews" [ref=e26] [cursor=pointer]:
+              - /url: https://www.trustpilot.com/review/BroLooting.com
+        - generic [ref=e27]:
+          - button "EN" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]: EN
+            - img
+          - button [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+    - generic [ref=e40]:
+      - heading "FAQ" [level=1] [ref=e41]
+      - paragraph [ref=e42]: Frequently asked questions about our services.
+      - generic [ref=e43]:
+        - button "What happens after I buy a boost account?" [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: What happens after I buy a boost account?
+          - img [ref=e47]
+        - button "What happens after I buy a modded account?" [ref=e50] [cursor=pointer]:
+          - generic [ref=e51]: What happens after I buy a modded account?
+          - img [ref=e52]
+        - button "How is BroLooting different from others?" [ref=e55] [cursor=pointer]:
+          - generic [ref=e56]: How is BroLooting different from others?
+          - img [ref=e57]
+        - button "Is it safe to use a boost account or a modded account?" [ref=e60] [cursor=pointer]:
+          - generic [ref=e61]: Is it safe to use a boost account or a modded account?
+          - img [ref=e62]
+        - button "Can I get banned for this?" [ref=e65] [cursor=pointer]:
+          - generic [ref=e66]: Can I get banned for this?
+          - img [ref=e67]
+        - button "What is the difference between cash/cars and cash only?" [ref=e70] [cursor=pointer]:
+          - generic [ref=e71]: What is the difference between cash/cars and cash only?
+          - img [ref=e72]
+        - button "How fast will I receive my order?" [ref=e75] [cursor=pointer]:
+          - generic [ref=e76]: How fast will I receive my order?
+          - img [ref=e77]
+      - paragraph [ref=e80]:
+        - text: Still have questions?
+        - link "support@brolooting.com" [ref=e81] [cursor=pointer]:
+          - /url: mailto:support@brolooting.com
+        - text: or join our
+        - link "Discord server" [ref=e82] [cursor=pointer]:
+          - /url: https://discord.com/invite/gkySAJz3Mz
+        - text: . Our support team is available 24/7.
+    - button [ref=e83] [cursor=pointer]:
+      - img
+    - generic [ref=e85]:
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - link "BroLooting BroLooting" [ref=e89] [cursor=pointer]:
+            - /url: /
+            - img "BroLooting" [ref=e90]
+            - generic [ref=e91]: BroLooting
+          - paragraph [ref=e92]: The fastest, safest way to buy gaming credits and coins. Delivered in minutes — every time.
+          - generic [ref=e93]:
+            - paragraph [ref=e94]: Support
+            - generic [ref=e95]:
+              - img [ref=e96]
+              - generic [ref=e99]:
+                - text: Mon – Fri, 9:00 AM – 6:00 PM
+                - text: Email responses within 12 hours.
+            - generic [ref=e100]:
+              - img [ref=e101]
+              - link "support@brolooting.com" [ref=e104] [cursor=pointer]:
+                - /url: mailto:support@brolooting.com
+            - generic [ref=e105]:
+              - img [ref=e106]
+              - link "+44 7455 903679" [ref=e108] [cursor=pointer]:
+                - /url: tel:+447455903679
+            - generic [ref=e109]:
+              - img [ref=e110]
+              - paragraph [ref=e113]:
+                - text: First Floor Office, 3 Hornton Place,
+                - text: London, United Kingdom
+          - generic [ref=e114]:
+            - link "Discord" [ref=e115] [cursor=pointer]:
+              - /url: https://discord.com/invite/gkySAJz3Mz
+              - img [ref=e116]
+            - link "Instagram" [ref=e118] [cursor=pointer]:
+              - /url: https://instagram.com/brolooting/
+              - img [ref=e119]
+            - link "WhatsApp" [ref=e121] [cursor=pointer]:
+              - /url: https://wa.me/380730882668
+              - img [ref=e122]
+        - generic [ref=e124]:
+          - paragraph [ref=e125]: Company
+          - navigation [ref=e126]:
+            - link "About Us" [ref=e127] [cursor=pointer]:
+              - /url: /about
+            - link "FAQ" [ref=e128] [cursor=pointer]:
+              - /url: /faq
+            - link "How It Works" [ref=e129] [cursor=pointer]:
+              - /url: /how-it-works
+            - link "Contact Us" [ref=e130] [cursor=pointer]:
+              - /url: /contact
+        - generic [ref=e131]:
+          - paragraph [ref=e132]: Popular Types
+          - navigation [ref=e133]:
+            - link "Boosting" [ref=e134] [cursor=pointer]:
+              - /url: /shop?type=boosting
+            - link "Game Coins" [ref=e135] [cursor=pointer]:
+              - /url: /shop?type=game-coins
+            - link "Accounts" [ref=e136] [cursor=pointer]:
+              - /url: /shop?type=accounts
+        - generic [ref=e137]:
+          - paragraph [ref=e138]: Legal
+          - navigation [ref=e139]:
+            - link "Privacy Policy" [ref=e140] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms & Conditions" [ref=e141] [cursor=pointer]:
+              - /url: /terms
+            - link "Refund Policy" [ref=e142] [cursor=pointer]:
+              - /url: /refunds
+            - link "Payment Policy" [ref=e143] [cursor=pointer]:
+              - /url: /payment-policy
+            - link "Shipping Policy" [ref=e144] [cursor=pointer]:
+              - /url: /shipping-policy
+            - link "Cookies Policy" [ref=e145] [cursor=pointer]:
+              - /url: /cookies-policy
+      - generic [ref=e147]:
+        - img "Accepted Payment Methods" [ref=e149]
+        - paragraph [ref=e151]: © 2026 BroLooting — All rights reserved.
+        - paragraph [ref=e152]: BroLooting is an independent platform not affiliated with, endorsed by, or sponsored by any video game developers or publishers, including Rockstar Games, Take-Two Interactive, Riot Games, Activision Blizzard, Electronic Arts, Epic Games, Tencent, Bungie, Grinding Gear Games, Square Enix, Valve, Battlestate Games, Wargaming.net, Amazon, Jagex, Smilegate RPG, Digital Extremes, and Ubisoft. All trademarks, game titles, logos and images featured on this website are the property of their respective publishers and owners. The views and opinions expressed by BroLooting do not reflect those of any game developers or publishers.
+        - link "Designed & Developed by Ritesh Sahoo" [ref=e154] [cursor=pointer]:
+          - /url: https://riteshsahoo.com
+          - generic [ref=e155]: Designed & Developed by
+          - img "Ritesh Sahoo" [ref=e156]
+  - region "Notifications alt+T"
+  - alert [ref=e157]

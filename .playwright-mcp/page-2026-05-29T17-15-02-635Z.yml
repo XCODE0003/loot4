@@ -1,0 +1,15 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]: CURRENT css (height:18px; width:auto)
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: ○
+      - generic [ref=e6]: Apple Pay
+      - img [ref=e8]
+    - generic [ref=e9]:
+      - generic [ref=e10]: ○
+      - generic [ref=e11]: Bancontact
+      - img [ref=e13]
+    - generic [ref=e14]:
+      - generic [ref=e15]: ○
+      - generic [ref=e16]: EPS
+      - img [ref=e18]

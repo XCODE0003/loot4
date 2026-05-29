@@ -1,0 +1,2 @@
+[    1069ms] [ERROR] Error: <path> attribute d: Expected number, "…03.2 467.3 459.3C468 459.1 469 4…". @ https://brolooting.com/faq:0
+[    2378ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://connect.facebook.net/en_US/fbevents.js:0

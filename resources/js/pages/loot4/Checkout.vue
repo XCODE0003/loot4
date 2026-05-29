@@ -40,20 +40,10 @@ const paymentMethods = [
   { value: 'stripe-revolut-pay', label: 'Revolut Pay',         icons: ['/payment_methods/revolut-white.svg'] },
 ]
 
-const FEE_RATE = 0.05
-
-const activeMethod = computed(() => paymentMethods.find((m) => m.value === method.value) ?? paymentMethods[0])
-const feeMultiplier = computed(() => (method.value === 'crypto' ? -FEE_RATE : FEE_RATE))
-const feeAmount = computed(() => total.value * feeMultiplier.value)
-const grandTotal = computed(() => total.value + feeAmount.value)
+const grandTotal = computed(() => total.value)
 
 function money(value) {
   return formatPrice(value)
-}
-
-function signedMoney(value) {
-  const sign = value < 0 ? '−' : '+'
-  return `${sign}${formatPrice(Math.abs(Number(value)))}`
 }
 
 async function applyPromo() {
@@ -184,12 +174,6 @@ function placeOrder() {
             <div class="co_row">
               <span>Total items</span>
               <span>{{ count }}</span>
-            </div>
-            <div class="co_row">
-              <span>{{ activeMethod.label }}</span>
-              <span :class="{ 'co_row_pos': feeAmount > 0, 'co_row_neg': feeAmount < 0 }">
-                {{ signedMoney(feeAmount) }}
-              </span>
             </div>
             <div v-if="coupon" class="co_row co_row_neg">
               <span>Discount ({{ coupon.code }})</span>
@@ -427,6 +411,9 @@ function placeOrder() {
 .co_method_icons img {
   height: 18px;
   width: auto;
+  max-height: 18px;
+  max-width: 120px;
+  object-fit: contain;
   opacity: 0.85;
 }
 
@@ -517,7 +504,6 @@ function placeOrder() {
   color: rgba(255, 255, 255, 0.85);
   font-size: 15px;
 }
-.co_row_pos { color: rgba(255, 255, 255, 0.85); }
 .co_row_neg { color: #4ade80; }
 .co_row_total {
   font-size: 22px;

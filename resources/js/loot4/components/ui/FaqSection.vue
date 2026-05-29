@@ -4,6 +4,10 @@ import Container from '@/loot4/components/layout/Container.vue'
 import SectionTag from '@/loot4/components/ui/SectionTag.vue'
 import { faqItems } from '@/loot4/data/faq'
 
+const props = defineProps({
+  items: { type: Array, default: () => faqItems },
+})
+
 const openIndex = ref(0)
 
 function toggle(index) {
@@ -22,7 +26,7 @@ function toggle(index) {
       </p>
       <div class="faq_blocks">
         <div
-          v-for="(item, index) in faqItems"
+          v-for="(item, index) in props.items"
           :key="index"
           class="faq_block"
           :class="{ 'is-open': openIndex === index }"
@@ -34,7 +38,12 @@ function toggle(index) {
                 <path d="M4.92383 7.38281L9.84646 12.3054L14.7691 7.38281" stroke="#A1A1AA" stroke-width="2.1097" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </div>
-            <p class="faq_block_text">{{ item.answer }}</p>
+            <div class="faq_block_text">
+              <ul v-if="Array.isArray(item.answer)" class="faq_block_list">
+                <li v-for="(point, i) in item.answer" :key="i" class="faq_block_list_item">{{ point }}</li>
+              </ul>
+              <template v-else>{{ item.answer }}</template>
+            </div>
           </div>
         </div>
       </div>
