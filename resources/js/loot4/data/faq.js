@@ -94,7 +94,3 @@ export const faqGameItems = [
     ],
   },
 ]
-
-// Full list for the dedicated /faq page: the curated FAQ plus the
-// game/account-specific questions.
-export const faqAllItems = [...faqItems, ...faqGameItems]
