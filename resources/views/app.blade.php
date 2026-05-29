@@ -30,9 +30,8 @@
             }
         </style>
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="icon" href="/favicon-l4y.png" type="image/png">
+        <link rel="apple-touch-icon" href="/favicon-l4y.png">
         @php
             try { $customFavicon = \App\Models\Setting::get('favicon'); } catch (\Throwable $e) { $customFavicon = null; }
         @endphp
