@@ -8,7 +8,7 @@ import { asset } from '@/loot4/utils/asset'
 
 const { t } = useI18n()
 
-const { items, isOpen, count, subtotal, discount, total, coupon, remove, close, applyCoupon, clearCoupon } = useCart()
+const { items, isOpen, count, subtotal, discount, total, coupon, remove, setQty, close, applyCoupon, clearCoupon } = useCart()
 const { formatPrice } = useLocale()
 
 // Teleport + Transition is rendered on the client only — SSR has no <body>
@@ -81,6 +81,11 @@ async function applyPromo() {
             <div class="cart_item_info">
               <p class="cart_item_title">{{ item.title }}</p>
               <p v-if="item.option" class="cart_item_option">{{ item.option }}</p>
+              <div class="cart_qty">
+                <button type="button" class="cart_qty_btn" aria-label="Decrease quantity" @click="setQty(item.key, item.qty - 1)">−</button>
+                <span class="cart_qty_value">{{ item.qty }}</span>
+                <button type="button" class="cart_qty_btn" aria-label="Increase quantity" @click="setQty(item.key, item.qty + 1)">+</button>
+              </div>
             </div>
             <div class="cart_item_prices">
               <span v-if="item.priceOld && item.priceOld > item.price" class="cart_item_old">{{ money(item.priceOld) }}</span>
@@ -230,6 +235,38 @@ async function applyPromo() {
   margin-top: 4px;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.45);
+}
+.cart_qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 4px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.cart_qty_btn {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.cart_qty_btn:hover {
+  background: rgba(43, 255, 149, 0.25);
+}
+.cart_qty_value {
+  min-width: 18px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 15px;
 }
 .cart_item_prices {
   text-align: right;

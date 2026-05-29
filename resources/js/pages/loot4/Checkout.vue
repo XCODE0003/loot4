@@ -8,7 +8,7 @@ import { useLocale } from '@/loot4/composables/useLocale'
 import { asset } from '@/loot4/utils/asset'
 
 const { t } = useI18n()
-const { items, subtotal, discount, total, coupon, count, remove, applyCoupon, clearCoupon, checkoutPayload, hydrate } = useCart()
+const { items, subtotal, discount, total, coupon, count, remove, setQty, applyCoupon, clearCoupon, checkoutPayload, hydrate } = useCart()
 const { formatPrice } = useLocale()
 
 onMounted(() => hydrate())
@@ -192,6 +192,11 @@ function placeOrder() {
               <div class="co_item_body">
                 <p class="co_item_title">{{ item.title }}</p>
                 <p v-if="item.option" class="co_item_option">{{ item.option }}</p>
+                <div class="co_qty">
+                  <button type="button" class="co_qty_btn" aria-label="Decrease quantity" @click="setQty(item.key, item.qty - 1)">−</button>
+                  <span class="co_qty_value">{{ item.qty }}</span>
+                  <button type="button" class="co_qty_btn" aria-label="Increase quantity" @click="setQty(item.key, item.qty + 1)">+</button>
+                </div>
               </div>
               <div class="co_item_price">
                 <span v-if="item.compareAt && item.compareAt > item.price" class="co_item_price_old">
@@ -486,6 +491,38 @@ function placeOrder() {
   margin: 4px 0 0;
   color: rgba(255, 255, 255, 0.55);
   font-size: 13px;
+}
+.co_qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  padding: 3px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.co_qty_btn {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.co_qty_btn:hover {
+  background: rgba(43, 255, 149, 0.25);
+}
+.co_qty_value {
+  min-width: 16px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
 }
 .co_item_price {
   display: flex;

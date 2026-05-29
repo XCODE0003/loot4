@@ -171,7 +171,9 @@ class StorefrontController extends Controller
             'priceOld' => ($comparePrice !== null && $comparePrice !== $price) ? $comparePrice : null,
             'packages' => $this->packages($product, $price),
             'description' => (string) ($product->description ?? ''),
-            'descriptionHtml' => (string) ($product->html_description ?? ''),
+            // Prefer the dedicated HTML field; fall back to the plain description so
+            // raw HTML pasted there still renders as-is (descriptions are admin-entered).
+            'descriptionHtml' => (string) ($product->html_description ?: ($product->description ?? '')),
             'recommended' => $recommended,
         ];
     }
