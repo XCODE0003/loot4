@@ -1,9 +1,0 @@
-[     641ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8040/_boost/browser-logs @ http://127.0.0.1:8040/game:170
-[  207009ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8040/_boost/browser-logs @ http://127.0.0.1:8040/game:170
-[  347122ms] [WARNING] [Vue warn]: Extraneous non-props attributes (errors, name, auth, sidebarOpen) were passed to component but could not be automatically inherited because component renders fragment or text or teleport root nodes. 
-  at <Game errors= {} name="Laravel" auth= {user: null}  ... > 
-  at <Loot4Layout errors= {} name="Laravel" auth= {user: null}  ... > 
-  at <Inertia initialPage= {component: loot4/Game, props: Object, url: /game, version: ee392a27457c9eeb2d982614bf66d311, sharedProps: Array(4)} initialComponent= {__name: Game, props: Object, setup: , __hmrId: d3362463, render: } resolveComponent=fn<resolveComponent>  ... > 
-  at <App> @ http://127.0.0.1:8040/game:229
-[  410205ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8040/_boost/browser-logs @ http://127.0.0.1:8040/game:170
-[  422692ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8040/_boost/browser-logs @ http://127.0.0.1:8040/game:170

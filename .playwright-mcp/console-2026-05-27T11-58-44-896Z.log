@@ -1,3 +1,0 @@
-[     356ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8040/_boost/browser-logs @ http://127.0.0.1:8040/product:178
-[     362ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: http://[::1]:5173/resources/js/loot4/assets/fonts/SF-Pro-Display-Regular.otf @ http://127.0.0.1:8040/product:364
-[     363ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: http://[::1]:5173/resources/js/loot4/assets/fonts/SF-Pro-Display-Medium.otf @ http://127.0.0.1:8040/product:364

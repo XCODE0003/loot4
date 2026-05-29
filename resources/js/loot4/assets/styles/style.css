@@ -1033,9 +1033,8 @@ position: relative;
   vertical-align: middle;
   border-radius: 20px;
   width: 584px;
+  min-width: 584px;
   height: 374px;
-  /* Always fill the Fortnite-sized box: stretch smaller / odd-ratio art to fit
-     instead of cropping it (object-fit:cover) or shrinking it (height:auto). */
   object-fit: fill;
 }
 .game_intro_block_trust{

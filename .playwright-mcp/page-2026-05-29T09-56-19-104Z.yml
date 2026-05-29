@@ -1,8 +1,0 @@
-- generic [active] [ref=e1]:
-  - generic [ref=e2]: LOOT4YOU
-  - heading "New order received" [level=1] [ref=e3]
-  - paragraph [ref=e4]: A new paid order has just come in. Details are below.
-  - text: "Order number #ORD-SCU1GP8C2N Date May 27, 2026 · 13:35 Email asdasdasd@gmail.com Payment ICENOX-PAYPAL Source Storefront"
-  - paragraph [ref=e5]: Order details
-  - text: Minima Quis Ut × 1 165.28 USD Total 165.28 USD
-  - paragraph [ref=e6]: © 2026 Loot4You — All rights reserved. The fastest, safest way to buy gaming credits and coins.
