@@ -15,8 +15,14 @@ class StorefrontController extends Controller
 
     /** @var list<string> */
     private const PAYMENT_ICONS = [
-        'product_visa.png', 'product_master.png', 'product_paypal.png',
-        'product_pay.png', 'product_btc.png', 'product_china.png',
+        '/payment_methods/cards.svg',
+        '/payment_methods/amazon-pay-white.svg',
+        '/payment_methods/apple-pay.svg',
+        '/payment_methods/bancontact.svg',
+        '/payment_methods/eps-white.svg',
+        '/payment_methods/google-pay.svg',
+        '/payment_methods/google-pay (1).svg',
+        '/payment_methods/klarna.svg',
     ];
 
     public function home(): Response
