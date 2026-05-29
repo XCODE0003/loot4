@@ -463,7 +463,7 @@ border-radius: 93px;
   box-shadow: none;
 }
 .intro_block_stats {
-  margin-top: 141.68px;
+  margin-top: 70px;
   display: flex;
   align-items: center;
   gap: 58.19px;
@@ -1070,7 +1070,7 @@ line-height: 200%;
 letter-spacing: -0.03em;
 color: rgba(255, 255, 255, 0.64);
 margin-left: 20px;
-} 
+}
 .game_cards {
   width: 100%;
   height: auto;
@@ -1678,7 +1678,7 @@ color: #fff;
     left: calc(50% - 1000px);
     width: 2000px
   }
-  
+
 }
 
 @media (max-width: 1400px) {
@@ -1840,7 +1840,7 @@ color: #fff;
     min-width: 180px;
   }
   .game_intro_block_image {
-   
+
     margin: 0 auto;
     display: block;
 }
@@ -2035,7 +2035,7 @@ color: #fff;
     max-width: 100%;
     width: 100%;
     height: auto;
-    
+
   }
   .game_cards_up {
     flex-direction: column;
@@ -2277,7 +2277,7 @@ color: #fff;
     left: calc(50% - 1000px);
     width: 2000px;
   }
-  
+
 }
 
 @media (max-width: 480px) {

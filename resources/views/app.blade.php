@@ -19,22 +19,32 @@
             })();
         </script>
 
-        {{-- Inline style to set the HTML background color based on our theme in app.css --}}
+        {{-- Avoid white flash on first paint before storefront CSS loads. --}}
         <style>
             html {
-                background-color: oklch(1 0 0);
+                background-color: #020202;
             }
 
             html.dark {
-                background-color: oklch(0.145 0 0);
+                background-color: #020202;
             }
         </style>
+        @php($gtmId = env('GTM_CONTAINER_ID'))
+        @if($gtmId)
+            <!-- Google Tag Manager -->
+            <script>
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','{{ $gtmId }}');
+            </script>
+            <!-- End Google Tag Manager -->
+        @endif
 
         <link rel="icon" href="/favicon-l4y.png" type="image/png">
         <link rel="apple-touch-icon" href="/favicon-l4y.png">
-        @php
-            try { $customFavicon = \App\Models\Setting::get('favicon'); } catch (\Throwable $e) { $customFavicon = null; }
-        @endphp
+        @php($customFavicon = rescue(fn () => \App\Models\Setting::get('favicon'), null, false))
         @if($customFavicon)
             <link rel="icon" href="{{ $customFavicon }}">
         @endif
@@ -63,6 +73,12 @@
         </x-inertia::head>
     </head>
     <body class="font-sans antialiased">
+        @if($gtmId)
+            <!-- Google Tag Manager (noscript) -->
+            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+            <!-- End Google Tag Manager (noscript) -->
+        @endif
         <x-inertia::app />
     </body>
 </html>

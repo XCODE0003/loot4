@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { Head, Link } from '@inertiajs/vue3'
 import '@/loot4/assets/styles/style.css'
 import Container from '@/loot4/components/layout/Container.vue'
@@ -13,9 +13,13 @@ const props = defineProps({
 
 const { formatPrice } = useLocale()
 const { clear } = useCart()
+const purchaseKey = computed(() => `l4_purchase_sent_${props.order?.number ?? ''}`)
 
 // Order placed — empty the cart once we reach the confirmation page.
-onMounted(() => clear())
+onMounted(() => {
+  clear()
+  pushPurchaseEvent()
+})
 
 function money(value) {
   return formatPrice(value)
@@ -23,6 +27,37 @@ function money(value) {
 
 function detailLabel(key) {
   return key.replace(/[_-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
+function pushPurchaseEvent() {
+  const orderNumber = props.order?.number
+  if (!orderNumber || typeof window === 'undefined') return
+
+  // Prevent duplicate purchase events on refresh/revisit of success page.
+  if (window.sessionStorage.getItem(purchaseKey.value) === '1') return
+
+  window.dataLayer = window.dataLayer || []
+
+  const items = (props.order?.items ?? []).map((item) => ({
+    item_name: item.name ?? 'Product',
+    item_id: item.id ?? '',
+    price: Number(item.price ?? 0),
+    quantity: Number(item.qty ?? 1),
+  }))
+
+  window.dataLayer.push({ ecommerce: null })
+  window.dataLayer.push({
+    event: 'purchase',
+    ecommerce: {
+      transaction_id: orderNumber,
+      affiliation: 'Online Store',
+      value: Number(props.order?.total ?? 0),
+      currency: props.order?.currency ?? 'USD',
+      items,
+    },
+  })
+
+  window.sessionStorage.setItem(purchaseKey.value, '1')
 }
 </script>
 

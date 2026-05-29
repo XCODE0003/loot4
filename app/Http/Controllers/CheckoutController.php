@@ -254,6 +254,7 @@ class CheckoutController extends Controller
                 'discount' => (float) $order->discount,
                 'total' => (float) $order->total,
                 'items' => $order->items->map(fn ($item): array => [
+                    'id' => (string) $item->product_id,
                     'name' => $item->product_name,
                     'option' => $item->form_data['option'] ?? null,
                     'details' => array_filter(
