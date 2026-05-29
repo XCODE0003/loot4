@@ -39,6 +39,9 @@ class IceNoxGateway
             ->post(rtrim($this->baseUrl, '/').'/api/payment/create/', [
                 'paymentmethod' => $method,
                 'orderid' => $order->order_number,
+                // Keep our own order number as-is; without this IceNox prefixes it
+                // (e.g. "301-20000-<id>"), which would break webhook matching by orderid.
+                'add_orderid_prefix' => false,
                 'amount' => (float) $order->subtotal,
                 'discount' => (float) $order->discount,
                 'total' => (float) $order->total,
@@ -46,6 +49,8 @@ class IceNoxGateway
                 'product' => 'Loot4you order '.$order->order_number,
                 'customer_email' => $order->email,
                 'customerid' => (string) ($order->user_id ?? ''),
+                // Custom integration: status webhook is POSTed to notification_url.
+                'notification_mode' => 'default',
                 'notification_url' => route('checkout.webhook'),
                 'redirect_url' => route('checkout.success', $order->order_number),
             ]);
@@ -61,6 +66,13 @@ class IceNoxGateway
 
             throw new PaymentException($data['message'] ?? 'Could not start the payment. Please try again.');
         }
+
+        Log::info('IceNox payment created', [
+            'order' => $order->order_number,
+            'paymentid' => $data['paymentid'] ?? null,
+            'returned_orderid' => $data['orderid'] ?? null,
+            'notification_url' => route('checkout.webhook'),
+        ]);
 
         return [
             'url' => $data['url'],
