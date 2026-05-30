@@ -7,6 +7,7 @@ use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
 use App\Filament\Resources\Orders\OrderResource;
 use App\Models\Order;
+use App\Services\Notifications\OrderNotifier;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -27,12 +28,40 @@ class OrderActions
     public static function all(): array
     {
         return [
+            self::markPaid(),
             self::markDelivered(),
             self::sendEmail(),
             self::resendInstructions(),
             self::refund(),
             self::duplicate(),
         ];
+    }
+
+    /**
+     * Manually confirm payment (for cases where the gateway webhook didn't land —
+     * e.g. the customer paid in another browser). Marks the order paid and fires
+     * the same notifications as the webhook: customer email + Telegram.
+     */
+    public static function markPaid(): Action
+    {
+        return Action::make('markPaid')
+            ->label('Mark as paid')
+            ->icon('heroicon-m-check-badge')
+            ->color('success')
+            ->requiresConfirmation()
+            ->modalDescription('Mark this order as paid, then notify the customer (email) and the orders bot (Telegram).')
+            ->visible(fn (Order $record): bool => $record->payment_status !== PaymentStatus::Paid)
+            ->action(function (Order $record): void {
+                $record->update([
+                    'payment_status' => PaymentStatus::Paid,
+                    'status' => OrderStatus::Processing,
+                ]);
+                $record->payments()->update(['status' => PaymentStatus::Paid->value]);
+
+                app(OrderNotifier::class)->paid($record);
+
+                Notification::make()->title('Order marked as paid — customer & Telegram notified')->success()->send();
+            });
     }
 
     public static function markDelivered(): Action
