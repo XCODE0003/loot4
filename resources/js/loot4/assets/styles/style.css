@@ -218,8 +218,7 @@ transition: all .5s;
 cursor: pointer;
 transition: all .5s;
 padding: 9px 30px;
-background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
-box-shadow: inset 0 6px 32px 0 rgba(81, 255, 159, 0.25), inset 0 22px 32px 0 rgba(81, 255, 214, 0.25), inset 0 -4px 6px 0 rgba(0, 0, 0, 0.25);
+background: #070208;
 border-radius: 11px;
 position: relative;
 }
@@ -325,10 +324,9 @@ color: #adadad;
 }
 .header_info_valute {
 padding: 9px 30px;
-border: none;
+border: 1px solid rgba(255, 255, 255, 0.15);
 border-radius: 11px;
-background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
-box-shadow: inset 0 6px 32px 0 rgba(81, 255, 159, 0.25), inset 0 22px 32px 0 rgba(81, 255, 214, 0.25), inset 0 -4px 6px 0 rgba(0, 0, 0, 0.25);
+background: rgba(255, 255, 255, 0.05);
 cursor: pointer;
 transition: all .5s;
 }
@@ -350,14 +348,18 @@ text-align: center;
 color: #adadad;
 
 }
-/* White text/arrow on the gradient language & currency selectors */
+/* Selected value rendered in the brand gradient (like the buttons). */
 .header_info_lang_title,
 .header_info_valute_title {
-  color: #fff;
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 .header_info_lang .header_info_select_arrow,
 .header_info_valute .header_info_select_arrow {
-  color: #fff;
+  color: #2bff95;
 }
 .header_login {
   margin-left: 54.26px;
