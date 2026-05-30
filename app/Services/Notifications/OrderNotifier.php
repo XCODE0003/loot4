@@ -79,7 +79,6 @@ class OrderNotifier
             '🆔 Order ID: #'.$order->order_number,
             '👤 Customer: '.$order->email,
             '📣 Source: '.$this->sourceLabel($order),
-            '💡 Status: Waiting delivery',
             '💎 Payment: '.$this->paymentLabel($order),
             '',
             '🛒 Items Purchased:',
