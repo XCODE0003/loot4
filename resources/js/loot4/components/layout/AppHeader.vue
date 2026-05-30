@@ -131,7 +131,7 @@ onBeforeUnmount(() => {
             <div class="header_locale">
             <div class="header_pick">
               <button type="button" class="header_pick_btn">
-                {{ lang }}
+                <span class="header_pick_val">{{ lang }}</span>
                 <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M0.5 0.5L4 4L7.5 0.5" stroke="currentColor" stroke-linecap="round"/></svg>
               </button>
               <div class="header_pick_drop">
@@ -147,7 +147,7 @@ onBeforeUnmount(() => {
             </div>
             <div class="header_pick">
               <button type="button" class="header_pick_btn">
-                {{ currency }}
+                <span class="header_pick_val">{{ currency }}</span>
                 <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M0.5 0.5L4 4L7.5 0.5" stroke="currentColor" stroke-linecap="round"/></svg>
               </button>
               <div class="header_pick_drop">
@@ -255,8 +255,14 @@ onBeforeUnmount(() => {
   background: rgba(255, 255, 255, 0.06);
   color: #fff;
 }
+/* Selected value rendered in the brand gradient (like the buttons). */
+.header_pick_val,
 .header_pick_opt.is-active {
-  color: #2bff95;
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 .header_cart {
   position: relative;

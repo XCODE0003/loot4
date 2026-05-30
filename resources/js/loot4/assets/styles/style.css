@@ -404,6 +404,7 @@ border: none;
 .intro_block:last-child {
   position: relative;
   flex: 1 1 300px;
+  height: 600px;
 }
 .intro_block_trust {
   vertical-align: middle;
@@ -525,7 +526,7 @@ background-clip: text;
 .intro_block_image {
   position: absolute;
   right: -100px;
-  top: -500px;
+  top: 0;
   z-index: -2;
 }
 
@@ -1829,6 +1830,9 @@ color: #fff;
   .intro_block:last-child {
     min-height: auto;
     overflow: visible;
+  }
+  .height-600{
+    height: 600px;
   }
   .intro_block_image {
     position: relative;
