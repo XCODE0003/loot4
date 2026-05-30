@@ -348,19 +348,6 @@ text-align: center;
 color: #adadad;
 
 }
-/* Selected value rendered in the brand gradient (like the buttons). */
-.header_info_lang_title,
-.header_info_valute_title {
-  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-.header_info_lang .header_info_select_arrow,
-.header_info_valute .header_info_select_arrow {
-  color: #2bff95;
-}
 .header_login {
   margin-left: 54.26px;
   font-family: var(--font-family);
