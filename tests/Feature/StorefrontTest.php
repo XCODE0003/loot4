@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Enums\FieldType;
 use App\Enums\GameStatus;
+use App\Enums\PricingMode;
 use App\Enums\ProductStatus;
 use App\Models\Game;
 use App\Models\Product;
@@ -58,7 +60,40 @@ class StorefrontTest extends TestCase
                 ->where('product.slug', 'test-product')
                 ->has('product.packages')
                 ->has('product.platforms')
+                ->has('product.optionGroups')
                 ->has('product.breadcrumb'),
+        );
+    }
+
+    public function test_variant_product_price_is_cheapest_option(): void
+    {
+        $product = Product::factory()->create([
+            'slug' => 'variant-product',
+            'status' => ProductStatus::Active,
+            'price' => 5,
+        ]);
+        $form = $product->forms()->create(['name' => 'Config', 'is_active' => true, 'sort_order' => 0]);
+        $form->fields()->create([
+            'label' => 'Amount',
+            'key' => 'amount',
+            'type' => FieldType::Radio,
+            'pricing_mode' => PricingMode::Absolute,
+            'required' => true,
+            'sort_order' => 0,
+            'options' => [
+                ['label' => '$10M', 'value' => '10m', 'extra_price' => 21.46],
+                ['label' => '$25M', 'value' => '25m', 'extra_price' => 30.05],
+            ],
+        ]);
+
+        $this->get('/product/variant-product')->assertOk()->assertInertia(
+            fn (Assert $page) => $page
+                ->component('loot4/Product')
+                ->where('product.price', 21.46) // cheapest absolute option, not the base price
+                ->has('product.optionGroups', 1)
+                ->where('product.optionGroups.0.pricingMode', 'absolute')
+                ->where('product.optionGroups.0.type', 'single')
+                ->etc(),
         );
     }
 

@@ -14,11 +14,12 @@ use App\Models\Product;
 use App\Services\Notifications\OrderNotifier;
 use App\Services\Payments\IceNoxGateway;
 use App\Services\Payments\PaymentException;
+use App\Services\Products\ProductPricing;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
@@ -65,7 +66,7 @@ class CheckoutController extends Controller
      * Place an order from the cart. Prices are recomputed server-side; payment is
      * not processed yet (order is created as pending).
      */
-    public function store(Request $request, IceNoxGateway $gateway): HttpResponse
+    public function store(Request $request, IceNoxGateway $gateway, ProductPricing $pricing): HttpResponse
     {
         $data = $request->validate([
             'email' => ['required', 'email'],
@@ -73,6 +74,7 @@ class CheckoutController extends Controller
             'items.*.slug' => ['required', 'string'],
             'items.*.qty' => ['required', 'integer', 'min:1'],
             'items.*.option' => ['nullable', 'string'],
+            'items.*.selections' => ['nullable', 'array'],
             'coupon' => ['nullable', 'string'],
             'method' => ['nullable', 'string', 'in:'.implode(',', self::PAYMENT_METHODS)],
         ]);
@@ -92,15 +94,27 @@ class CheckoutController extends Controller
                 continue;
             }
 
+            $selections = is_array($row['selections'] ?? null) ? $row['selections'] : [];
+
+            // A required price selector / option group with no valid choice means
+            // the cart line is incomplete — drop it rather than charge the base price.
+            if ($pricing->missingRequiredSelection($product, $selections)) {
+                continue;
+            }
+
             $qty = (int) $row['qty'];
-            $price = (float) $product->price;
+            $price = $pricing->linePrice($product, $selections);
+            $summary = $pricing->summary($product, $selections);
             $subtotal += $price * $qty;
 
             $lines[] = [
                 'product' => $product,
                 'qty' => $qty,
                 'price' => $price,
-                'option' => $row['option'] ?? null,
+                // Prefer the server-built summary; fall back to the client label for
+                // plain products that carry no structured selections.
+                'option' => $summary !== '' ? $summary : ($row['option'] ?? null),
+                'selections' => $selections,
             ];
         }
 
@@ -130,13 +144,21 @@ class CheckoutController extends Controller
             ]);
 
             foreach ($lines as $line) {
+                $formData = [];
+                if (filled($line['option'])) {
+                    $formData['option'] = $line['option'];
+                }
+                if (! empty($line['selections'])) {
+                    $formData['selections'] = $line['selections'];
+                }
+
                 $order->items()->create([
                     'product_id' => $line['product']->id,
                     'product_name' => $line['product']->name,
                     'quantity' => $line['qty'],
                     'price' => $line['price'],
                     'status' => DeliveryStatus::Pending,
-                    'form_data' => $line['option'] ? ['option' => $line['option']] : null,
+                    'form_data' => $formData === [] ? null : $formData,
                 ]);
             }
 
@@ -285,7 +307,7 @@ class CheckoutController extends Controller
         $order->load(['items', 'payments']);
 
         $method = (string) ($order->payments->first()?->method ?? 'card');
-        $methodLabel = \Illuminate\Support\Str::of($method)->replaceFirst('stripe-', '')->headline()->toString();
+        $methodLabel = Str::of($method)->replaceFirst('stripe-', '')->headline()->toString();
 
         return Inertia::render('loot4/CheckoutSuccess', [
             'order' => [

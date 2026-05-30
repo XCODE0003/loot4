@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Products\RelationManagers;
 
 use App\Enums\FieldType;
+use App\Enums\PricingMode;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -68,11 +69,19 @@ class FormsRelationManager extends RelationManager
                             ->default(FieldType::Select->value)
                             ->live()
                             ->required(),
+                        Select::make('pricing_mode')
+                            ->label('Pricing mode')
+                            ->options(PricingMode::class)
+                            ->default(PricingMode::Addon->value)
+                            ->live()
+                            ->required()
+                            ->helperText('Add-on: each chosen option adds to the total. Price selector: the customer picks the price and the product\'s shown price becomes the cheapest option.'),
                         TextInput::make('extra_price')
                             ->label('Base extra price')
                             ->numeric()
                             ->prefix('$')
-                            ->default(0),
+                            ->default(0)
+                            ->visible(fn (Get $get): bool => $get('pricing_mode') !== PricingMode::Absolute->value),
                         Toggle::make('required')
                             ->inline(false),
                         TextInput::make('tooltip'),
@@ -90,10 +99,17 @@ class FormsRelationManager extends RelationManager
                                 TextInput::make('label')->required(),
                                 TextInput::make('value')->required(),
                                 TextInput::make('extra_price')
-                                    ->label('Extra price')
+                                    ->label('Price')
+                                    ->helperText('Price-selector group: full price. Add-on group: amount added.')
                                     ->numeric()
                                     ->prefix('$')
                                     ->default(0),
+                                TextInput::make('tooltip')
+                                    ->label('Tooltip')
+                                    ->helperText('Optional info shown on hover.'),
+                                Toggle::make('popular')
+                                    ->label('Popular')
+                                    ->inline(false),
                             ])
                             ->columns(3),
 

@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Enums\CouponType;
+use App\Enums\FieldType;
+use App\Enums\PricingMode;
 use App\Enums\ProductStatus;
 use App\Models\Coupon;
 use App\Models\Order;
@@ -50,6 +52,72 @@ class CartCheckoutTest extends TestCase
         $this->assertEquals(40, (float) $order->total);
         $this->assertSame(1, $order->items()->count());
         $this->assertSame('PS4 · $10M', $order->items()->first()->form_data['option']);
+    }
+
+    public function test_checkout_recomputes_price_from_variant_and_addon_selections(): void
+    {
+        $product = Product::factory()->create([
+            'slug' => 'gta-cash',
+            'status' => ProductStatus::Active,
+            'price' => 5,
+        ]);
+        $form = $product->forms()->create(['name' => 'Config', 'is_active' => true, 'sort_order' => 0]);
+        $form->fields()->create([
+            'label' => 'Amount', 'key' => 'amount', 'type' => FieldType::Radio,
+            'pricing_mode' => PricingMode::Absolute, 'required' => true, 'sort_order' => 0,
+            'options' => [
+                ['label' => '$10M', 'value' => '10m', 'extra_price' => 21.46],
+                ['label' => '$25M', 'value' => '25m', 'extra_price' => 30.05],
+            ],
+        ]);
+        $form->fields()->create([
+            'label' => 'Add-ons', 'key' => 'addons', 'type' => FieldType::Checkbox,
+            'pricing_mode' => PricingMode::Addon, 'required' => false, 'sort_order' => 1,
+            'options' => [['label' => 'Max Stats', 'value' => 'max', 'extra_price' => 10]],
+        ]);
+
+        $this->post('/checkout', [
+            'email' => 'buyer@example.com',
+            'items' => [[
+                'slug' => 'gta-cash',
+                'qty' => 1,
+                // Client-sent price is irrelevant — the server recomputes from selections.
+                'selections' => ['amount' => '25m', 'addons' => ['max']],
+                'option' => 'tampered label',
+            ]],
+            'coupon' => null,
+        ])->assertRedirect();
+
+        $order = Order::where('email', 'buyer@example.com')->firstOrFail();
+        $item = $order->items()->firstOrFail();
+
+        $this->assertEquals(40.05, (float) $order->total); // 30.05 + 10
+        $this->assertEquals(40.05, (float) $item->price);
+        $this->assertSame('$25M · Max Stats', $item->form_data['option']); // server-built summary
+        $this->assertSame(['amount' => '25m', 'addons' => ['max']], $item->form_data['selections']);
+    }
+
+    public function test_checkout_drops_line_missing_a_required_selection(): void
+    {
+        $product = Product::factory()->create([
+            'slug' => 'gta-cash',
+            'status' => ProductStatus::Active,
+            'price' => 5,
+        ]);
+        $form = $product->forms()->create(['name' => 'Config', 'is_active' => true, 'sort_order' => 0]);
+        $form->fields()->create([
+            'label' => 'Amount', 'key' => 'amount', 'type' => FieldType::Radio,
+            'pricing_mode' => PricingMode::Absolute, 'required' => true, 'sort_order' => 0,
+            'options' => [['label' => '$10M', 'value' => '10m', 'extra_price' => 21.46]],
+        ]);
+
+        // Bogus selection for a required group → line dropped → no valid items.
+        $this->post('/checkout', [
+            'email' => 'buyer@example.com',
+            'items' => [['slug' => 'gta-cash', 'qty' => 1, 'selections' => ['amount' => 'bogus']]],
+        ])->assertSessionHasErrors('items');
+
+        $this->assertSame(0, Order::where('email', 'buyer@example.com')->count());
     }
 
     public function test_checkout_applies_coupon_discount(): void

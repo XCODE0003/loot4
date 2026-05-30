@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\FieldType;
+use App\Enums\PricingMode;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,7 @@ class ProductFormField extends Model
         'label',
         'key',
         'type',
+        'pricing_mode',
         'options',
         'required',
         'extra_price',
@@ -28,6 +30,7 @@ class ProductFormField extends Model
     {
         return [
             'type' => FieldType::class,
+            'pricing_mode' => PricingMode::class,
             'options' => 'array',
             'required' => 'boolean',
             'extra_price' => 'decimal:2',

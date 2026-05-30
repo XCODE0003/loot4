@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\FieldType;
 use App\Enums\GameStatus;
 use App\Enums\ProductStatus;
 use App\Models\Game;
 use App\Models\Product;
+use App\Services\Products\ProductPricing;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class StorefrontController extends Controller
 {
-    /** @var list<string> */
+    public function __construct(private readonly ProductPricing $pricing) {}
 
     /** @var list<string> */
     private const PAYMENT_ICONS = [
@@ -50,7 +52,7 @@ class StorefrontController extends Controller
         $products = Product::query()
             ->where('status', ProductStatus::Active->value)
             ->where('visibility', true)
-            ->with('game')
+            ->with(['game', 'forms.fields'])
             ->orderBy('sort_order')
             ->orderBy('id')
             ->get();
@@ -82,7 +84,7 @@ class StorefrontController extends Controller
             ->where('status', ProductStatus::Active->value)
             ->where('visibility', true)
             ->where('game_id', $game->id)
-            ->with('game')
+            ->with(['game', 'forms.fields'])
             ->orderBy('sort_order')
             ->orderBy('id')
             ->get();
@@ -118,7 +120,8 @@ class StorefrontController extends Controller
      */
     private function card(Product $product, int $index = 0): array
     {
-        $price = (float) $product->price;
+        // "From" price: cheapest selectable option for variant products, else the base price.
+        $price = $this->pricing->fromPrice($product);
         $comparePrice = $product->compare_price !== null ? (float) $product->compare_price : null;
 
         return [
@@ -147,6 +150,7 @@ class StorefrontController extends Controller
             ->where('status', ProductStatus::Active->value)
             ->when($product->game_id, fn ($q) => $q->where('game_id', $product->game_id))
             ->whereKeyNot($product->id)
+            ->with('forms.fields')
             ->inRandomOrder()
             ->take(4)
             ->get()
@@ -167,9 +171,11 @@ class StorefrontController extends Controller
             ],
             'payments' => self::PAYMENT_ICONS,
             'platforms' => $this->platforms($product),
-            'price' => $price,
+            // Displayed/starting price: cheapest selectable option for variant products.
+            'price' => $this->pricing->fromPrice($product),
             'priceOld' => ($comparePrice !== null && $comparePrice !== $price) ? $comparePrice : null,
             'packages' => $this->packages($product, $price),
+            'optionGroups' => $this->optionGroups($product),
             'description' => (string) ($product->description ?? ''),
             // Prefer the dedicated HTML field; fall back to the plain description so
             // raw HTML pasted there still renders as-is (descriptions are admin-entered).
@@ -259,5 +265,41 @@ class StorefrontController extends Controller
             ->all();
 
         return $packages;
+    }
+
+    /**
+     * Selectable option groups (price selectors + paid add-ons) for the product
+     * page, built from the product's active dynamic-form fields. A group with
+     * pricingMode 'absolute' is a "choose amount" selector whose option price is
+     * the full price; 'addon' option prices add to the total.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function optionGroups(Product $product): array
+    {
+        return $product->forms
+            ->filter(fn ($form): bool => (bool) $form->is_active)
+            ->flatMap(fn ($form) => $form->fields)
+            ->filter(fn ($field): bool => $field->type->hasOptions() && filled($field->options))
+            ->sortBy('sort_order')
+            ->values()
+            ->map(fn ($field): array => [
+                'key' => $field->key,
+                'label' => $field->label,
+                'type' => $field->type === FieldType::Checkbox ? 'multi' : 'single',
+                'pricingMode' => $field->pricing_mode->value,
+                'required' => (bool) $field->required,
+                'options' => collect($field->options)
+                    ->map(fn ($o): array => [
+                        'value' => (string) ($o['value'] ?? $o['label'] ?? ''),
+                        'label' => (string) ($o['label'] ?? $o['value'] ?? ''),
+                        'price' => round((float) ($o['extra_price'] ?? 0), 2),
+                        'tooltip' => (string) ($o['tooltip'] ?? ''),
+                        'popular' => (bool) ($o['popular'] ?? false),
+                    ])
+                    ->values()
+                    ->all(),
+            ])
+            ->all();
     }
 }

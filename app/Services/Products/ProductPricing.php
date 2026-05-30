@@ -1,0 +1,165 @@
+<?php
+
+namespace App\Services\Products;
+
+use App\Enums\PricingMode;
+use App\Models\Product;
+use App\Models\ProductFormField;
+use Illuminate\Support\Collection;
+
+/**
+ * Single source of truth for product pricing built from dynamic option groups.
+ *
+ * Used by both the storefront (display "from" price) and the checkout
+ * (authoritative line-price recompute — the client price is never trusted).
+ *
+ * Selections are keyed by field key, e.g. ['amount' => '25m', 'addons' => ['ram', 'ssd']].
+ *
+ * @phpstan-type Selections array<string, string|list<string>>
+ */
+class ProductPricing
+{
+    /**
+     * The lowest price a customer could pay — the "from" price on cards and the
+     * product page. With a price-selector (absolute) group this is the cheapest
+     * selectable option; otherwise the product's own base price.
+     */
+    public function fromPrice(Product $product): float
+    {
+        $absolute = $this->fields($product)
+            ->filter(fn (ProductFormField $f): bool => $f->pricing_mode === PricingMode::Absolute);
+
+        if ($absolute->isEmpty()) {
+            return round((float) $product->price, 2);
+        }
+
+        // Cheapest achievable base: the minimum option of each absolute group
+        // (there is normally exactly one such group).
+        $base = $absolute->sum(fn (ProductFormField $f): float => (float) (collect($f->options)
+            ->map(fn ($o): float => (float) ($o['extra_price'] ?? 0))
+            ->min() ?? 0.0));
+
+        return round((float) $base, 2);
+    }
+
+    /**
+     * Authoritative line unit price for a set of selections.
+     *
+     * @param  Selections  $selections
+     */
+    public function linePrice(Product $product, array $selections): float
+    {
+        $base = (float) $product->price;
+        $hasAbsolute = false;
+        $addons = 0.0;
+
+        foreach ($this->fields($product) as $field) {
+            $picked = $this->pickedOptions($field, $selections[$field->key] ?? null);
+
+            if ($field->pricing_mode === PricingMode::Absolute) {
+                if ($picked === []) {
+                    continue;
+                }
+                // The first selected absolute group replaces the base price.
+                if (! $hasAbsolute) {
+                    $base = 0.0;
+                    $hasAbsolute = true;
+                }
+                $base += $this->sumPrices($picked);
+
+                continue;
+            }
+
+            $addons += $this->sumPrices($picked);
+        }
+
+        return round($base + $addons, 2);
+    }
+
+    /**
+     * Human-readable, server-authoritative summary of the selected options,
+     * e.g. "$25M GTA Cash · Max Stats". Stored on the order item.
+     *
+     * @param  Selections  $selections
+     */
+    public function summary(Product $product, array $selections): string
+    {
+        $labels = [];
+
+        foreach ($this->fields($product) as $field) {
+            foreach ($this->pickedOptions($field, $selections[$field->key] ?? null) as $option) {
+                $label = trim((string) ($option['label'] ?? $option['value'] ?? ''));
+                if ($label !== '') {
+                    $labels[] = $label;
+                }
+            }
+        }
+
+        return implode(' · ', $labels);
+    }
+
+    /**
+     * Whether a required option group has no valid selection. Such a line should
+     * be rejected rather than silently charged the fallback base price.
+     *
+     * @param  Selections  $selections
+     */
+    public function missingRequiredSelection(Product $product, array $selections): bool
+    {
+        foreach ($this->fields($product) as $field) {
+            if (! $field->required) {
+                continue;
+            }
+            if ($this->pickedOptions($field, $selections[$field->key] ?? null) === []) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Active, option-bearing form fields for the product, in display order.
+     *
+     * @return Collection<int, ProductFormField>
+     */
+    private function fields(Product $product): Collection
+    {
+        return $product->forms
+            ->filter(fn ($form): bool => (bool) ($form->is_active ?? true))
+            ->flatMap(fn ($form) => $form->fields ?? collect())
+            ->filter(fn (ProductFormField $f): bool => $f->type->hasOptions() && filled($f->options))
+            ->sortBy('sort_order')
+            ->values();
+    }
+
+    /**
+     * Resolve the selected option rows for a field, ignoring values that no
+     * longer exist (defends against stale carts and tampering).
+     *
+     * @param  string|list<string>|null  $value
+     * @return list<array<string, mixed>>
+     */
+    private function pickedOptions(ProductFormField $field, string|array|null $value): array
+    {
+        if ($value === null || $value === '' || $value === []) {
+            return [];
+        }
+
+        $wanted = array_map('strval', is_array($value) ? $value : [$value]);
+        $options = is_array($field->options) ? $field->options : [];
+
+        return array_values(array_filter(
+            $options,
+            fn ($o): bool => in_array((string) ($o['value'] ?? ''), $wanted, true),
+        ));
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $options
+     */
+    private function sumPrices(array $options): float
+    {
+        return array_sum(array_map(fn ($o): float => (float) ($o['extra_price'] ?? 0), $options));
+    }
+}

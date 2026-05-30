@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import Container from '@/loot4/components/layout/Container.vue'
-import ProductPackageSelect from '@/loot4/components/product/ProductPackageSelect.vue'
+import ProductOptionGroups from '@/loot4/components/product/ProductOptionGroups.vue'
 import GameCard from '@/loot4/components/ui/GameCard.vue'
 import TrustpilotWidget from '@/loot4/components/ui/TrustpilotWidget.vue'
 import { asset } from '@/loot4/utils/asset'
@@ -16,20 +16,16 @@ const props = defineProps({
 const { add } = useCart()
 const { formatPrice } = useLocale()
 
-const hasPlatforms = computed(() => props.data.platforms?.length > 0)
-const hasPackages = computed(() => props.data.packages?.length > 0)
+const hasGroups = computed(() => (props.data.optionGroups?.length ?? 0) > 0)
 
-const activePlatform = ref(hasPlatforms.value ? props.data.platforms[0] : null)
 const displayPrice = ref(props.data.price)
-const displayPriceOld = ref(props.data.priceOld)
-const selectedOption = ref('')
+const selectedSummary = ref('')
+const selectedSelections = ref({})
 
-function onPackageSelect({ base, addons, price }) {
+function onOptionsChange({ selections, price, summary }) {
   displayPrice.value = price
-  const labels = [base, ...(addons ?? [])]
-    .filter(Boolean)
-    .map((pkg) => pkg.parts.join(' '))
-  selectedOption.value = [activePlatform.value, ...labels].filter(Boolean).join(' · ')
+  selectedSummary.value = summary
+  selectedSelections.value = selections
 }
 
 function buy() {
@@ -38,7 +34,8 @@ function buy() {
     slug: props.data.slug,
     title: props.data.title,
     image: props.data.image,
-    option: selectedOption.value,
+    option: selectedSummary.value,
+    selections: selectedSelections.value,
     price: displayPrice.value,
     priceOld: props.data.priceOld,
   })
@@ -73,39 +70,17 @@ function buy() {
         </div>
         <div class="product_main_section">
           <h1 class="product_main_section_title">{{ data.title }}</h1>
-          <div v-if="hasPlatforms" class="product_main_section_platforms">
-            <p class="product_main_section_platforms_title">Your platform</p>
-            <ul class="product_main_section_platforms_items">
-              <li v-for="platform in data.platforms" :key="platform">
-                <label
-                  class="product_main_section_platforms_item"
-                  :class="{ 'is-active': activePlatform === platform }"
-                >
-                  <input
-                    v-model="activePlatform"
-                    type="radio"
-                    name="product-platform"
-                    class="product_option_radio_input"
-                    :value="platform"
-                  />
-                  <span class="product_option_radio" aria-hidden="true" />
-                  {{ platform }}
-                </label>
-              </li>
-            </ul>
-          </div>
-          <div v-if="hasPlatforms || hasPackages" class="product_main_section_line" />
-          <ProductPackageSelect
-            v-if="hasPackages"
-            :packages="data.packages"
-            :base-price="data.price"
-            @select="onPackageSelect"
+          <ProductOptionGroups
+            v-if="hasGroups"
+            :groups="data.optionGroups"
+            :product-price="data.price"
+            @change="onOptionsChange"
           />
           <div class="product_main_section_price">
             <div class="product_main_section_price_items">
               <p class="product_main_section_price_new">
                 {{ formatPrice(displayPrice) }}
-                <span v-if="displayPriceOld !== null">{{ formatPrice(displayPriceOld) }}</span>
+                <span v-if="data.priceOld != null">{{ formatPrice(data.priceOld) }}</span>
               </p>
               <button type="button" class="product_main_section_price_button" @click="buy">Buy now</button>
             </div>

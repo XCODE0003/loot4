@@ -12,6 +12,26 @@ function load(key) {
   }
 }
 
+/**
+ * Stable, order-independent string identity for a set of option selections, so
+ * identical configurations merge into one cart line regardless of the order
+ * fields/checkboxes were chosen, while different configs stay separate.
+ *
+ * @param {Record<string, string | string[]>} selections
+ * @returns {string}
+ */
+function canonicalSelections(selections) {
+  if (!selections || typeof selections !== 'object') return ''
+  return Object.keys(selections)
+    .sort()
+    .map((k) => {
+      const v = selections[k]
+      const val = Array.isArray(v) ? [...v].map(String).sort().join(',') : String(v ?? '')
+      return `${k}=${val}`
+    })
+    .join('|')
+}
+
 // Module-level singleton state shared across all components.
 // Starts empty so SSR / first client render match; real data is loaded from
 // localStorage via hydrate() after mount (client only) to avoid hydration mismatches.
@@ -48,12 +68,13 @@ export function useCart() {
   const total = computed(() => Math.max(0, subtotal.value - discount.value))
 
   function add(item) {
-    const key = `${item.slug}|${item.option ?? ''}`
+    const selections = item.selections ?? {}
+    const key = `${item.slug}#${canonicalSelections(selections)}`
     const existing = items.value.find((i) => i.key === key)
     if (existing) {
       existing.qty += item.qty ?? 1
     } else {
-      items.value = [...items.value, { ...item, key, qty: item.qty ?? 1 }]
+      items.value = [...items.value, { ...item, selections, key, qty: item.qty ?? 1 }]
     }
     open()
   }
@@ -101,7 +122,12 @@ export function useCart() {
     return {
       email,
       coupon: coupon.value?.code ?? null,
-      items: items.value.map((i) => ({ slug: i.slug, option: i.option ?? null, qty: i.qty })),
+      items: items.value.map((i) => ({
+        slug: i.slug,
+        selections: i.selections ?? {},
+        option: i.option ?? null,
+        qty: i.qty,
+      })),
     }
   }
 

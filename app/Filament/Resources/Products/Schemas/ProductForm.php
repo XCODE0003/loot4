@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Products\Schemas;
 use App\Enums\ProductStatus;
 use App\Enums\ProductType;
 use Filament\Forms\Components\CheckboxList;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TagsInput;
@@ -60,7 +59,8 @@ class ProductForm
                             ->numeric()
                             ->prefix('$')
                             ->default(0)
-                            ->required(),
+                            ->required()
+                            ->helperText('Base price. If the product has a "Price selector" option group, the shown price becomes the cheapest option and this value is the fallback base.'),
                         TextInput::make('compare_price')
                             ->label('Compare-at price')
                             ->numeric()
