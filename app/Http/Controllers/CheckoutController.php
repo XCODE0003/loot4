@@ -211,35 +211,38 @@ class CheckoutController extends Controller
         $raw = $request->getContent();
         $payload = $request->all();
         Log::info('Payment webhook received', [
+            'method' => $request->method(),
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
             'content_type' => $request->header('Content-Type'),
-            'has_signature' => filled($request->header('X-Signature')),
+            'has_signature' => filled($request->header('x-callback-hash')) || filled($request->header('X-Signature')),
             'payload' => $payload,
             'raw' => $raw,
         ]);
 
+        // IceNox signs callbacks with the x-callback-hash header (older shapes use X-Signature).
         $secret = config('services.icenox.webhook_secret');
         if (filled($secret)) {
             $expected = base64_encode(hash('sha256', $secret.$raw, true));
-            $provided = (string) $request->header('X-Signature', '');
+            $provided = (string) ($request->header('x-callback-hash') ?? $request->header('X-Signature') ?? '');
 
             if ($provided === '' || ! hash_equals($expected, $provided)) {
                 Log::warning('Payment webhook signature mismatch', [
-                    'reference' => $payload['code'] ?? $payload['orderid'] ?? null,
+                    'reference' => $payload['orderid'] ?? $payload['reference'] ?? $payload['code'] ?? null,
                 ]);
 
                 return response()->json(['received' => false, 'error' => 'invalid signature'], 401);
             }
         }
 
-        // Gateway transaction id (Nox: "txid") and our own order reference (Nox: "code").
-        $txid = $payload['txid'] ?? $payload['paymentid'] ?? $payload['payment_id'] ?? $payload['id'] ?? null;
-        $reference = $payload['code'] ?? $payload['orderid'] ?? null;
+        // IceNox sends: paymentid / gateway_transactionid, orderid, paymentstatus.
+        // Older/Nox shapes use txid / code / status — accept all.
+        $txid = $payload['paymentid'] ?? $payload['gateway_transactionid'] ?? $payload['txid'] ?? $payload['payment_id'] ?? $payload['id'] ?? null;
+        $reference = $payload['orderid'] ?? $payload['reference'] ?? $payload['code'] ?? null;
 
-        $statusRaw = strtolower((string) ($payload['status'] ?? $payload['state'] ?? $payload['payment_status'] ?? ''));
+        $statusRaw = strtolower((string) ($payload['paymentstatus'] ?? $payload['status'] ?? $payload['state'] ?? $payload['payment_status'] ?? ''));
         $isPaid = ($payload['success'] ?? null) === true
-            || in_array($statusRaw, ['paid', 'pay', 'success', 'successful', 'completed', 'complete', '1', 'true'], true);
+            || in_array($statusRaw, ['paid', 'pay', 'success', 'successful', 'completed', 'complete', 'captured', 'settled', 'approved', '1', 'true'], true);
         $isFailed = in_array($statusRaw, ['failed', 'fail', 'cancelled', 'canceled', 'declined', 'error', 'expired', 'refused', 'chargeback'], true);
 
         $order = $txid ? Payment::query()->where('transaction_id', $txid)->first()?->order : null;

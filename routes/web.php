@@ -17,9 +17,10 @@ Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'store']);
 Route::get('/checkout/success/{order:order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
 // Some gateways validate the notification URL with a GET/HEAD before sending —
-// answer 200 so the webhook URL is accepted, while real notifications use POST.
+// answer 200 so the webhook URL is accepted.
 Route::match(['get', 'head'], '/checkout/webhook', fn () => response()->json(['ok' => true]));
-Route::post('/checkout/webhook', [CheckoutController::class, 'webhook'])->name('checkout.webhook');
+// IceNox delivers the status callback via PATCH; accept POST/PUT too for safety.
+Route::match(['post', 'patch', 'put'], '/checkout/webhook', [CheckoutController::class, 'webhook'])->name('checkout.webhook');
 
 // Static content pages (footer + header links).
 Route::get('/about', [PageController::class, 'about'])->name('pages.about');
