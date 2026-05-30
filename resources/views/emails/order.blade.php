@@ -110,6 +110,23 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr>
+                            <td style="padding:0 32px 28px;">
+                                <div style="padding:22px;border:1px solid rgba(255,255,255,0.08);border-radius:14px;background:rgba(255,255,255,0.03);text-align:center;">
+                                    <p style="margin:0 0 16px;font-size:14px;font-weight:700;color:#ffffff;">To receive your order, please contact us:</p>
+                                    <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
+                                        <tr>
+                                            <td style="padding:0 5px;">
+                                                <a href="https://discord.gg/AyTrerusGZ" style="display:inline-block;padding:12px 26px;border-radius:10px;background:#5865f2;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;">Discord</a>
+                                            </td>
+                                            <td style="padding:0 5px;">
+                                                <a href="https://wa.me/380730882668?text=Hello!%20I%20want%20to%20get%20my%20order" style="display:inline-block;padding:12px 26px;border-radius:10px;background:#25d366;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;">WhatsApp</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
                     @endif
                     <!-- footer -->
                     <tr>
