@@ -1034,12 +1034,9 @@ position: relative;
   vertical-align: middle;
   border-radius: 20px;
   width: 584px;
-  max-width: 100%;
-  /* 584px floor on desktop (keeps the banner from shrinking in the flex row),
-     but never wider than the container — so it adapts on mobile instead of
-     overflowing. */
-  min-width: min(584px, 100%);
+  min-width: 584px;
   height: 374px;
+  min-height: 374px;
   object-fit: fill;
 }
 .game_intro_block_trust{
@@ -2101,8 +2098,9 @@ color: #fff;
   .game_intro_block_image {
     max-width: 100%;
     width: 100%;
+    min-width: 0;
     height: auto;
-
+    min-height: 0;
   }
   .game_cards_up {
     flex-direction: column;
