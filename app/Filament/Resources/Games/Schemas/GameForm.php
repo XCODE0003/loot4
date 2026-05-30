@@ -61,6 +61,8 @@ class GameForm
                             ->default(GameStatus::Active->value)
                             ->required(),
                         TextInput::make('sort_order')
+                            ->label('Position')
+                            ->helperText('Lower number = higher in the "Choose Game" dropdown. You can also drag rows to reorder in the games list.')
                             ->numeric()
                             ->default(0),
                         Textarea::make('description')
