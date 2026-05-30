@@ -59,6 +59,7 @@ class PageController extends Controller
             ['type' => 'p', 'text' => 'Our support team is available every day to assist you with purchases, delivery questions and account issues. We aim to respond quickly by email and chat, and within a few hours during working hours.'],
             ['type' => 'p', 'text' => "Please always include your order number and any relevant screenshots so we can help you faster. If you are contacting us about a potential issue, don't worry — our goal is always to find a fair and safe solution for both sides."],
             ['type' => 'h', 'text' => 'Contact Information'],
+            ['type' => 'contact_cards', 'items' => $this->contactCards()],
             ['type' => 'contacts', 'items' => $this->contactItems()],
         ]);
     }
@@ -70,6 +71,7 @@ class PageController extends Controller
             ['type' => 'p', 'text' => 'We buy from trusted players and resellers across many different games. To get started, send us a short message with what you want to sell, the server or platform, and any relevant screenshots or proof.'],
             ['type' => 'p', 'text' => "Once we review your offer, we'll reply with pricing and the safest way to complete the trade. All deals are handled manually by our team to keep both your account and our marketplace safe."],
             ['type' => 'h', 'text' => 'Get in touch'],
+            ['type' => 'contact_cards', 'items' => $this->contactCards()],
             ['type' => 'contacts', 'items' => $this->contactItems()],
         ]);
     }
@@ -258,6 +260,42 @@ class PageController extends Controller
             ['label' => 'Email', 'value' => self::EMAIL, 'href' => 'mailto:'.self::EMAIL],
             ['label' => 'Phone', 'value' => self::PHONE, 'href' => 'tel:'.str_replace(' ', '', self::PHONE)],
             ['label' => 'Address', 'value' => self::ADDRESS],
+        ];
+    }
+
+    /**
+     * Support channel cards shown on the Contact / Sell pages.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function contactCards(): array
+    {
+        return [
+            [
+                'key' => 'discord',
+                'name' => 'Discord',
+                'subtitle' => 'Join our Discord group for real-time support and community.',
+                'button' => 'Discord',
+                'href' => 'https://discord.gg/AyTrerusGZ',
+                'external' => true,
+            ],
+            [
+                'key' => 'email',
+                'name' => 'Email',
+                'subtitle' => 'Fast, friendly, and reliable support anytime.',
+                'button' => 'Help',
+                'href' => 'mailto:'.self::EMAIL,
+                'footer' => self::EMAIL,
+                'external' => false,
+            ],
+            [
+                'key' => 'whatsapp',
+                'name' => 'WhatsApp',
+                'subtitle' => 'Quick, friendly, and hassle-free support on WhatsApp.',
+                'button' => 'WhatsApp',
+                'href' => 'https://wa.me/380730882668',
+                'external' => true,
+            ],
         ];
     }
 
