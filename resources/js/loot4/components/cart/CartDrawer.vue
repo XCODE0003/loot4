@@ -23,7 +23,6 @@ const promoInput = ref('')
 const promoError = ref('')
 const promoLoading = ref(false)
 
-const paymentIcons = ['product_visa.png', 'product_master.png', 'product_paypal.png', 'product_pay.png', 'product_btc.png']
 
 function money(value) {
   return formatPrice(value)
@@ -124,7 +123,7 @@ async function applyPromo() {
           </Link>
 
           <div class="cart_payments">
-            <img v-for="icon in paymentIcons" :key="icon" :src="asset(icon)" alt="" />
+            <img src="/payment.svg" alt="Accepted payment methods" class="cart_payments_strip" loading="lazy" />
           </div>
         </div>
       </aside>
@@ -381,13 +380,13 @@ async function applyPromo() {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
   margin-top: 22px;
-  opacity: 0.5;
+  opacity: 0.6;
 }
-.cart_payments img {
-  height: 22px;
-  width: auto;
+.cart_payments_strip {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 .cart-fade-enter-active,
 .cart-fade-leave-active {

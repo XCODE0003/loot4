@@ -6,6 +6,7 @@ import { faqItems } from '@/loot4/data/faq'
 
 const props = defineProps({
   items: { type: Array, default: () => faqItems },
+  standalone: { type: Boolean, default: false },
 })
 
 const openIndex = ref(0)
@@ -17,7 +18,7 @@ function toggle(index) {
 </script>
 
 <template>
-  <section class="faq">
+  <section class="faq" :class="{ 'faq--flush': props.standalone }">
     <Container>
       <SectionTag with-icon>FAQ</SectionTag>
       <h4 class="faq_title">Frequently asked questions</h4>

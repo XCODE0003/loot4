@@ -7,5 +7,5 @@ import { faqGameItems } from '@/loot4/data/faq'
 
 <template>
   <Head title="FAQ — Loot4you" />
-  <FaqSection :items="faqGameItems" />
+  <FaqSection :items="faqGameItems" standalone />
 </template>
