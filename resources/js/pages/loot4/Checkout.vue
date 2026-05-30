@@ -8,7 +8,7 @@ import { useLocale } from '@/loot4/composables/useLocale'
 import { asset } from '@/loot4/utils/asset'
 
 const { t } = useI18n()
-const { items, subtotal, discount, total, coupon, count, remove, setQty, clear, applyCoupon, clearCoupon, checkoutPayload, hydrate } = useCart()
+const { items, subtotal, discount, total, coupon, count, remove, setQty, applyCoupon, clearCoupon, checkoutPayload, hydrate } = useCart()
 const { formatPrice } = useLocale()
 
 onMounted(() => hydrate())
@@ -116,10 +116,6 @@ function placeOrder() {
     },
     onFinish: () => {
       processing.value = false
-      // Order was placed (no validation/payment error) — empty the cart.
-      if (! formError.value && ! emailError.value) {
-        clear()
-      }
     },
   })
 }
