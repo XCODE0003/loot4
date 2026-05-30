@@ -117,7 +117,7 @@ onBeforeUnmount(() => {
                 <Link
                   v-for="g in games"
                   :key="g.name"
-                  :href="g.slug ? `/game/${g.slug}` : '/game'"
+                  :href="g.slug ? `/game/${g.slug}` : '/'"
                   class="header_nav_dropdown_item"
                   @click="closeGameMenu(); closeMenu()"
                 >

@@ -2,7 +2,7 @@ export const product = {
   slug: 'cash-boost-15m',
   breadcrumb: {
     game: 'GTA 5',
-    gameTo: '/game',
+    gameTo: '/',
     name: 'Cash boost 15 Million',
     platformIcon: 'product_xbox.png',
   },

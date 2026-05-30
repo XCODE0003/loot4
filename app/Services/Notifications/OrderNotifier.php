@@ -4,6 +4,7 @@ namespace App\Services\Notifications;
 
 use App\Mail\NewOrderMail;
 use App\Mail\OrderConfirmationMail;
+use App\Mail\OrderDeliveredMail;
 use App\Models\Order;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Log;
@@ -54,6 +55,16 @@ class OrderNotifier
             Setting::get('telegram_failed_chat_id') ?: Setting::get('telegram_chat_id'),
             $this->failedOrderText($order, $reason),
         );
+    }
+
+    /**
+     * A delivered order: confirm delivery to the customer.
+     */
+    public function delivered(Order $order): void
+    {
+        $order->loadMissing('items');
+
+        $this->mailTo($order->email, fn () => new OrderDeliveredMail($order), 'customer delivered');
     }
 
     private function newOrderText(Order $order): string

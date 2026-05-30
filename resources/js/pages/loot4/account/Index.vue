@@ -49,7 +49,7 @@ const statusColors = {
       </div>
 
       <p v-if="!recentOrders.length" class="ov_empty">
-        {{ $t('account.noOrders') }} <Link href="/game" class="ov_link">{{ $t('account.startShopping') }}</Link>
+        {{ $t('account.noOrders') }} <Link href="/" class="ov_link">{{ $t('account.startShopping') }}</Link>
       </p>
 
       <Link

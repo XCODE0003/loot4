@@ -66,6 +66,13 @@ class Order extends Model
                 $order->order_number = strtoupper(Str::random(10));
             }
         });
+
+        // Email the customer when an order transitions to "delivered".
+        static::updated(function (Order $order): void {
+            if ($order->wasChanged('delivery_status') && $order->delivery_status === DeliveryStatus::Delivered) {
+                app(\App\Services\Notifications\OrderNotifier::class)->delivered($order);
+            }
+        });
     }
 
     public function getActivitylogOptions(): LogOptions

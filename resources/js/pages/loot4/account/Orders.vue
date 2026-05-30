@@ -28,7 +28,7 @@ const statusColors = {
   <AccountShell :title="$t('account.myOrders')">
     <div class="ord_panel">
       <p v-if="!orders.length" class="ord_empty">
-        {{ $t('account.noOrdersList') }} <Link href="/game" class="ord_link">{{ $t('account.browseCatalog') }}</Link>
+        {{ $t('account.noOrdersList') }} <Link href="/" class="ord_link">{{ $t('account.browseCatalog') }}</Link>
       </p>
 
       <table v-else class="ord_table">

@@ -143,7 +143,7 @@ function pushPurchaseEvent() {
 
       <div class="ty_actions">
         <Link v-if="authed" href="/account/orders" class="ty_btn ty_btn--primary">View My Orders</Link>
-        <Link href="/game" class="ty_btn ty_btn--ghost">Continue Shopping</Link>
+        <Link href="/" class="ty_btn ty_btn--ghost">Continue Shopping</Link>
       </div>
     </Container>
   </section>
