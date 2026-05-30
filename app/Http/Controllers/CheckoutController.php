@@ -152,6 +152,20 @@ class CheckoutController extends Controller
             return $order;
         });
 
+        // Free order (e.g. a 100% discount coupon) — nothing to charge, so skip the
+        // gateway, mark it paid and go straight to the confirmation page.
+        if ($total <= 0.0) {
+            $order->update([
+                'payment_status' => PaymentStatus::Paid,
+                'status' => OrderStatus::Processing,
+            ]);
+            $order->payments()->update(['status' => PaymentStatus::Paid->value]);
+
+            app(OrderNotifier::class)->paid($order);
+
+            return redirect()->route('checkout.success', $order->order_number);
+        }
+
         // Hand off to the IceNox hosted payment page when configured.
         if ($gateway->isConfigured()) {
             try {
