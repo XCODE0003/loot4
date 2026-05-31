@@ -74,6 +74,7 @@ function buy() {
             v-if="hasGroups"
             :groups="data.optionGroups"
             :product-price="data.price"
+            :layout="data.optionsLayout"
             @change="onOptionsChange"
           />
           <div class="product_main_section_price">

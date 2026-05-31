@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
+use App\Enums\OptionsLayout;
 use App\Enums\ProductStatus;
 use App\Enums\ProductType;
 use Filament\Forms\Components\CheckboxList;
@@ -117,6 +118,11 @@ class ProductForm
                         Toggle::make('featured')->inline(false),
                         Toggle::make('visibility')->default(true)->inline(false),
                         TextInput::make('sort_order')->numeric()->default(0),
+                        Select::make('options_layout')
+                            ->label('Options layout')
+                            ->options(OptionsLayout::class)
+                            ->default(OptionsLayout::Single->value)
+                            ->helperText('How option groups appear on the product page: all on one page, or as a step-by-step wizard.'),
                         Textarea::make('delivery_instructions')
                             ->rows(3)
                             ->columnSpanFull(),

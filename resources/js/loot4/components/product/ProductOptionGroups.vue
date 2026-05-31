@@ -1,41 +1,35 @@
 <script setup>
-import { computed, reactive, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { useLocale } from '@/loot4/composables/useLocale'
 
 const props = defineProps({
-  // [{ key, label, type: 'single'|'multi', pricingMode: 'absolute'|'addon', required, options: [{ value, label, price, tooltip, popular }] }]
+  // [{ key, label, type: 'single'|'multi', control: 'select'|'radio'|'checkbox',
+  //    pricingMode: 'absolute'|'addon', required, options: [{ value, label, price, tooltip, popular, default }] }]
   groups: { type: Array, default: () => [] },
-  // Base price used when there is no price-selector (absolute) group.
+  // Base price used when there is no price-selector (absolute) group selected.
   productPrice: { type: Number, default: 0 },
+  // 'single' = all groups on one page, 'steps' = one group per step.
+  layout: { type: String, default: 'single' },
 })
 
 const emit = defineEmits(['change'])
 const { formatPrice } = useLocale()
 
+const isSteps = computed(() => props.layout === 'steps' && props.groups.length > 1)
+
 // selections: { [groupKey]: string (single) | string[] (multi) }
 const selections = reactive({})
+const step = ref(0)
 
-function cheapestValue(group) {
-  let best = null
-  for (const opt of group.options) {
-    if (best === null || opt.price < best.price) best = opt
-  }
-  return best?.value ?? null
-}
-
-// Defaults: preselect the cheapest option of price-selector groups (so the shown
-// price matches the "from" price) and the first option of any other required
-// single-select group. Multi-select add-ons start empty.
+// Defaults come only from options explicitly marked "default" — nothing is
+// preselected otherwise.
 function initSelections() {
   for (const group of props.groups) {
     if (group.type === 'multi') {
-      selections[group.key] = []
-    } else if (group.pricingMode === 'absolute') {
-      selections[group.key] = cheapestValue(group)
-    } else if (group.required) {
-      selections[group.key] = group.options[0]?.value ?? null
+      selections[group.key] = group.options.filter((o) => o.default).map((o) => o.value)
     } else {
-      selections[group.key] = ''
+      const def = group.options.find((o) => o.default)
+      selections[group.key] = def ? def.value : ''
     }
   }
 }
@@ -43,6 +37,7 @@ function initSelections() {
 function resetSelections() {
   for (const key of Object.keys(selections)) delete selections[key]
   initSelections()
+  step.value = 0
 }
 
 resetSelections()
@@ -79,8 +74,13 @@ function priceLabel(group, opt) {
   return ''
 }
 
-// Mirrors the server-side ProductPricing formula exactly so the displayed price
-// always matches the recomputed checkout price.
+function optionText(group, opt) {
+  const label = priceLabel(group, opt)
+  return label ? `${opt.label} — ${label}` : opt.label
+}
+
+// Mirrors the server-side ProductPricing formula so the displayed price always
+// matches the recomputed checkout price.
 const price = computed(() => {
   let base = props.productPrice
   let hasAbsolute = false
@@ -136,13 +136,54 @@ watch(
   () => emit('change', { selections: plainSelections(), price: price.value, summary: summary.value }),
   { immediate: true },
 )
+
+function next() {
+  if (step.value < props.groups.length - 1) step.value += 1
+}
+function back() {
+  if (step.value > 0) step.value -= 1
+}
 </script>
 
 <template>
-  <div v-if="groups.length" class="pog">
-    <div v-for="group in groups" :key="group.key" class="pog_group">
+  <div v-if="groups.length" class="pog" :class="{ 'pog--steps': isSteps }">
+    <div v-if="isSteps" class="pog_steps" aria-hidden="true">
+      <template v-for="(g, i) in groups" :key="`step-${g.key}`">
+        <div class="pog_step" :class="{ 'is-active': i === step, 'is-done': i < step }">
+          <svg v-if="i < step" width="12" height="10" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.298 1.673 3.798 7.173a.57.57 0 0 1-.398.165.57.57 0 0 1-.399-.165L.376 4.548a.563.563 0 0 1 0-.797.563.563 0 0 1 .797 0L3.4 5.978 8.502.877a.564.564 0 0 1 .797.797z" fill="currentColor" />
+          </svg>
+          <span v-else>{{ i + 1 }}</span>
+        </div>
+        <div v-if="i < groups.length - 1" class="pog_step_line" :class="{ 'is-done': i < step }" />
+      </template>
+    </div>
+
+    <div
+      v-for="(group, gi) in groups"
+      v-show="!isSteps || gi === step"
+      :key="group.key"
+      class="pog_group"
+    >
       <p class="pog_group_title">{{ group.label }}</p>
-      <div class="pog_list">
+
+      <div v-if="group.control === 'select'" class="pog_select_wrap">
+        <select
+          class="pog_select"
+          :value="selections[group.key] ?? ''"
+          @change="select(group, $event.target.value)"
+        >
+          <option value="" disabled>Choose…</option>
+          <option v-for="opt in group.options" :key="opt.value" :value="opt.value">
+            {{ optionText(group, opt) }}
+          </option>
+        </select>
+        <svg class="pog_select_arrow" width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M1 1.5 6 6.5 11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+
+      <div v-else class="pog_list">
         <button
           v-for="opt in group.options"
           :key="opt.value"
@@ -164,10 +205,8 @@ watch(
               <path d="M9.298 1.673 3.798 7.173a.57.57 0 0 1-.398.165.57.57 0 0 1-.399-.165L.376 4.548a.563.563 0 0 1 0-.797.563.563 0 0 1 .797 0L3.4 5.978 8.502.877a.564.564 0 0 1 .797.797z" fill="currentColor" />
             </svg>
           </span>
-          <span class="pog_name">
-            {{ opt.label }}
-            <span v-if="opt.popular" class="pog_tag">Popular</span>
-          </span>
+          <span class="pog_name">{{ opt.label }}</span>
+          <span v-if="opt.popular" class="pog_tag">Popular</span>
           <span v-if="priceLabel(group, opt)" class="pog_price">{{ priceLabel(group, opt) }}</span>
           <span v-if="opt.tooltip" class="pog_info" @click.stop>
             <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -178,6 +217,18 @@ watch(
           </span>
         </button>
       </div>
+    </div>
+
+    <div v-if="isSteps" class="pog_nav">
+      <button type="button" class="pog_nav_btn" :disabled="step === 0" @click="back">Back</button>
+      <button
+        v-if="step < groups.length - 1"
+        type="button"
+        class="pog_nav_btn pog_nav_btn--next"
+        @click="next"
+      >
+        Next
+      </button>
     </div>
   </div>
 </template>
@@ -209,7 +260,7 @@ watch(
 .pog_row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
   padding: 13px 16px;
   text-align: left;
@@ -248,17 +299,23 @@ watch(
 .pog_mark_icon {
   display: block;
 }
+/* Name then price sit together on the left; no gap pushing price to the edge. */
 .pog_name {
-  flex: 1;
+  flex: 0 1 auto;
   min-width: 0;
   font-family: var(--font-family);
   font-size: 14px;
   font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+}
+.pog_price {
+  flex-shrink: 0;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
 }
 .pog_tag {
+  flex-shrink: 0;
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
@@ -268,16 +325,10 @@ watch(
   border-radius: 999px;
   padding: 2px 8px;
 }
-.pog_price {
-  flex-shrink: 0;
-  font-family: var(--font-family);
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
-}
 .pog_info {
   position: relative;
   flex-shrink: 0;
+  margin-left: auto;
   display: inline-flex;
   color: rgba(255, 255, 255, 0.55);
   cursor: help;
@@ -313,6 +364,113 @@ watch(
   visibility: visible;
   transform: translateY(0);
 }
+
+/* Dropdown */
+.pog_select_wrap {
+  position: relative;
+}
+.pog_select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 14px 44px 14px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #fff;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.pog_select:focus {
+  outline: none;
+  border-color: #2bff95;
+}
+.pog_select option {
+  background: #16161d;
+  color: #fff;
+}
+.pog_select_arrow {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+/* Step progress + nav */
+.pog_steps {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pog_step {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.pog_step.is-active {
+  color: #0b0b0f;
+  background: #2bff95;
+  border-color: #2bff95;
+}
+.pog_step.is-done {
+  color: #2bff95;
+  border-color: rgba(43, 255, 149, 0.5);
+}
+.pog_step_line {
+  flex: 1;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.pog_step_line.is-done {
+  background: rgba(43, 255, 149, 0.5);
+}
+.pog_nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.pog_nav_btn {
+  padding: 11px 22px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+}
+.pog_nav_btn:hover:not(:disabled) {
+  border-color: rgba(43, 255, 149, 0.4);
+}
+.pog_nav_btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.pog_nav_btn--next {
+  margin-left: auto;
+  border-color: #2bff95;
+  color: #0b0b0f;
+  background: #2bff95;
+}
+.pog_nav_btn--next:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
 @media (max-width: 768px) {
   .pog_tooltip {
     max-width: 200px;

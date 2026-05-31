@@ -121,6 +121,10 @@ class FormsRelationManager extends RelationManager
                                 Toggle::make('popular')
                                     ->label('Popular')
                                     ->inline(false),
+                                Toggle::make('default')
+                                    ->label('Selected by default')
+                                    ->helperText('Preselect this option on page load. Leave all off for no preselection.')
+                                    ->inline(false),
                             ])
                             ->columns(3),
                     ]),

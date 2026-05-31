@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\FieldType;
 use App\Enums\GameStatus;
+use App\Enums\OptionsLayout;
 use App\Enums\ProductStatus;
 use App\Models\Game;
 use App\Models\Product;
@@ -176,6 +177,7 @@ class StorefrontController extends Controller
             'priceOld' => ($comparePrice !== null && $comparePrice !== $price) ? $comparePrice : null,
             'packages' => $this->packages($product, $price),
             'optionGroups' => $this->optionGroups($product),
+            'optionsLayout' => ($product->options_layout ?? OptionsLayout::Single)->value,
             'description' => (string) ($product->description ?? ''),
             // Prefer the dedicated HTML field; fall back to the plain description so
             // raw HTML pasted there still renders as-is (descriptions are admin-entered).
@@ -287,6 +289,7 @@ class StorefrontController extends Controller
                 'key' => $field->key,
                 'label' => $field->label,
                 'type' => $field->type === FieldType::Checkbox ? 'multi' : 'single',
+                'control' => $field->type->value, // 'select' (dropdown) | 'radio' | 'checkbox'
                 'pricingMode' => $field->pricing_mode->value,
                 'required' => (bool) $field->required,
                 'options' => collect($field->options)
@@ -296,6 +299,7 @@ class StorefrontController extends Controller
                         'price' => round((float) ($o['extra_price'] ?? 0), 2),
                         'tooltip' => (string) ($o['tooltip'] ?? ''),
                         'popular' => (bool) ($o['popular'] ?? false),
+                        'default' => (bool) ($o['default'] ?? false),
                     ])
                     ->values()
                     ->all(),

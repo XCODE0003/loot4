@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OptionsLayout;
 use App\Enums\ProductStatus;
 use App\Enums\ProductType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,8 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Spatie\Activitylog\Support\LogOptions;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -32,6 +33,7 @@ class Product extends Model implements HasMedia
         'name',
         'slug',
         'type',
+        'options_layout',
         'short_description',
         'description',
         'html_description',
@@ -54,6 +56,7 @@ class Product extends Model implements HasMedia
     {
         return [
             'type' => ProductType::class,
+            'options_layout' => OptionsLayout::class,
             'status' => ProductStatus::class,
             'price' => 'decimal:2',
             'compare_price' => 'decimal:2',

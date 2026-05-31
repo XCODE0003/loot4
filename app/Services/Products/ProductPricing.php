@@ -49,7 +49,10 @@ class ProductPricing
      */
     public function linePrice(Product $product, array $selections): float
     {
-        $base = (float) $product->price;
+        // Start from the "from" price so an unselected variant group falls back to
+        // its cheapest option (matching what the storefront shows), not the raw
+        // base price. A selected absolute group then replaces this entirely.
+        $base = $this->fromPrice($product);
         $hasAbsolute = false;
         $addons = 0.0;
 
