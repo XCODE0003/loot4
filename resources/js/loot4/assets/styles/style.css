@@ -1277,6 +1277,7 @@ margin-left: 24px;
 .product_main_sections {
   width: 100%;
   height: auto;
+  justify-content: center;
   margin-top: 82.45px;
   display: flex;
   align-items: flex-start;
