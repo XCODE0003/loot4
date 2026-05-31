@@ -387,6 +387,7 @@ function placeOrder() {
   gap: 10px;
 }
 .co_method {
+  position: relative;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -418,13 +419,28 @@ function placeOrder() {
   flex-shrink: 0;
 }
 .co_method.is-active {
-  background: rgba(43, 255, 149, 0.08);
-  border-color: rgba(43, 255, 149, 0.5);
+  border-color: transparent;
+  background: linear-gradient(135deg, rgba(43, 255, 149, 0.12), rgba(5, 71, 146, 0.12)), rgba(255, 255, 255, 0.04);
   color: #fff;
 }
+/* brand-gradient border on the selected method (mask keeps the 1px ring) */
+.co_method.is-active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  padding: 1px;
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
 .co_method.is-active .co_method_radio {
-  border-color: #2bff95;
-  background: #2bff95;
+  border-color: transparent;
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
   box-shadow: inset 0 0 0 4px #060b15;
 }
 .co_method_label {
@@ -796,6 +812,8 @@ function placeOrder() {
   .co_grid {
     display: flex;
     flex-direction: column;
+    /* stretch (not the desktop "start") so email + methods fill the width */
+    align-items: stretch;
     gap: 22px;
   }
   .co_left,
