@@ -9,7 +9,6 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -81,26 +80,38 @@ class FormsRelationManager extends RelationManager
                             ->numeric()
                             ->prefix('$')
                             ->default(0)
-                            ->visible(fn (Get $get): bool => $get('pricing_mode') !== PricingMode::Absolute->value),
+                            ->visible(fn (Get $get): bool => self::stateValue($get('pricing_mode')) !== PricingMode::Absolute->value),
                         Toggle::make('required')
                             ->inline(false),
                         TextInput::make('tooltip'),
 
                         Repeater::make('options')
-                            ->label('Options')
+                            ->label('Options (the choices the customer selects)')
+                            ->helperText('Add one row per choice. "Price" = the full price for Price-selector groups, or the amount added for Add-on groups.')
                             ->columnSpanFull()
-                            ->visible(fn (Get $get): bool => in_array($get('type'), [
+                            ->visible(fn (Get $get): bool => in_array(self::stateValue($get('type')), [
                                 FieldType::Select->value,
                                 FieldType::Radio->value,
                                 FieldType::Checkbox->value,
                             ], true))
+                            ->itemLabel(fn (array $state): ?string => $state['label'] ?? 'New option')
                             ->addActionLabel('Add option')
+                            ->defaultItems(1)
+                            ->reorderable()
                             ->schema([
-                                TextInput::make('label')->required(),
-                                TextInput::make('value')->required(),
+                                TextInput::make('label')
+                                    ->required()
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(function (?string $state, Get $get, Set $set): void {
+                                        if (blank($get('value'))) {
+                                            $set('value', Str::slug((string) $state));
+                                        }
+                                    }),
+                                TextInput::make('value')
+                                    ->required()
+                                    ->helperText('Internal identifier (auto-filled from the label).'),
                                 TextInput::make('extra_price')
                                     ->label('Price')
-                                    ->helperText('Price-selector group: full price. Add-on group: amount added.')
                                     ->numeric()
                                     ->prefix('$')
                                     ->default(0),
@@ -112,14 +123,22 @@ class FormsRelationManager extends RelationManager
                                     ->inline(false),
                             ])
                             ->columns(3),
-
-                        KeyValue::make('conditional_logic')
-                            ->label('Conditional logic')
-                            ->keyLabel('Depends on field')
-                            ->valueLabel('Equals value')
-                            ->columnSpanFull(),
                     ]),
             ]);
+    }
+
+    /**
+     * Normalise form state for comparisons. Filament keeps enum-cast attributes
+     * as enum instances when editing a saved record, so a raw string comparison
+     * would fail; this returns the backing scalar value either way.
+     */
+    private static function stateValue(mixed $state): ?string
+    {
+        if ($state instanceof \BackedEnum) {
+            return (string) $state->value;
+        }
+
+        return is_scalar($state) ? (string) $state : null;
     }
 
     public function table(Table $table): Table
