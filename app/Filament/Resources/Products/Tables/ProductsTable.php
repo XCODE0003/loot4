@@ -11,6 +11,7 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -57,6 +58,12 @@ class ProductsTable
                     ->alignCenter(),
                 IconColumn::make('featured')
                     ->boolean()
+                    ->alignCenter(),
+                TextInputColumn::make('sort_order')
+                    ->label('Order')
+                    ->type('number')
+                    ->rules(['integer', 'min:0'])
+                    ->sortable()
                     ->alignCenter(),
                 TextColumn::make('created_at')
                     ->dateTime('M j, Y')

@@ -73,6 +73,11 @@ class ItemsRelationManager extends RelationManager
                     ->label('Product')
                     ->searchable()
                     ->weight('bold'),
+                TextColumn::make('options')
+                    ->label('Options')
+                    ->state(fn ($record): ?string => is_array($record->form_data) ? ($record->form_data['option'] ?? null) : null)
+                    ->placeholder('—')
+                    ->wrap(),
                 TextColumn::make('quantity')
                     ->label('Qty')
                     ->alignCenter(),

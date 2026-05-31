@@ -11,6 +11,7 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Services\Geo\IpCountry;
 use App\Services\Notifications\OrderNotifier;
 use App\Services\Payments\IceNoxGateway;
 use App\Services\Payments\PaymentException;
@@ -133,11 +134,15 @@ class CheckoutController extends Controller
         $discount = $this->discountFor($coupon, $subtotal);
         $total = max(0, $subtotal - $discount);
 
-        $order = DB::transaction(function () use ($data, $lines, $subtotal, $discount, $total, $coupon, $request, $method): Order {
+        // Resolve the country from the IP outside the transaction (cached, fails safe).
+        $country = app(IpCountry::class)->lookup($request->ip());
+
+        $order = DB::transaction(function () use ($data, $lines, $subtotal, $discount, $total, $coupon, $request, $method, $country): Order {
             $order = Order::create([
                 'user_id' => $request->user()?->id,
                 'email' => $data['email'],
                 'ip' => $request->ip(),
+                'country' => $country,
                 'status' => OrderStatus::Pending,
                 'payment_status' => PaymentStatus::Pending,
                 'delivery_status' => DeliveryStatus::Pending,

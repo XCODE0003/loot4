@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Orders\Schemas;
 
 use App\Models\Order;
+use App\Services\Geo\IpCountry;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -37,7 +38,9 @@ class OrderInfolist
                         TextEntry::make('user.name')->label('User')->placeholder('Guest'),
                         TextEntry::make('user_id')->label('User ID')->placeholder('—'),
                         TextEntry::make('ip')->label('IP')->placeholder('—'),
-                        TextEntry::make('country')->placeholder('—'),
+                        TextEntry::make('country')
+                            ->state(fn ($record): ?string => $record->country ?: app(IpCountry::class)->lookup($record->ip))
+                            ->placeholder('—'),
                         TextEntry::make('user.created_at')->label('Registration date')->dateTime()->placeholder('—'),
                     ]),
 
@@ -84,6 +87,9 @@ class OrderInfolist
                             ->columns(4)
                             ->schema([
                                 TextEntry::make('product_name')->label('Product')->weight('bold'),
+                                TextEntry::make('options')
+                                    ->state(fn ($record): ?string => is_array($record->form_data) ? ($record->form_data['option'] ?? null) : null)
+                                    ->placeholder('—'),
                                 TextEntry::make('quantity')->label('Qty'),
                                 TextEntry::make('price')->money(fn ($record): string => $record->order?->currency ?? 'USD'),
                                 TextEntry::make('status')->badge(),

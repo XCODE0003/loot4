@@ -93,6 +93,13 @@ export function useCart() {
   function clear() {
     items.value = []
     coupon.value = null
+    // Remove storage synchronously too: on the success page, clear() runs before
+    // the layout's hydrate(), which would otherwise re-read the stale cart from
+    // localStorage (the deep watcher persists async) and restore it.
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem(STORAGE_KEY)
+      window.localStorage.removeItem(COUPON_KEY)
+    }
   }
 
   function applyCoupon(payload) {
