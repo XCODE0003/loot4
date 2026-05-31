@@ -163,6 +163,7 @@ class StorefrontController extends Controller
             'slug' => $product->slug,
             'title' => $product->name,
             'image' => $product->getFirstMediaUrl('main') ?: null,
+            'gallery' => $this->galleryImages($product),
             'trustImage' => 'product_trust.png',
             'breadcrumb' => [
                 'game' => $product->game?->name ?? 'Games',
@@ -267,6 +268,22 @@ class StorefrontController extends Controller
             ->all();
 
         return $packages;
+    }
+
+    /**
+     * All product images for the gallery: the main image first, then the gallery
+     * collection, de-duplicated.
+     *
+     * @return list<string>
+     */
+    private function galleryImages(Product $product): array
+    {
+        return collect([$product->getFirstMediaUrl('main')])
+            ->merge($product->getMedia('gallery')->map(fn ($m): string => $m->getUrl()))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
     }
 
     /**

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import Container from '@/loot4/components/layout/Container.vue'
 import ProductOptionGroups from '@/loot4/components/product/ProductOptionGroups.vue'
@@ -17,6 +17,17 @@ const { add } = useCart()
 const { formatPrice } = useLocale()
 
 const hasGroups = computed(() => (props.data.optionGroups?.length ?? 0) > 0)
+
+// Gallery: main image first, then any extra gallery images.
+const images = computed(() => {
+  const list = props.data.gallery?.length ? props.data.gallery : []
+  if (list.length) return list
+  return props.data.image ? [props.data.image] : []
+})
+const activeImage = ref(images.value[0] ?? null)
+watch(images, (imgs) => {
+  if (!imgs.includes(activeImage.value)) activeImage.value = imgs[0] ?? null
+})
 
 const displayPrice = ref(props.data.price)
 const selectedSummary = ref('')
@@ -70,7 +81,19 @@ function buy() {
 
       <div class="product_main_sections">
         <div class="product_main_section">
-          <img v-if="data.image" :src="asset(data.image)" alt="" class="product_main_section_image" />
+          <img v-if="activeImage" :src="asset(activeImage)" alt="" class="product_main_section_image" />
+          <div v-if="images.length > 1" class="product_gallery_thumbs">
+            <button
+              v-for="(img, i) in images"
+              :key="i"
+              type="button"
+              class="product_gallery_thumb"
+              :class="{ 'is-active': img === activeImage }"
+              @click="activeImage = img"
+            >
+              <img :src="asset(img)" alt="" />
+            </button>
+          </div>
           <div class="product_main_section_payments">
             <img :src="asset('/payment.svg')" alt="Payment methods" class="product_main_section_payments_strip" />
           </div>
@@ -117,3 +140,35 @@ function buy() {
     </Container>
   </section>
 </template>
+
+<style scoped>
+.product_gallery_thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+.product_gallery_thumb {
+  width: 72px;
+  height: 72px;
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.product_gallery_thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.product_gallery_thumb:hover {
+  border-color: rgba(43, 255, 149, 0.4);
+}
+.product_gallery_thumb.is-active {
+  border-color: #2bff95;
+}
+</style>
