@@ -34,6 +34,7 @@ class OrderConfirmationMail extends Mailable
             'heading' => 'Thank you for your order!',
             'intro' => 'Your payment was received and your order is now being processed. A member of our team will deliver it shortly — you can track it any time from your account.',
             'forCustomer' => true,
+            'showContact' => true,
         ]);
     }
 }

@@ -108,7 +108,7 @@
                             </table>
                         </td>
                     </tr>
-                    @if($forCustomer)
+                    @if($forCustomer && ($showContact ?? false))
                         <tr>
                             <td style="padding:0 32px 28px;">
                                 <div style="padding:18px;border:1px solid rgba(43,255,149,0.2);border-radius:12px;background:rgba(43,255,149,0.05);">
