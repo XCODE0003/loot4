@@ -175,8 +175,15 @@ header,
 .header_overlay {
   display: none;
 }
-body.menu-open,
+body.menu-open {
+  overflow: hidden;
+}
+/* `top` is set inline (-scrollY) so the page stays put with no background scroll. */
 body.cart-open {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
   overflow: hidden;
 }
 .header_logo {

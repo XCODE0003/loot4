@@ -18,10 +18,21 @@ onMounted(() => {
   mounted.value = true
 })
 
-// Lock background scroll while the cart is open so the page behind doesn't move.
+// Lock background scroll while the cart is open. Uses the position:fixed
+// technique so iOS Safari can't scroll the page behind (overflow:hidden alone
+// doesn't hold there) — this is what caused the "double scroll".
+let savedScrollY = 0
 watch(isOpen, (open) => {
-  if (typeof document !== 'undefined') {
-    document.body.classList.toggle('cart-open', open)
+  if (typeof document === 'undefined') return
+  const body = document.body
+  if (open) {
+    savedScrollY = window.scrollY
+    body.style.top = `-${savedScrollY}px`
+    body.classList.add('cart-open')
+  } else {
+    body.classList.remove('cart-open')
+    body.style.top = ''
+    window.scrollTo(0, savedScrollY)
   }
 })
 
@@ -192,6 +203,7 @@ async function applyPromo() {
 .cart_body {
   flex: 1;
   overflow-y: auto;
+  overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
   gap: 14px;

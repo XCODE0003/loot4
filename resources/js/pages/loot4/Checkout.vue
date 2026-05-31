@@ -802,11 +802,16 @@ function placeOrder() {
   .co_right {
     display: contents;
   }
+  /* Order Summary → Email → consent + Pay Now → payment methods. */
   .co_title { order: 0; }
   .co_orderbox { order: 1; }
   .co_section--email { order: 2; }
-  .co_section--methods { order: 3; }
-  .co_paybox { order: 4; }
+  .co_paybox { order: 3; }
+  .co_section--methods { order: 4; }
+  /* rely on the flex gap, not per-section margins, so spacing stays even */
+  .co_section {
+    margin-bottom: 0;
+  }
 
   .co_orderbox {
     border: 1px solid rgba(255, 255, 255, 0.08);
