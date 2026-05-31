@@ -83,6 +83,7 @@ class CheckoutController extends Controller
 
         $lines = [];
         $subtotal = 0.0;
+        $incomplete = false;
 
         foreach ($data['items'] as $row) {
             $product = Product::query()
@@ -96,9 +97,11 @@ class CheckoutController extends Controller
 
             $selections = is_array($row['selections'] ?? null) ? $row['selections'] : [];
 
-            // A required price selector / option group with no valid choice means
-            // the cart line is incomplete — drop it rather than charge the base price.
+            // A required option group with no valid choice means the cart line is
+            // incomplete — block checkout rather than charge the fallback price.
             if ($pricing->missingRequiredSelection($product, $selections)) {
+                $incomplete = true;
+
                 continue;
             }
 
@@ -116,6 +119,10 @@ class CheckoutController extends Controller
                 'option' => $summary !== '' ? $summary : ($row['option'] ?? null),
                 'selections' => $selections,
             ];
+        }
+
+        if ($incomplete) {
+            return back()->withErrors(['items' => 'Please choose all required options before checkout.']);
         }
 
         if ($lines === []) {

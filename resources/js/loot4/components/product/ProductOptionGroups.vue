@@ -10,6 +10,9 @@ const props = defineProps({
   productPrice: { type: Number, default: 0 },
   // 'single' = all groups on one page, 'steps' = one group per step.
   layout: { type: String, default: 'single' },
+  // When true, highlight required groups that have no selection (set after a
+  // blocked "Buy now").
+  showErrors: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['change'])
@@ -20,6 +23,7 @@ const isSteps = computed(() => props.layout === 'steps' && props.groups.length >
 // selections: { [groupKey]: string (single) | string[] (multi) }
 const selections = reactive({})
 const step = ref(0)
+const stepAttempted = ref(false)
 
 // Defaults come only from options explicitly marked "default" — nothing is
 // preselected otherwise.
@@ -55,6 +59,18 @@ function selectedValues(group) {
 
 function isSelected(group, value) {
   return selectedValues(group).includes(value)
+}
+
+function isGroupSatisfied(group) {
+  return !group.required || selectedValues(group).length > 0
+}
+
+// A required group with no selection shows an error once the customer tried to
+// advance (steps) or buy (single page).
+function groupHasError(group, gi) {
+  if (isGroupSatisfied(group)) return false
+  if (props.showErrors) return true
+  return isSteps.value && gi === step.value && stepAttempted.value
 }
 
 function select(group, value) {
@@ -131,17 +147,45 @@ function plainSelections() {
   return out
 }
 
+const valid = computed(() => props.groups.every(isGroupSatisfied))
+
 watch(
   [price, summary, () => JSON.stringify(selections)],
-  () => emit('change', { selections: plainSelections(), price: price.value, summary: summary.value }),
+  () => emit('change', {
+    selections: plainSelections(),
+    price: price.value,
+    summary: summary.value,
+    valid: valid.value,
+  }),
   { immediate: true },
 )
 
+// When a buy is blocked, jump the wizard to the first unsatisfied required group.
+watch(
+  () => props.showErrors,
+  (on) => {
+    if (!on || !isSteps.value) return
+    const idx = props.groups.findIndex((g) => !isGroupSatisfied(g))
+    if (idx >= 0) step.value = idx
+  },
+)
+
 function next() {
-  if (step.value < props.groups.length - 1) step.value += 1
+  const group = props.groups[step.value]
+  if (group && !isGroupSatisfied(group)) {
+    stepAttempted.value = true
+    return
+  }
+  if (step.value < props.groups.length - 1) {
+    step.value += 1
+    stepAttempted.value = false
+  }
 }
 function back() {
-  if (step.value > 0) step.value -= 1
+  if (step.value > 0) {
+    step.value -= 1
+    stepAttempted.value = false
+  }
 }
 </script>
 
@@ -164,6 +208,7 @@ function back() {
       v-show="!isSteps || gi === step"
       :key="group.key"
       class="pog_group"
+      :class="{ 'has-error': groupHasError(group, gi) }"
     >
       <p class="pog_group_title">{{ group.label }}</p>
 
@@ -217,6 +262,8 @@ function back() {
           </span>
         </button>
       </div>
+
+      <p v-if="groupHasError(group, gi)" class="pog_error">Please select an option to continue.</p>
     </div>
 
     <div v-if="isSteps" class="pog_nav">
@@ -236,6 +283,7 @@ function back() {
 <style scoped>
 .pog {
   display: flex;
+  max-height: 350px;
   flex-direction: column;
   gap: 24px;
   margin: 8px 0 4px;
@@ -251,6 +299,17 @@ function back() {
   font-size: 16px;
   font-weight: 600;
   color: #fff;
+}
+.pog_error {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 500;
+  color: #ff6b6b;
+}
+.pog_group.has-error .pog_row,
+.pog_group.has-error .pog_select {
+  border-color: #ff6b6b;
 }
 .pog_list {
   display: flex;

@@ -21,14 +21,24 @@ const hasGroups = computed(() => (props.data.optionGroups?.length ?? 0) > 0)
 const displayPrice = ref(props.data.price)
 const selectedSummary = ref('')
 const selectedSelections = ref({})
+const optionsValid = ref(true)
+const buyAttempted = ref(false)
+const optionsRef = ref(null)
 
-function onOptionsChange({ selections, price, summary }) {
+function onOptionsChange({ selections, price, summary, valid }) {
   displayPrice.value = price
   selectedSummary.value = summary
   selectedSelections.value = selections
+  optionsValid.value = valid !== false
 }
 
 function buy() {
+  // Block purchase until every required option group has a selection.
+  if (hasGroups.value && !optionsValid.value) {
+    buyAttempted.value = true
+    optionsRef.value?.$el?.scrollIntoView?.({ behavior: 'smooth', block: 'center' })
+    return
+  }
   add({
     id: props.data.slug,
     slug: props.data.slug,
@@ -72,9 +82,11 @@ function buy() {
           <h1 class="product_main_section_title">{{ data.title }}</h1>
           <ProductOptionGroups
             v-if="hasGroups"
+            ref="optionsRef"
             :groups="data.optionGroups"
             :product-price="data.price"
             :layout="data.optionsLayout"
+            :show-errors="buyAttempted"
             @change="onOptionsChange"
           />
           <div class="product_main_section_price">
