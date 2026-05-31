@@ -1280,18 +1280,19 @@ margin-left: 24px;
   margin-top: 82.45px;
   display: flex;
   align-items: flex-start;
-  gap: 32px;
+  gap: 48px;
 }
 .product_main_section {
   min-width: 0;
 }
 .product_main_section:first-child {
-  flex: 1 1 0;
+  /* Hug the image instead of stretching, so the options sit right beside it. */
+  flex: 0 1 auto;
 }
 .product_main_section:last-child {
-  width: 724px;
   max-width: 724px;
-  flex: 0 0 724px;
+  /* Cap at 724px but allow shrinking so the row never overflows. */
+  flex: 0 1 724px;
 }
 .product_main_section_image {
   border: 1px solid rgba(255, 255, 255, 0.15);

@@ -212,7 +212,11 @@ function back() {
     >
       <p class="pog_group_title">{{ group.label }}</p>
 
-      <div v-if="group.control === 'select'" class="pog_select_wrap">
+      <div
+        v-if="group.control === 'select'"
+        class="pog_select_wrap"
+        :class="{ 'is-active': (selections[group.key] ?? '') !== '' }"
+      >
         <select
           class="pog_select"
           :value="selections[group.key] ?? ''"
@@ -461,7 +465,26 @@ function back() {
 }
 .pog_select:focus {
   outline: none;
-  border-color: rgb(43, 255, 149);
+  border-color: transparent;
+}
+.pog_select_wrap.is-active .pog_select {
+  border-color: transparent;
+}
+/* Brand-gradient border on the selected/focused dropdown (mask keeps the 1px ring). */
+.pog_select_wrap.is-active::after,
+.pog_select_wrap:focus-within::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1px;
+  background: var(--pog-grad);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 .pog_select option {
   background: #16161d;
