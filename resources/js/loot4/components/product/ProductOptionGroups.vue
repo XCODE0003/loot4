@@ -282,6 +282,7 @@ function back() {
 
 <style scoped>
 .pog {
+  --pog-grad: radial-gradient(136.56% 99.31% at 37.02% 26.55%, rgb(43, 255, 149) 0%, rgb(5, 71, 146) 100%);
   display: flex;
   max-width: 350px;
   flex-direction: column;
@@ -317,6 +318,7 @@ function back() {
   gap: 8px;
 }
 .pog_row {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -334,8 +336,23 @@ function back() {
   border-color: rgba(43, 255, 149, 0.4);
 }
 .pog_row.is-active {
-  border-color: #2bff95;
-  background: rgba(43, 255, 149, 0.08);
+  border-color: transparent;
+  background: linear-gradient(135deg, rgba(43, 255, 149, 0.12), rgba(5, 71, 146, 0.12)), rgba(255, 255, 255, 0.03);
+}
+/* Brand-gradient border on the selected row (mask keeps only the 1px ring). */
+.pog_row.is-active::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--pog-grad);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 .pog_mark {
   flex-shrink: 0;
@@ -352,8 +369,8 @@ function back() {
   border-radius: 50%;
 }
 .pog_row.is-active .pog_mark {
-  background: #2bff95;
-  border-color: #2bff95;
+  background: var(--pog-grad);
+  border-color: transparent;
 }
 .pog_mark_icon {
   display: block;
@@ -444,7 +461,7 @@ function back() {
 }
 .pog_select:focus {
   outline: none;
-  border-color: #2bff95;
+  border-color: rgb(43, 255, 149);
 }
 .pog_select option {
   background: #16161d;
@@ -481,8 +498,8 @@ function back() {
 }
 .pog_step.is-active {
   color: #0b0b0f;
-  background: #2bff95;
-  border-color: #2bff95;
+  background: var(--pog-grad);
+  border-color: transparent;
 }
 .pog_step.is-done {
   color: #2bff95;
@@ -522,9 +539,9 @@ function back() {
 }
 .pog_nav_btn--next {
   margin-left: auto;
-  border-color: #2bff95;
-  color: #0b0b0f;
-  background: #2bff95;
+  border-color: transparent;
+  color: #fff;
+  background: var(--pog-grad);
 }
 .pog_nav_btn--next:hover:not(:disabled) {
   filter: brightness(1.05);

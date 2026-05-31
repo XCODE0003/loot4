@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Products\RelationManagers;
 
 use App\Enums\FieldType;
 use App\Enums\PricingMode;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -11,9 +12,12 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
@@ -128,6 +132,65 @@ class FormsRelationManager extends RelationManager
                             ])
                             ->columns(3),
                     ]),
+
+                Actions::make([
+                    Action::make('copyFieldsJson')
+                        ->label('Copy fields JSON')
+                        ->icon('heroicon-m-clipboard-document')
+                        ->color('gray')
+                        ->modalHeading('Fields JSON')
+                        ->modalDescription('Copy this and paste it into another product via "Paste fields JSON".')
+                        ->modalSubmitAction(false)
+                        ->modalCancelActionLabel('Close')
+                        ->fillForm(fn (Get $get): array => [
+                            'json' => json_encode(
+                                collect($get('fields') ?? [])
+                                    ->values()
+                                    ->map(function (array $field): array {
+                                        $field['options'] = array_values($field['options'] ?? []);
+
+                                        return $field;
+                                    })
+                                    ->all(),
+                                JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
+                            ),
+                        ])
+                        ->schema([
+                            Textarea::make('json')
+                                ->hiddenLabel()
+                                ->rows(14)
+                                ->readOnly(),
+                        ]),
+                    Action::make('pasteFieldsJson')
+                        ->label('Paste fields JSON')
+                        ->icon('heroicon-m-clipboard')
+                        ->color('gray')
+                        ->modalHeading('Paste fields JSON')
+                        ->modalDescription('Paste a fields JSON copied from another product. This replaces the fields above — review them, then click Save changes.')
+                        ->modalSubmitActionLabel('Load')
+                        ->schema([
+                            Textarea::make('json')
+                                ->label('Fields JSON')
+                                ->rows(14)
+                                ->required(),
+                        ])
+                        ->action(function (array $data, Set $set): void {
+                            $decoded = json_decode((string) ($data['json'] ?? ''), true);
+
+                            if (! is_array($decoded) || $decoded === []) {
+                                Notification::make()->title('Invalid or empty JSON')->danger()->send();
+
+                                return;
+                            }
+
+                            $set('fields', array_values($decoded));
+
+                            Notification::make()
+                                ->title('Loaded '.count($decoded).' field(s) — review and Save changes')
+                                ->success()
+                                ->send();
+                        }),
+                ])->columnSpanFull(),
             ]);
     }
 
