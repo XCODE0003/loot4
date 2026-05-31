@@ -179,14 +179,25 @@ function setGameFilter(value) {
     margin-right: 0;
   }
 }
-@media (max-width: 480px) {
-  .catalog_filter_label {
-    padding: 0 14px;
-    font-size: 14px;
+@media (max-width: 760px) {
+  /* Let the platform options wrap onto multiple rows so long labels
+     (e.g. "PlayStation 4/5") are never cut off. */
+  .catalog_filter {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .catalog_filter_options {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    gap: 4px;
   }
   .catalog_filter_opt {
-    padding: 12px 18px;
-    font-size: 14px;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  /* dividers look odd once wrapped */
+  .catalog_filter_opt + .catalog_filter_opt::before {
+    display: none;
   }
 }
 </style>

@@ -6,6 +6,7 @@ import SectionTag from '@/loot4/components/ui/SectionTag.vue'
 import { discoverGames as fallbackGames } from '@/loot4/data/home'
 import { asset } from '@/loot4/utils/asset'
 import { useGameMenu } from '@/loot4/composables/useGameMenu'
+import { useMobileMenu } from '@/loot4/composables/useMobileMenu'
 
 const props = defineProps({
   games: { type: Array, default: null },
@@ -13,7 +14,19 @@ const props = defineProps({
 
 const games = computed(() => (props.games ?? fallbackGames).slice(0, 4))
 
-const { openGameMenuFromAnywhere } = useGameMenu()
+const { openGameMenu, openGameMenuFromAnywhere } = useGameMenu()
+const { openMenu } = useMobileMenu()
+
+function viewAllGames() {
+  // On mobile the games live inside the slide-out menu — open it and expand the
+  // games dropdown. On desktop, open the header's hover dropdown.
+  if (typeof window !== 'undefined' && window.innerWidth <= 1100) {
+    openMenu()
+    setTimeout(openGameMenu, 0)
+    return
+  }
+  openGameMenuFromAnywhere()
+}
 </script>
 
 <template>
@@ -28,7 +41,7 @@ const { openGameMenuFromAnywhere } = useGameMenu()
           </p>
         </div>
         <div class="discover_controls">
-          <button type="button" class="discover_up_more" @click="openGameMenuFromAnywhere">
+          <button type="button" class="discover_up_more" @click="viewAllGames">
             View All Games
             <svg width="20" height="15" viewBox="0 0 20 15" fill="none"><path d="M1 6.364C.448 6.364 0 6.812 0 7.364s.448 1 1 1V6.364zm18.707.707a1 1 0 000-1.414L13.343.293a1 1 0 10-1.414 1.414L17.586 7.364l-5.657 5.657a1 1 0 101.414 1.414l6.364-6.364zM1 7.364v1h18v-2H1v1z" fill="white"/></svg>
           </button>

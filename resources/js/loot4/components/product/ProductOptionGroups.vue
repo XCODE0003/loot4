@@ -148,14 +148,17 @@ function plainSelections() {
 }
 
 const valid = computed(() => props.groups.every(isGroupSatisfied))
+// In steps mode the buy button only shows on the final step.
+const isLastStep = computed(() => !isSteps.value || step.value >= props.groups.length - 1)
 
 watch(
-  [price, summary, () => JSON.stringify(selections)],
+  [price, summary, () => JSON.stringify(selections), () => step.value],
   () => emit('change', {
     selections: plainSelections(),
     price: price.value,
     summary: summary.value,
     valid: valid.value,
+    isLastStep: isLastStep.value,
   }),
   { immediate: true },
 )
@@ -288,7 +291,7 @@ function back() {
 .pog {
   --pog-grad: radial-gradient(136.56% 99.31% at 37.02% 26.55%, rgb(43, 255, 149) 0%, rgb(5, 71, 146) 100%);
   display: flex;
-  max-width: 350px;
+  max-width: 400px;
   flex-direction: column;
   gap: 24px;
   margin: 8px 0 4px;

@@ -162,7 +162,7 @@ onBeforeUnmount(() => {
               </div>
             </div>
           </div>
-          <button type="button" class="header_cart" aria-label="Open cart" @click="openCart">
+          <button type="button" class="header_cart" aria-label="Open cart" @click="closeMenu(); openCart()">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.5 3h2l2.4 12.2a1 1 0 0 0 1 .8h8.7a1 1 0 0 0 1-.8L20.5 7H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               <circle cx="9.5" cy="20" r="1.4" fill="currentColor"/>

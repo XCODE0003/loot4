@@ -21,6 +21,9 @@ const processing = ref(false)
 const formError = ref('')
 const agreed = ref(true)
 
+// Collapsible "Order Summary" shutter (mobile only — always expanded on desktop).
+const summaryOpen = ref(false)
+
 const promoOpen = ref(false)
 const promoInput = ref(coupon.value?.code ?? '')
 const promoError = ref('')
@@ -132,9 +135,9 @@ function placeOrder() {
 
       <div v-else class="co_grid">
         <div class="co_left">
-          <h1 class="co_title">Secure checkout</h1>
+          <h1 class="co_title">Checkout</h1>
 
-          <div class="co_section">
+          <div class="co_section co_section--email">
             <p class="co_section_label">Customer information</p>
             <input
               id="co-email"
@@ -152,7 +155,7 @@ function placeOrder() {
             <p v-if="emailError" class="co_field_err">{{ emailError }}</p>
           </div>
 
-          <div class="co_section">
+          <div class="co_section co_section--methods">
             <h2 class="co_section_title">Pay with</h2>
             <div class="co_methods">
               <label
@@ -176,6 +179,15 @@ function placeOrder() {
         </div>
 
         <aside class="co_right">
+          <div class="co_orderbox" :class="{ 'is-open': summaryOpen }">
+            <button type="button" class="co_orderbox_toggle" @click="summaryOpen = !summaryOpen">
+              <span class="co_orderbox_toggle_label">Order Summary</span>
+              <span class="co_orderbox_toggle_total">{{ money(grandTotal) }}</span>
+              <svg class="co_orderbox_chevron" width="13" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1.5 6 6.5 11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <div class="co_orderbox_body">
           <div class="co_items">
             <div v-for="item in items" :key="item.key" class="co_item">
               <button
@@ -246,7 +258,11 @@ function placeOrder() {
               <span>Total</span>
               <span>{{ money(grandTotal) }}</span>
             </div>
+            </div>
+            </div>
+          </div>
 
+          <div class="co_paybox">
             <div class="co_consent">
               <p class="co_consent_text">
                 Your personal data will be used to process your order, support your experience throughout this
@@ -764,13 +780,70 @@ function placeOrder() {
   text-decoration: none;
 }
 
+/* Order summary box: a collapsible shutter on mobile, always open on desktop. */
+.co_orderbox_toggle {
+  display: none;
+}
+.co_orderbox_body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
 @media (max-width: 900px) {
+  /* Flatten the two columns into one stream so the blocks can be reordered:
+     Order Summary (shutter) → Email → Pay with + consent + Pay Now. */
   .co_grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
   }
+  .co_left,
   .co_right {
-    position: static;
+    display: contents;
+  }
+  .co_title { order: 0; }
+  .co_orderbox { order: 1; }
+  .co_section--email { order: 2; }
+  .co_section--methods { order: 3; }
+  .co_paybox { order: 4; }
+
+  .co_orderbox {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    overflow: hidden;
+  }
+  .co_orderbox_toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 18px;
+    background: transparent;
+    color: #fff;
+    font-family: var(--font-family);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .co_orderbox_toggle_label {
+    flex: 1;
+    text-align: left;
+  }
+  .co_orderbox_chevron {
+    color: rgba(255, 255, 255, 0.55);
+    transition: transform 0.2s ease;
+  }
+  .co_orderbox.is-open .co_orderbox_chevron {
+    transform: rotate(180deg);
+  }
+  .co_orderbox_body {
+    display: none;
+    padding: 0 14px 14px;
+  }
+  .co_orderbox.is-open .co_orderbox_body {
+    display: flex;
   }
 }
 </style>

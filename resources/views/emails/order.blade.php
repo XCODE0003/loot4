@@ -1,6 +1,12 @@
 @php
     $payment = $order->payments->first()?->method ?? 'card';
-    $payment = 'ICENOX-'.\Illuminate\Support\Str::of($payment)->replaceFirst('stripe-', '')->upper()->replace('_', '-');
+    $payment = \Illuminate\Support\Str::of($payment)
+        ->replaceFirst('stripe-', '')
+        ->replaceFirst('icenox-', '')
+        ->replace('_', '-')
+        ->headline()
+        ->toString();
+    $payment = $payment === 'Eps' ? 'EPS' : $payment;
     $accent = '#2bff95';
     $bg = '#0a0a0b';
     $card = '#121218';

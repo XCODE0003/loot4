@@ -5,6 +5,7 @@ namespace App\Mail;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -20,7 +21,10 @@ class OrderDeliveredMail extends Mailable
 
     public function envelope(): Envelope
     {
-        return new Envelope(subject: 'Your Loot4you order '.$this->order->order_number.' has been delivered');
+        return new Envelope(
+            from: new Address((string) config('mail.from.address'), 'Loot4You'),
+            subject: 'Your Loot4You order '.$this->order->order_number.' has been delivered',
+        );
     }
 
     public function content(): Content

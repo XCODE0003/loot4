@@ -35,12 +35,15 @@ const selectedSelections = ref({})
 const optionsValid = ref(true)
 const buyAttempted = ref(false)
 const optionsRef = ref(null)
+// In step-by-step mode the Buy button only appears on the last step.
+const canBuy = ref(true)
 
-function onOptionsChange({ selections, price, summary, valid }) {
+function onOptionsChange({ selections, price, summary, valid, isLastStep }) {
   displayPrice.value = price
   selectedSummary.value = summary
   selectedSelections.value = selections
   optionsValid.value = valid !== false
+  canBuy.value = isLastStep !== false
 }
 
 function buy() {
@@ -118,7 +121,7 @@ function buy() {
                 {{ formatPrice(displayPrice) }}
                 <span v-if="data.priceOld != null">{{ formatPrice(data.priceOld) }}</span>
               </p>
-              <button type="button" class="product_main_section_price_button" @click="buy">Buy now</button>
+              <button v-if="canBuy" type="button" class="product_main_section_price_button" @click="buy">Buy now</button>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Link } from '@inertiajs/vue3'
 import { useCart } from '@/loot4/composables/useCart'
@@ -16,6 +16,13 @@ const { formatPrice } = useLocale()
 const mounted = ref(false)
 onMounted(() => {
   mounted.value = true
+})
+
+// Lock background scroll while the cart is open so the page behind doesn't move.
+watch(isOpen, (open) => {
+  if (typeof document !== 'undefined') {
+    document.body.classList.toggle('cart-open', open)
+  }
 })
 
 const promoOpen = ref(true)
@@ -403,5 +410,11 @@ async function applyPromo() {
 .cart-slide-enter-from,
 .cart-slide-leave-to {
   transform: translateX(100%);
+}
+@media (max-width: 600px) {
+  .cart {
+    width: 100%;
+    padding: 20px;
+  }
 }
 </style>
