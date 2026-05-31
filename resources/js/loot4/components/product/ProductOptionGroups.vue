@@ -283,7 +283,7 @@ function back() {
 <style scoped>
 .pog {
   display: flex;
-  max-height: 350px;
+  max-width: 350px;
   flex-direction: column;
   gap: 24px;
   margin: 8px 0 4px;
