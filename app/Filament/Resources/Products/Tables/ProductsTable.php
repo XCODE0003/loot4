@@ -21,10 +21,12 @@ class ProductsTable
     public static function configure(Table $table): Table
     {
         return $table
-            // Manual display position: drag rows to set the order shown in the
-            // storefront catalog. Filter by game/type first, then reorder.
+            // Storefront display position. Drag the ≡ handle to reorder (top = first),
+            // or type the "Order" number (lower = first). Filter by game first to
+            // reorder within one game.
             ->reorderable('sort_order')
             ->defaultSort('sort_order')
+            ->paginationPageOptions([10, 25, 50, 100])
             ->columns([
                 SpatieMediaLibraryImageColumn::make('main')
                     ->collection('main')
@@ -63,6 +65,7 @@ class ProductsTable
                     ->label('Order')
                     ->type('number')
                     ->rules(['integer', 'min:0'])
+                    ->tooltip('Lower number shows first on the site. You can also drag the ≡ handle to reorder.')
                     ->sortable()
                     ->alignCenter(),
                 TextColumn::make('created_at')

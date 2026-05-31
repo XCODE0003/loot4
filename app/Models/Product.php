@@ -27,6 +27,17 @@ class Product extends Model implements HasMedia
             ->dontLogEmptyChanges();
     }
 
+    protected static function booted(): void
+    {
+        // New products go to the end of the list (highest sort_order) unless an
+        // explicit position was set, so they don't jump to the top.
+        static::creating(function (Product $product): void {
+            if (empty($product->sort_order)) {
+                $product->sort_order = (int) static::max('sort_order') + 1;
+            }
+        });
+    }
+
     protected $fillable = [
         'game_id',
         'currency_id',
