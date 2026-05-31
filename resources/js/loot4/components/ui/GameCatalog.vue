@@ -180,24 +180,23 @@ function setGameFilter(value) {
   }
 }
 @media (max-width: 760px) {
-  /* Let the platform options wrap onto multiple rows so long labels
-     (e.g. "PlayStation 4/5") are never cut off. */
+  /* Clean single-row, swipeable filter. The "Platform" label is dropped on
+     mobile to give the options the full width before scrolling kicks in. */
   .catalog_filter {
-    align-items: flex-start;
-    flex-wrap: wrap;
+    align-items: center;
+  }
+  .catalog_filter_label {
+    display: none;
   }
   .catalog_filter_options {
-    flex-wrap: wrap;
-    overflow-x: visible;
-    gap: 4px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .catalog_filter_opt {
-    padding: 10px 14px;
+    flex: 0 0 auto;
+    padding: 10px 16px;
     font-size: 13px;
-  }
-  /* dividers look odd once wrapped */
-  .catalog_filter_opt + .catalog_filter_opt::before {
-    display: none;
   }
 }
 </style>
