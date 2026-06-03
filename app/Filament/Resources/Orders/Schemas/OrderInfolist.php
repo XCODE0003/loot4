@@ -74,6 +74,7 @@ class OrderInfolist
                         TextEntry::make('content')->placeholder('—'),
                         TextEntry::make('term')->placeholder('—'),
                         TextEntry::make('landing_page')->label('Landing page')->placeholder('—'),
+                        TextEntry::make('gclid')->label('Google Click ID')->placeholder('—'),
                         TextEntry::make('fbclid')->label('Facebook Click ID')->placeholder('—'),
                         TextEntry::make('ttclid')->label('TikTok Click ID')->placeholder('—'),
                         TextEntry::make('first_visit_at')->label('First visit')->dateTime()->placeholder('—'),

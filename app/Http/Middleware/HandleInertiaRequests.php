@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Enums\GameStatus;
 use App\Models\Game;
+use App\Models\Setting;
 use Filament\Facades\Filament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -68,8 +69,15 @@ class HandleInertiaRequests extends Middleware
                     'icon' => $g->getFirstMediaUrl('icon') ?: $g->getFirstMediaUrl('image') ?: null,
                 ])
                 ->all(),
-            // Google Analytics measurement ID (loaded only after cookie consent).
-            'gaId' => \App\Models\Setting::get('ga_measurement_id'),
+            // Marketing/analytics tag IDs (all public by nature — they ship in
+            // page source on any site). Trackers load only after cookie consent.
+            'tracking' => [
+                'gaId' => Setting::get('ga_measurement_id'),
+                'googleAdsId' => Setting::get('google_ads_conversion_id'),
+                'googleAdsLabel' => Setting::get('google_ads_conversion_label'),
+                'facebookPixelId' => Setting::get('facebook_pixel_id'),
+                'tiktokPixelId' => Setting::get('tiktok_pixel_id'),
+            ],
             // Live USD exchange rates fetched hourly by FetchExchangeRates job.
             'exchangeRates' => Cache::get('exchange_rates', []),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',

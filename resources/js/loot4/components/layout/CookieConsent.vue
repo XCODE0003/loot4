@@ -1,9 +1,10 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { Link, usePage } from '@inertiajs/vue3'
+import { loadTrackers } from '@/loot4/utils/tracking'
 
 const page = usePage()
-const gaId = computed(() => page.props.gaId ?? null)
+const tracking = computed(() => page.props.tracking ?? {})
 
 const CONSENT_COOKIE = 'cookie_consent'
 const visible = ref(false)
@@ -18,28 +19,11 @@ function writeConsent(value) {
   document.cookie = `${CONSENT_COOKIE}=${value}; path=/; max-age=${oneYear}; SameSite=Lax`
 }
 
-// Inject Google Analytics (gtag) once, only after consent and only if configured.
-function loadAnalytics() {
-  if (!gaId.value || window.__gaLoaded) return
-  window.__gaLoaded = true
-
-  const s = document.createElement('script')
-  s.async = true
-  s.src = `https://www.googletagmanager.com/gtag/js?id=${gaId.value}`
-  document.head.appendChild(s)
-
-  window.dataLayer = window.dataLayer || []
-  window.gtag = function gtag() {
-    window.dataLayer.push(arguments)
-  }
-  window.gtag('js', new Date())
-  window.gtag('config', gaId.value, { anonymize_ip: true })
-}
-
 function accept() {
   writeConsent('accepted')
   visible.value = false
-  loadAnalytics()
+  // Marketing tags (gtag / Facebook / TikTok) load only after consent.
+  loadTrackers(tracking.value)
 }
 
 function decline() {
@@ -50,7 +34,7 @@ function decline() {
 onMounted(() => {
   const consent = readConsent()
   if (consent === 'accepted') {
-    loadAnalytics()
+    loadTrackers(tracking.value)
   } else if (consent !== 'declined') {
     visible.value = true
   }

@@ -10,6 +10,9 @@ enum ConversionStatus: string implements HasColor, HasLabel
     case Pending = 'pending';
     case Sent = 'sent';
     case Failed = 'failed';
+    // The client decided not to fire the pixel (already sent for this order,
+    // or the visitor has not accepted marketing cookies). Logged for debugging.
+    case Skipped = 'skipped';
 
     public function getLabel(): string
     {
@@ -22,6 +25,7 @@ enum ConversionStatus: string implements HasColor, HasLabel
             self::Pending => 'warning',
             self::Sent => 'success',
             self::Failed => 'danger',
+            self::Skipped => 'gray',
         };
     }
 }

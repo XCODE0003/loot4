@@ -88,7 +88,10 @@ class ConversionLogsTable
                 Action::make('retry')
                     ->icon('heroicon-m-arrow-path')
                     ->color('warning')
-                    ->visible(fn (ConversionLog $record): bool => $record->status !== ConversionStatus::Sent)
+                    // Browser-fired pixels can't be re-sent from the server, so
+                    // retry only applies to server-side (non client-origin) events.
+                    ->visible(fn (ConversionLog $record): bool => $record->status !== ConversionStatus::Sent
+                        && ($record->request_payload['origin'] ?? null) !== 'client')
                     ->action(function (ConversionLog $record): void {
                         $record->update(['status' => ConversionStatus::Pending, 'reason' => null]);
                         SendConversionEvent::dispatch($record->id);
@@ -138,7 +141,7 @@ class ConversionLogsTable
         ];
 
         return response()->streamDownload(
-            fn () => print(json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)),
+            fn () => print (json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)),
             "conversion-{$record->id}.json",
             ['Content-Type' => 'application/json'],
         );

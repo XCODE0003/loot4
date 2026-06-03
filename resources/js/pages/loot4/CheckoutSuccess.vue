@@ -1,16 +1,18 @@
 <script setup>
 import { computed, onMounted } from 'vue'
-import { Head, Link } from '@inertiajs/vue3'
+import { Head, Link, usePage } from '@inertiajs/vue3'
 import '@/loot4/assets/styles/style.css'
 import Container from '@/loot4/components/layout/Container.vue'
 import { useCart } from '@/loot4/composables/useCart'
 import { useLocale } from '@/loot4/composables/useLocale'
+import { firePurchaseConversions } from '@/loot4/utils/tracking'
 
 const props = defineProps({
   order: { type: Object, required: true },
   authed: { type: Boolean, default: false },
 })
 
+const page = usePage()
 const { formatPrice } = useLocale()
 const { clear } = useCart()
 const purchaseKey = computed(() => `l4_purchase_sent_${props.order?.number ?? ''}`)
@@ -21,10 +23,13 @@ const whatsappUrl = computed(() => {
   return `https://wa.me/380730882668?text=${encodeURIComponent(message)}`
 })
 
-// Order placed — empty the cart once we reach the confirmation page.
+// Order placed — empty the cart once we reach the confirmation page, push the
+// GTM ecommerce event and fire ad-platform conversions (each attempt is logged
+// to the admin Conversion Logs with sent / localStorage-skip / no-consent).
 onMounted(() => {
   clear()
   pushPurchaseEvent()
+  firePurchaseConversions(page.props.tracking ?? {}, props.order)
 })
 
 function money(value) {

@@ -11,6 +11,7 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Services\Attribution\AttributionResolver;
 use App\Services\Geo\IpCountry;
 use App\Services\Notifications\OrderNotifier;
 use App\Services\Payments\IceNoxGateway;
@@ -78,6 +79,9 @@ class CheckoutController extends Controller
             'items.*.selections' => ['nullable', 'array'],
             'coupon' => ['nullable', 'string'],
             'method' => ['nullable', 'string', 'in:'.implode(',', self::PAYMENT_METHODS)],
+            // Attribution is sanitized leniently by AttributionResolver — bad
+            // tracking data must never block a checkout, so no strict rules here.
+            'attribution' => ['nullable', 'array'],
         ]);
 
         $method = $data['method'] ?? self::PAYMENT_METHODS[0];
@@ -137,7 +141,14 @@ class CheckoutController extends Controller
         // Resolve the country from the IP outside the transaction (cached, fails safe).
         $country = app(IpCountry::class)->lookup($request->ip());
 
-        $order = DB::transaction(function () use ($data, $lines, $subtotal, $discount, $total, $coupon, $request, $method, $country): Order {
+        // Normalize the client-captured attribution (utm/gclid/fbclid/...) into
+        // order columns; falls back to source=storefront when nothing was captured.
+        $attribution = app(AttributionResolver::class)->resolve(
+            is_array($data['attribution'] ?? null) ? $data['attribution'] : [],
+            $request->getHost(),
+        );
+
+        $order = DB::transaction(function () use ($data, $lines, $subtotal, $discount, $total, $coupon, $request, $method, $country, $attribution): Order {
             $order = Order::create([
                 'user_id' => $request->user()?->id,
                 'email' => $data['email'],
@@ -152,7 +163,7 @@ class CheckoutController extends Controller
                 'total' => $total,
                 'coupon_id' => $coupon?->id,
                 'discount_code' => $coupon?->code,
-                'source' => 'storefront',
+                ...$attribution,
             ]);
 
             foreach ($lines as $line) {

@@ -1,4 +1,5 @@
 import { computed, ref, watch } from 'vue'
+import { getAttribution } from '@/loot4/composables/useAttribution'
 
 const STORAGE_KEY = 'loot4_cart'
 const COUPON_KEY = 'loot4_cart_coupon'
@@ -124,6 +125,7 @@ export function useCart() {
 
   /**
    * Payload sent to the server at checkout (prices are recomputed server-side).
+   * Attribution rides along so the order records the real traffic source.
    */
   function checkoutPayload(email) {
     return {
@@ -135,6 +137,7 @@ export function useCart() {
         option: i.option ?? null,
         qty: i.qty,
       })),
+      attribution: getAttribution() ?? undefined,
     }
   }
 

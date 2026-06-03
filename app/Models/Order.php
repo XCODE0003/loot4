@@ -5,13 +5,14 @@ namespace App\Models;
 use App\Enums\DeliveryStatus;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
+use App\Services\Notifications\OrderNotifier;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
-use Spatie\Activitylog\Support\LogOptions;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class Order extends Model
 {
@@ -37,6 +38,7 @@ class Order extends Model
         'campaign',
         'content',
         'term',
+        'gclid',
         'fbclid',
         'ttclid',
         'landing_page',
@@ -70,7 +72,7 @@ class Order extends Model
         // Email the customer when an order transitions to "delivered".
         static::updated(function (Order $order): void {
             if ($order->wasChanged('delivery_status') && $order->delivery_status === DeliveryStatus::Delivered) {
-                app(\App\Services\Notifications\OrderNotifier::class)->delivered($order);
+                app(OrderNotifier::class)->delivered($order);
             }
         });
     }

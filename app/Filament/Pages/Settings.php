@@ -31,7 +31,8 @@ class Settings extends Page
     private const KEYS = [
         'site_name', 'site_logo', 'favicon', 'seo_default_title', 'seo_default_description',
         'payment_stripe', 'stripe_key', 'payment_paypal', 'paypal_client_id', 'payment_crypto', 'payment_apple_pay',
-        'facebook_pixel_id', 'tiktok_pixel_id', 'ga_measurement_id', 'discord_webhook_url',
+        'facebook_pixel_id', 'tiktok_pixel_id', 'ga_measurement_id',
+        'google_ads_conversion_id', 'google_ads_conversion_label', 'discord_webhook_url',
         'telegram_bot_token', 'telegram_chat_id', 'telegram_failed_bot_token', 'telegram_failed_chat_id',
         'mail_host', 'mail_port', 'mail_username', 'mail_password', 'mail_encryption',
         'mail_from_address', 'mail_from_name', 'order_notify_email',
@@ -82,6 +83,13 @@ class Settings extends Page
                         TextInput::make('facebook_pixel_id')->label('Facebook Pixel ID'),
                         TextInput::make('tiktok_pixel_id')->label('TikTok Pixel ID'),
                         TextInput::make('ga_measurement_id')->label('Google Analytics ID (G-XXXXXXX)')->placeholder('G-XXXXXXXXXX'),
+                        TextInput::make('google_ads_conversion_id')
+                            ->label('Google Ads Conversion ID')
+                            ->placeholder('AW-123456789')
+                            ->helperText('From the Google Ads conversion tag: gtag send_to = AW-XXXXXXXXX/label.'),
+                        TextInput::make('google_ads_conversion_label')
+                            ->label('Google Ads Conversion Label')
+                            ->placeholder('AbC-D_efG-h12_34-567'),
                         TextInput::make('discord_webhook_url')->label('Discord webhook URL')->url(),
                     ]),
 

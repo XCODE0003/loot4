@@ -97,6 +97,7 @@ class OrderForm
                         TextInput::make('content'),
                         TextInput::make('term'),
                         TextInput::make('landing_page')->label('Landing page'),
+                        TextInput::make('gclid')->label('Google Click ID'),
                         TextInput::make('fbclid')->label('Facebook Click ID'),
                         TextInput::make('ttclid')->label('TikTok Click ID'),
                         DateTimePicker::make('first_visit_at')->label('First visit'),
