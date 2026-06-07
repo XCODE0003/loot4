@@ -42,7 +42,10 @@ const oauthError = computed(() => page.props.errors?.oauth ?? null)
           </div>
 
           <label class="auth_remember">
-            <input name="remember" type="checkbox" />
+            <!-- Checked by default — keeps customers signed in long-term
+                 (Fortify issues the remember cookie) instead of dropping
+                 them after the session expires. -->
+            <input name="remember" type="checkbox" checked />
             <span>{{ $t('auth.remember') }}</span>
           </label>
 

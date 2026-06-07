@@ -235,8 +235,19 @@ export function firePurchaseConversions(tracking = {}, order) {
 
     for (const platform of purchasePlatforms(tracking, order)) {
         if (!platform.configured) {
+            // Settings missing (e.g. Google Ads conversion ID/label) — log it
+            // so the admin sees WHY nothing fired instead of an empty table.
+            logConversion({
+                order: order.number,
+                platform: platform.key,
+                event: 'Purchase',
+                sent: false,
+                reason: 'not-configured',
+                url: window.location.href,
+            });
+
             continue;
-        } // not set up — nothing to debug
+        }
 
         const dedupKey = `l4_conv_${platform.key}_${order.number}`;
         let alreadySent = false;

@@ -45,7 +45,14 @@ function pushPurchaseEvent() {
   if (!orderNumber || typeof window === 'undefined') return
 
   // Prevent duplicate purchase events on refresh/revisit of success page.
-  if (window.sessionStorage.getItem(purchaseKey.value) === '1') return
+  // localStorage (not sessionStorage) — the success URL is reachable later
+  // from email/history/another tab, and each new tab gets a fresh
+  // sessionStorage, which double-counted GTM purchase conversions.
+  try {
+    if (window.localStorage.getItem(purchaseKey.value) === '1') return
+  } catch {
+    /* private mode — fall through and fire */
+  }
 
   window.dataLayer = window.dataLayer || []
 
@@ -68,7 +75,11 @@ function pushPurchaseEvent() {
     },
   })
 
-  window.sessionStorage.setItem(purchaseKey.value, '1')
+  try {
+    window.localStorage.setItem(purchaseKey.value, '1')
+  } catch {
+    /* ignore */
+  }
 }
 </script>
 

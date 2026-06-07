@@ -18,7 +18,7 @@ class ConversionLogController extends Controller
      *
      * @var list<string>
      */
-    private const SKIP_REASONS = ['localStorage-skip', 'no-consent', 'consent-declined'];
+    private const SKIP_REASONS = ['localStorage-skip', 'no-consent', 'consent-declined', 'not-configured'];
 
     /**
      * Upper bound of debug rows per order+platform — keeps a public endpoint

@@ -60,4 +60,8 @@ jobs:
             docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force
             docker compose -f docker-compose.prod.yml exec -T --user www-data app php artisan optimize
             docker compose -f docker-compose.prod.yml exec -T --user www-data app php artisan exchange-rates:fetch || true
+            # --no-cache builds leave ~1GB of unused build cache per deploy; without
+            # pruning it filled the 120GB disk (91GB of cache) and crashed the server.
+            docker builder prune -af
+            docker image prune -f
             echo "Deploy complete"

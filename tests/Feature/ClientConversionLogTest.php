@@ -73,6 +73,18 @@ class ClientConversionLogTest extends TestCase
         $this->assertSame(ConversionStatus::Skipped, ConversionLog::firstOrFail()->status);
     }
 
+    public function test_not_configured_is_logged_as_skipped(): void
+    {
+        $order = Order::factory()->create();
+
+        $this->postJson('/checkout/conversion', $this->payload($order, [
+            'sent' => false,
+            'reason' => 'not-configured',
+        ]))->assertCreated();
+
+        $this->assertSame(ConversionStatus::Skipped, ConversionLog::firstOrFail()->status);
+    }
+
     public function test_blocked_tracker_is_logged_as_failed(): void
     {
         $order = Order::factory()->create();
