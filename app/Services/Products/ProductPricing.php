@@ -20,6 +20,12 @@ use Illuminate\Support\Collection;
 class ProductPricing
 {
     /**
+     * Max length kept from a free-form input value (text/number/textarea) when
+     * pricing, summarising and storing it — defends against oversized payloads.
+     */
+    public const INPUT_MAX_LENGTH = 120;
+
+    /**
      * The lowest price a customer could pay — the "from" price on cards and the
      * product page. With a price-selector (absolute) group this is the cheapest
      * selectable option; otherwise the product's own base price.
@@ -76,6 +82,13 @@ class ProductPricing
             $addons += $this->sumPrices($picked);
         }
 
+        // Free-form input fields add their base extra price once filled.
+        foreach ($this->inputFields($product) as $field) {
+            if ($this->inputValue($field, $selections[$field->key] ?? null) !== '') {
+                $addons += (float) ($field->extra_price ?? 0);
+            }
+        }
+
         return round($base + $addons, 2);
     }
 
@@ -95,6 +108,14 @@ class ProductPricing
                 if ($label !== '') {
                     $labels[] = $label;
                 }
+            }
+        }
+
+        // Free-form input fields contribute "Label: typed value".
+        foreach ($this->inputFields($product) as $field) {
+            $value = $this->inputValue($field, $selections[$field->key] ?? null);
+            if ($value !== '') {
+                $labels[] = trim((string) $field->label).': '.$value;
             }
         }
 
@@ -118,6 +139,12 @@ class ProductPricing
             }
         }
 
+        foreach ($this->inputFields($product) as $field) {
+            if ($field->required && $this->inputValue($field, $selections[$field->key] ?? null) === '') {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -134,6 +161,37 @@ class ProductPricing
             ->filter(fn (ProductFormField $f): bool => $f->type->hasOptions() && filled($f->options))
             ->sortBy('sort_order')
             ->values();
+    }
+
+    /**
+     * Active, free-form input fields (text/number/textarea) for the product, in
+     * display order. These carry no options; the customer types a value.
+     *
+     * @return Collection<int, ProductFormField>
+     */
+    private function inputFields(Product $product): Collection
+    {
+        return $product->forms
+            ->filter(fn ($form): bool => (bool) ($form->is_active ?? true))
+            ->flatMap(fn ($form) => $form->fields ?? collect())
+            ->filter(fn (ProductFormField $f): bool => $f->type->isInput())
+            ->sortBy('sort_order')
+            ->values();
+    }
+
+    /**
+     * The trimmed, length-capped string a customer typed into an input field.
+     * Arrays (a tampered payload) and blanks collapse to ''.
+     *
+     * @param  string|list<string>|null  $value
+     */
+    private function inputValue(ProductFormField $field, string|array|null $value): string
+    {
+        if (! is_string($value)) {
+            return '';
+        }
+
+        return mb_substr(trim($value), 0, self::INPUT_MAX_LENGTH);
     }
 
     /**

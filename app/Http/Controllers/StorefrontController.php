@@ -8,6 +8,7 @@ use App\Enums\OptionsLayout;
 use App\Enums\ProductStatus;
 use App\Models\Game;
 use App\Models\Product;
+use App\Models\ProductFormField;
 use App\Services\Products\ProductPricing;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -287,10 +288,12 @@ class StorefrontController extends Controller
     }
 
     /**
-     * Selectable option groups (price selectors + paid add-ons) for the product
-     * page, built from the product's active dynamic-form fields. A group with
-     * pricingMode 'absolute' is a "choose amount" selector whose option price is
-     * the full price; 'addon' option prices add to the total.
+     * Selectable option groups (price selectors + paid add-ons) and free-form
+     * input fields for the product page, built from the product's active
+     * dynamic-form fields. A group with pricingMode 'absolute' is a "choose
+     * amount" selector whose option price is the full price; 'addon' option
+     * prices add to the total. Input fields (text/number/textarea) render as a
+     * typed field whose `price` (base extra price) is added when filled.
      *
      * @return list<array<string, mixed>>
      */
@@ -299,28 +302,64 @@ class StorefrontController extends Controller
         return $product->forms
             ->filter(fn ($form): bool => (bool) $form->is_active)
             ->flatMap(fn ($form) => $form->fields)
-            ->filter(fn ($field): bool => $field->type->hasOptions() && filled($field->options))
+            ->filter(fn ($field): bool => ($field->type->hasOptions() && filled($field->options)) || $field->type->isInput())
             ->sortBy('sort_order')
             ->values()
-            ->map(fn ($field): array => [
-                'key' => $field->key,
-                'label' => $field->label,
-                'type' => $field->type === FieldType::Checkbox ? 'multi' : 'single',
-                'control' => $field->type->value, // 'select' (dropdown) | 'radio' | 'checkbox'
-                'pricingMode' => $field->pricing_mode->value,
-                'required' => (bool) $field->required,
-                'options' => collect($field->options)
-                    ->map(fn ($o): array => [
-                        'value' => (string) ($o['value'] ?? $o['label'] ?? ''),
-                        'label' => (string) ($o['label'] ?? $o['value'] ?? ''),
-                        'price' => round((float) ($o['extra_price'] ?? 0), 2),
-                        'tooltip' => (string) ($o['tooltip'] ?? ''),
-                        'popular' => (bool) ($o['popular'] ?? false),
-                        'default' => (bool) ($o['default'] ?? false),
-                    ])
-                    ->values()
-                    ->all(),
-            ])
+            ->map(fn ($field): array => $field->type->isInput()
+                ? $this->inputGroup($field)
+                : $this->choiceGroup($field))
             ->all();
+    }
+
+    /**
+     * Shape for a choice field (select / radio / checkbox).
+     *
+     * @return array<string, mixed>
+     */
+    private function choiceGroup(ProductFormField $field): array
+    {
+        return [
+            'key' => $field->key,
+            'label' => $field->label,
+            'type' => $field->type === FieldType::Checkbox ? 'multi' : 'single',
+            'control' => $field->type->value, // 'select' (dropdown) | 'radio' | 'checkbox'
+            'pricingMode' => $field->pricing_mode->value,
+            'required' => (bool) $field->required,
+            'tooltip' => (string) ($field->tooltip ?? ''),
+            'options' => collect($field->options)
+                ->map(fn ($o): array => [
+                    'value' => (string) ($o['value'] ?? $o['label'] ?? ''),
+                    'label' => (string) ($o['label'] ?? $o['value'] ?? ''),
+                    'price' => round((float) ($o['extra_price'] ?? 0), 2),
+                    'tooltip' => (string) ($o['tooltip'] ?? ''),
+                    'popular' => (bool) ($o['popular'] ?? false),
+                    'default' => (bool) ($o['default'] ?? false),
+                ])
+                ->values()
+                ->all(),
+        ];
+    }
+
+    /**
+     * Shape for a free-form input field (text / number / textarea). It has no
+     * options; the customer types a value that is stored on the order and whose
+     * `price` (base extra price) is added to the total when filled.
+     *
+     * @return array<string, mixed>
+     */
+    private function inputGroup(ProductFormField $field): array
+    {
+        return [
+            'key' => $field->key,
+            'label' => $field->label,
+            'type' => 'single',
+            'control' => $field->type->value, // 'text' | 'number' | 'textarea'
+            'pricingMode' => 'addon',
+            'required' => (bool) $field->required,
+            'tooltip' => (string) ($field->tooltip ?? ''),
+            'price' => round((float) ($field->extra_price ?? 0), 2),
+            'maxLength' => ProductPricing::INPUT_MAX_LENGTH,
+            'options' => [],
+        ];
     }
 }

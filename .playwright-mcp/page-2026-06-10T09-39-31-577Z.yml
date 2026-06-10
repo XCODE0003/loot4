@@ -1,0 +1,94 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "OwlMix" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - img [ref=e6]
+        - text: OwlMix
+      - navigation [ref=e8]:
+        - link "Обмен" [ref=e9] [cursor=pointer]:
+          - /url: /
+        - link "Преимущества" [ref=e10] [cursor=pointer]:
+          - /url: "#advantages"
+        - link "Как работает" [ref=e11] [cursor=pointer]:
+          - /url: "#how"
+  - main [ref=e12]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - heading "Reliable Bitcoin Exchange" [level=1] [ref=e16]
+          - paragraph [ref=e17]: Приватный обмен в одном активе. Фиксированная комиссия. Без аккаунтов.
+          - generic [ref=e18]:
+            - generic [ref=e19]: BTC → BTC
+            - generic [ref=e20]: Комиссия 4%
+            - generic [ref=e21]: Без аккаунта
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - textbox "Адрес выплаты (куда получить BTC)*" [ref=e25]
+            - generic [ref=e27]:
+              - img "captcha" [ref=e29]:
+                - generic [ref=e34]: L
+                - generic [ref=e35]: "6"
+                - generic [ref=e36]: K
+                - generic [ref=e37]: H
+                - generic [ref=e38]: X
+              - button "↻" [ref=e39] [cursor=pointer]
+              - textbox "Капча" [ref=e40]
+            - button "Начать обмен" [ref=e41] [cursor=pointer]:
+              - generic [ref=e42]: Начать обмен
+          - paragraph [ref=e43]: Проверьте адрес выплаты перед отправкой.
+          - text: Website
+          - textbox [ref=e44]
+      - generic [ref=e45]:
+        - heading "Преимущества" [level=2] [ref=e46]
+        - generic [ref=e47]:
+          - article [ref=e48]:
+            - heading "Фиксированная комиссия" [level=3] [ref=e49]
+            - paragraph [ref=e50]: Комиссия 4% задаётся в панели оператора и не меняется по ходу заявки.
+          - article [ref=e51]:
+            - heading "Только BTC" [level=3] [ref=e52]
+            - paragraph [ref=e53]: Операции выполняются только в сети Bitcoin.
+          - article [ref=e54]:
+            - heading "Без регистрации" [level=3] [ref=e55]
+            - paragraph [ref=e56]: Достаточно адреса выплаты и капчи. Аккаунты и KYC не требуются.
+          - article [ref=e57]:
+            - heading "Гарантийное письмо" [level=3] [ref=e58]
+            - paragraph [ref=e59]: Сразу после создания заявки вы получаете письмо с реквизитом и условиями.
+      - generic [ref=e60]:
+        - heading "Как это работает" [level=2] [ref=e61]
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - generic [ref=e64]: "01"
+            - heading "Укажите адрес" [level=3] [ref=e65]
+            - paragraph [ref=e66]: Введите BTC-кошелёк, на который нужно отправить результат обмена.
+          - generic [ref=e67]:
+            - generic [ref=e68]: "02"
+            - heading "Внесите депозит" [level=3] [ref=e69]
+            - paragraph [ref=e70]: Получите входящий адрес и отправьте на него Bitcoin (BTC).
+          - generic [ref=e71]:
+            - generic [ref=e72]: "03"
+            - heading "Получите обмен" [level=3] [ref=e73]
+            - paragraph [ref=e74]: После подтверждения сети отправляем сумму за вычетом комиссии.
+      - generic [ref=e75]:
+        - heading "Условия" [level=2] [ref=e76]
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - generic [ref=e79]: Пара
+            - generic [ref=e80]: Bitcoin (BTC) → Bitcoin (BTC)
+          - generic [ref=e81]:
+            - generic [ref=e82]: Комиссия
+            - generic [ref=e83]: 4%
+          - generic [ref=e84]:
+            - generic [ref=e85]: Срок заявки
+            - generic [ref=e86]: 8 ч
+          - generic [ref=e87]:
+            - generic [ref=e88]: KYC / AML
+            - generic [ref=e89]: Не требуется
+        - paragraph [ref=e90]: Обмен выполняется только в BTC. При отсутствии депозита в течение 8 ч заявка закрывается автоматически.
+  - contentinfo [ref=e91]:
+    - navigation [ref=e92]:
+      - link "Обмен" [ref=e93] [cursor=pointer]:
+        - /url: /
+      - link "Условия" [ref=e94] [cursor=pointer]:
+        - /url: "#terms"
+    - paragraph [ref=e95]: © 2026 OwlMix. Все права защищены.

@@ -20,6 +20,15 @@ const { formatPrice } = useLocale()
 
 const isSteps = computed(() => props.layout === 'steps' && props.groups.length > 1)
 
+// Free-form fields the customer types into (no predefined options).
+const INPUT_CONTROLS = ['text', 'number', 'textarea']
+function isInput(group) {
+  return INPUT_CONTROLS.includes(group.control)
+}
+function inputValue(group) {
+  return String(selections[group.key] ?? '').trim()
+}
+
 // selections: { [groupKey]: string (single) | string[] (multi) }
 const selections = reactive({})
 const step = ref(0)
@@ -62,6 +71,7 @@ function isSelected(group, value) {
 }
 
 function isGroupSatisfied(group) {
+  if (isInput(group)) return !group.required || inputValue(group) !== ''
   return !group.required || selectedValues(group).length > 0
 }
 
@@ -103,6 +113,11 @@ const price = computed(() => {
   let addons = 0
 
   for (const group of props.groups) {
+    if (isInput(group)) {
+      // Input fields add their base extra price once filled.
+      if (inputValue(group) !== '') addons += group.price || 0
+      continue
+    }
     if (group.pricingMode === 'absolute') {
       const opt = optionByValue(group, selections[group.key])
       if (opt) {
@@ -126,6 +141,11 @@ const price = computed(() => {
 const summary = computed(() => {
   const labels = []
   for (const group of props.groups) {
+    if (isInput(group)) {
+      const v = inputValue(group)
+      if (v) labels.push(`${group.label}: ${v}`)
+      continue
+    }
     for (const v of selectedValues(group)) {
       const opt = optionByValue(group, v)
       if (opt) labels.push(opt.label)
@@ -213,10 +233,32 @@ function back() {
       class="pog_group"
       :class="{ 'has-error': groupHasError(group, gi) }"
     >
-      <p class="pog_group_title">{{ group.label }}</p>
+      <p class="pog_group_title">
+        {{ group.label }}
+        <span v-if="isInput(group) && group.price > 0" class="pog_title_price">+{{ formatPrice(group.price) }}</span>
+      </p>
+
+      <textarea
+        v-if="isInput(group) && group.control === 'textarea'"
+        class="pog_input pog_textarea"
+        rows="3"
+        :value="selections[group.key] ?? ''"
+        :placeholder="group.label"
+        :maxlength="group.maxLength"
+        @input="select(group, $event.target.value)"
+      ></textarea>
+      <input
+        v-else-if="isInput(group)"
+        class="pog_input"
+        :type="group.control === 'number' ? 'number' : 'text'"
+        :value="selections[group.key] ?? ''"
+        :placeholder="group.label"
+        :maxlength="group.maxLength"
+        @input="select(group, $event.target.value)"
+      />
 
       <div
-        v-if="group.control === 'select'"
+        v-else-if="group.control === 'select'"
         class="pog_select_wrap"
         :class="{ 'is-active': (selections[group.key] ?? '') !== '' }"
       >
@@ -270,7 +312,11 @@ function back() {
         </button>
       </div>
 
-      <p v-if="groupHasError(group, gi)" class="pog_error">Please select an option to continue.</p>
+      <p v-if="isInput(group) && group.tooltip" class="pog_hint">{{ group.tooltip }}</p>
+
+      <p v-if="groupHasError(group, gi)" class="pog_error">
+        {{ isInput(group) ? 'Please fill in this field.' : 'Please select an option to continue.' }}
+      </p>
     </div>
 
     <div v-if="isSteps" class="pog_nav">
@@ -316,8 +362,43 @@ function back() {
   color: #ff6b6b;
 }
 .pog_group.has-error .pog_row,
-.pog_group.has-error .pog_select {
+.pog_group.has-error .pog_select,
+.pog_group.has-error .pog_input {
   border-color: #ff6b6b;
+}
+.pog_title_price {
+  margin-left: 6px;
+  font-weight: 600;
+  color: #2bff95;
+}
+.pog_hint {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+}
+.pog_input {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #fff;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 500;
+}
+.pog_input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+.pog_input:focus {
+  outline: none;
+  border-color: #2bff95;
+}
+.pog_textarea {
+  resize: vertical;
+  min-height: 88px;
+  line-height: 1.45;
 }
 .pog_list {
   display: flex;

@@ -100,7 +100,7 @@ class CheckoutController extends Controller
                 continue;
             }
 
-            $selections = is_array($row['selections'] ?? null) ? $row['selections'] : [];
+            $selections = $this->normalizeSelections(is_array($row['selections'] ?? null) ? $row['selections'] : []);
 
             // A required option group with no valid choice means the cart line is
             // incomplete — block checkout rather than charge the fallback price.
@@ -358,6 +358,28 @@ class CheckoutController extends Controller
             ],
             'authed' => $request->user() !== null,
         ]);
+    }
+
+    /**
+     * Trim and length-cap free-form selection values before they are priced and
+     * stored. Choice values are short identifiers; free-text fields are bounded
+     * to ProductPricing::INPUT_MAX_LENGTH to reject oversized payloads.
+     *
+     * @param  array<string, mixed>  $selections
+     * @return array<string, string|list<string>>
+     */
+    private function normalizeSelections(array $selections): array
+    {
+        $cap = fn (mixed $v): string => mb_substr(trim((string) $v), 0, ProductPricing::INPUT_MAX_LENGTH);
+
+        $clean = [];
+        foreach ($selections as $key => $value) {
+            $clean[(string) $key] = is_array($value)
+                ? array_values(array_map($cap, $value))
+                : $cap($value);
+        }
+
+        return $clean;
     }
 
     private function resolveCoupon(?string $code, float $subtotal): ?Coupon

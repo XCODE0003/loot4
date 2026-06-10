@@ -25,4 +25,13 @@ enum FieldType: string implements HasLabel
     {
         return in_array($this, [self::Select, self::Radio, self::Checkbox], true);
     }
+
+    /**
+     * Whether this field type is a free-form input the customer types into
+     * (no predefined options).
+     */
+    public function isInput(): bool
+    {
+        return in_array($this, [self::Text, self::Number, self::Textarea], true);
+    }
 }
