@@ -6,6 +6,7 @@ use App\Enums\ConversionPlatform;
 use App\Enums\ConversionStatus;
 use App\Models\ConversionLog;
 use App\Models\Order;
+use App\Services\Conversions\ConversionEligibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -46,6 +47,14 @@ class ConversionLogController extends Controller
         ]);
 
         $order = Order::query()->where('order_number', $data['order'])->firstOrFail();
+
+        // Drop cross-platform noise: a Google-Ads order must not log Facebook /
+        // TikTok rows (defends against stale cached clients that still post
+        // every platform). Null = no paid source → all platforms allowed.
+        $eligible = ConversionEligibility::for($order);
+        if ($eligible !== null && ! in_array($data['platform'], $eligible, true)) {
+            return response()->json(['logged' => false, 'reason' => 'not-eligible'], 200);
+        }
 
         $logged = ConversionLog::query()
             ->where('order_id', $order->id)

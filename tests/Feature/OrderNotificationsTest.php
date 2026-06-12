@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Enums\DeliveryStatus;
+use App\Enums\PaymentStatus;
 use App\Mail\NewOrderMail;
 use App\Mail\OrderConfirmationMail;
 use App\Models\Order;
@@ -26,14 +28,14 @@ class OrderNotificationsTest extends TestCase
             'product_name' => 'GTA 5 Online - Cash + Cars PS4&PS5',
             'quantity' => 1,
             'price' => 96.98,
-            'status' => \App\Enums\DeliveryStatus::Pending,
-            'form_data' => ['platform' => 'PlayStation 5', 'amount_money' => '500 Million GTA Cash & Cars'],
+            'status' => DeliveryStatus::Pending,
+            'form_data' => ['Select platform' => 'PlayStation 5', 'Package money' => '500 Million GTA Cash & Cars'],
         ]);
         $order->payments()->create([
             'method' => 'stripe-klarna',
             'amount' => 96.98,
             'currency' => 'USD',
-            'status' => \App\Enums\PaymentStatus::Paid,
+            'status' => PaymentStatus::Paid,
         ]);
 
         return $order;
@@ -55,7 +57,7 @@ class OrderNotificationsTest extends TestCase
             && str_contains($r['text'], 'NEW ORDER RECEIVED')
             && str_contains($r['text'], $order->order_number)
             && str_contains($r['text'], 'ICENOX-KLARNA')
-            && str_contains($r['text'], 'Platform: PlayStation 5'));
+            && str_contains($r['text'], 'Select platform: PlayStation 5'));
 
         Mail::assertSent(OrderConfirmationMail::class, fn ($m) => $m->hasTo('buyer@example.com'));
         Mail::assertSent(NewOrderMail::class, fn ($m) => $m->hasTo('staff@loot4you.gg'));

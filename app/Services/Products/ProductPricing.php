@@ -149,6 +149,57 @@ class ProductPricing
     }
 
     /**
+     * Human-readable per-field breakdown of a set of selections, in display
+     * order, as an ordered [label => value] map. Choice fields join their
+     * picked option labels; input fields use the typed value. Stored on the
+     * order item so every surface (confirmation page, account page, email,
+     * Telegram) can show each chosen option on its own line.
+     *
+     * @param  Selections  $selections
+     * @return array<string, string>
+     */
+    public function breakdown(Product $product, array $selections): array
+    {
+        $lines = [];
+
+        foreach ($this->orderedFields($product) as $field) {
+            $label = trim((string) $field->label);
+            if ($label === '') {
+                continue;
+            }
+
+            $value = $field->type->isInput()
+                ? $this->inputValue($field, $selections[$field->key] ?? null)
+                : collect($this->pickedOptions($field, $selections[$field->key] ?? null))
+                    ->map(fn ($o): string => trim((string) ($o['label'] ?? $o['value'] ?? '')))
+                    ->filter()
+                    ->implode(', ');
+
+            if ($value !== '') {
+                $lines[$label] = $value;
+            }
+        }
+
+        return $lines;
+    }
+
+    /**
+     * Active fields that render on the product page — choice fields that carry
+     * options and free-form inputs — in display order.
+     *
+     * @return Collection<int, ProductFormField>
+     */
+    private function orderedFields(Product $product): Collection
+    {
+        return $product->forms
+            ->filter(fn ($form): bool => (bool) ($form->is_active ?? true))
+            ->flatMap(fn ($form) => $form->fields ?? collect())
+            ->filter(fn (ProductFormField $f): bool => ($f->type->hasOptions() && filled($f->options)) || $f->type->isInput())
+            ->sortBy('sort_order')
+            ->values();
+    }
+
+    /**
      * Active, option-bearing form fields for the product, in display order.
      *
      * @return Collection<int, ProductFormField>

@@ -26,7 +26,9 @@ function money(value) {
         <div v-for="(item, i) in order.items" :key="i" class="os_item">
           <div>
             <p class="os_item_name">{{ item.name }}</p>
-            <p v-if="item.option" class="os_item_option">{{ item.option }}</p>
+            <p v-for="(line, j) in item.lines" :key="j" class="os_item_option">
+              <template v-if="line.label">{{ line.label }}: </template>{{ line.value }}
+            </p>
           </div>
           <span class="os_item_price">{{ item.qty }} × {{ money(item.price) }}</span>
         </div>

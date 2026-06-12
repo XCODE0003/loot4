@@ -68,7 +68,10 @@ export function useCart() {
 
   const total = computed(() => Math.max(0, subtotal.value - discount.value))
 
-  function add(item) {
+  // `open` controls whether the cart drawer pops open after adding. "Buy now"
+  // passes open:false so it can jump straight to checkout while still keeping
+  // the item in the (persisted) cart.
+  function add(item, { open: openDrawer = true } = {}) {
     const selections = item.selections ?? {}
     const key = `${item.slug}#${canonicalSelections(selections)}`
     const existing = items.value.find((i) => i.key === key)
@@ -77,7 +80,7 @@ export function useCart() {
     } else {
       items.value = [...items.value, { ...item, selections, key, qty: item.qty ?? 1 }]
     }
-    open()
+    if (openDrawer) open()
   }
 
   function remove(key) {

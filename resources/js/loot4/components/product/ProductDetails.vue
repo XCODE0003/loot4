@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, router } from '@inertiajs/vue3'
 import Container from '@/loot4/components/layout/Container.vue'
 import ProductOptionGroups from '@/loot4/components/product/ProductOptionGroups.vue'
 import GameCard from '@/loot4/components/ui/GameCard.vue'
@@ -53,16 +53,21 @@ function buy() {
     optionsRef.value?.$el?.scrollIntoView?.({ behavior: 'smooth', block: 'center' })
     return
   }
-  add({
-    id: props.data.slug,
-    slug: props.data.slug,
-    title: props.data.title,
-    image: props.data.image,
-    option: selectedSummary.value,
-    selections: selectedSelections.value,
-    price: displayPrice.value,
-    priceOld: props.data.priceOld,
-  })
+  // Add to the (persisted) cart but skip the drawer — go straight to checkout.
+  add(
+    {
+      id: props.data.slug,
+      slug: props.data.slug,
+      title: props.data.title,
+      image: props.data.image,
+      option: selectedSummary.value,
+      selections: selectedSelections.value,
+      price: displayPrice.value,
+      priceOld: props.data.priceOld,
+    },
+    { open: false },
+  )
+  router.visit('/checkout')
 }
 </script>
 

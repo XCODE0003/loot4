@@ -31,6 +31,34 @@ class OrderItem extends Model
         ];
     }
 
+    /**
+     * Per-field order details for display — one entry per chosen option, so the
+     * confirmation page, account page, email and Telegram message can render
+     * each selection on its own line. Falls back to the compact summary for
+     * legacy orders that only stored an 'option' string.
+     *
+     * @return list<array{label: ?string, value: string}>
+     */
+    public function detailLines(): array
+    {
+        $data = is_array($this->form_data) ? $this->form_data : [];
+        $lines = [];
+
+        foreach ($data as $key => $value) {
+            if ($key === 'option' || is_array($value) || blank($value)) {
+                continue;
+            }
+
+            $lines[] = ['label' => (string) $key, 'value' => (string) $value];
+        }
+
+        if ($lines === [] && filled($data['option'] ?? null)) {
+            $lines[] = ['label' => null, 'value' => (string) $data['option']];
+        }
+
+        return $lines;
+    }
+
     /** @return BelongsTo<Order, $this> */
     public function order(): BelongsTo
     {

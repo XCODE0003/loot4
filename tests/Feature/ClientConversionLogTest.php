@@ -14,6 +14,25 @@ class ClientConversionLogTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * An order with neutral attribution (no paid source) so the eligibility
+     * gate allows every platform — keeps these endpoint tests focused on the
+     * logging/validation logic rather than source gating.
+     *
+     * @param  array<string, mixed>  $attrs
+     */
+    private function neutralOrder(array $attrs = []): Order
+    {
+        return Order::factory()->create([
+            'source' => 'direct',
+            'medium' => 'none',
+            'gclid' => null,
+            'fbclid' => null,
+            'ttclid' => null,
+            ...$attrs,
+        ]);
+    }
+
+    /**
      * @param  array<string, mixed>  $overrides
      */
     private function payload(Order $order, array $overrides = []): array
@@ -31,7 +50,7 @@ class ClientConversionLogTest extends TestCase
 
     public function test_sent_conversion_is_logged_with_order_value(): void
     {
-        $order = Order::factory()->create(['total' => 49.99, 'currency' => 'USD']);
+        $order = $this->neutralOrder(['total' => 49.99, 'currency' => 'USD']);
 
         $this->postJson('/checkout/conversion', $this->payload($order))
             ->assertCreated()
@@ -51,7 +70,7 @@ class ClientConversionLogTest extends TestCase
 
     public function test_localstorage_skip_is_logged_as_skipped(): void
     {
-        $order = Order::factory()->create();
+        $order = $this->neutralOrder();
 
         $this->postJson('/checkout/conversion', $this->payload($order, [
             'sent' => false,
@@ -63,7 +82,7 @@ class ClientConversionLogTest extends TestCase
 
     public function test_no_consent_is_logged_as_skipped(): void
     {
-        $order = Order::factory()->create();
+        $order = $this->neutralOrder();
 
         $this->postJson('/checkout/conversion', $this->payload($order, [
             'sent' => false,
@@ -75,7 +94,7 @@ class ClientConversionLogTest extends TestCase
 
     public function test_not_configured_is_logged_as_skipped(): void
     {
-        $order = Order::factory()->create();
+        $order = $this->neutralOrder();
 
         $this->postJson('/checkout/conversion', $this->payload($order, [
             'sent' => false,
@@ -87,7 +106,7 @@ class ClientConversionLogTest extends TestCase
 
     public function test_blocked_tracker_is_logged_as_failed(): void
     {
-        $order = Order::factory()->create();
+        $order = $this->neutralOrder();
 
         $this->postJson('/checkout/conversion', $this->payload($order, [
             'sent' => false,
@@ -99,7 +118,7 @@ class ClientConversionLogTest extends TestCase
 
     public function test_client_supplied_value_is_ignored(): void
     {
-        $order = Order::factory()->create(['total' => 10.00]);
+        $order = $this->neutralOrder(['total' => 10.00]);
 
         $this->postJson('/checkout/conversion', $this->payload($order, ['value' => 99999]))
             ->assertCreated();
@@ -109,7 +128,7 @@ class ClientConversionLogTest extends TestCase
 
     public function test_unknown_platform_is_rejected(): void
     {
-        $order = Order::factory()->create();
+        $order = $this->neutralOrder();
 
         $this->postJson('/checkout/conversion', $this->payload($order, ['platform' => 'pinterest']))
             ->assertUnprocessable();
@@ -129,7 +148,7 @@ class ClientConversionLogTest extends TestCase
 
     public function test_facebook_pixel_platform_is_accepted(): void
     {
-        $order = Order::factory()->create();
+        $order = $this->neutralOrder();
 
         $this->postJson('/checkout/conversion', $this->payload($order, ['platform' => 'facebook_pixel']))
             ->assertCreated();
@@ -139,7 +158,7 @@ class ClientConversionLogTest extends TestCase
 
     public function test_non_http_url_is_rejected(): void
     {
-        $order = Order::factory()->create();
+        $order = $this->neutralOrder();
 
         $this->postJson('/checkout/conversion', $this->payload($order, [
             'url' => 'javascript:alert(document.cookie)',
@@ -150,7 +169,7 @@ class ClientConversionLogTest extends TestCase
 
     public function test_sent_reason_is_normalized_server_side(): void
     {
-        $order = Order::factory()->create();
+        $order = $this->neutralOrder();
 
         $this->postJson('/checkout/conversion', $this->payload($order, ['reason' => 'totally-custom']))
             ->assertCreated();
@@ -160,7 +179,7 @@ class ClientConversionLogTest extends TestCase
 
     public function test_logs_are_capped_per_order_and_platform(): void
     {
-        $order = Order::factory()->create();
+        $order = $this->neutralOrder();
         ConversionLog::factory()->count(10)->create([
             'order_id' => $order->id,
             'platform' => ConversionPlatform::GoogleAds,
@@ -174,5 +193,24 @@ class ClientConversionLogTest extends TestCase
         // Other platforms for the same order are unaffected by the cap.
         $this->postJson('/checkout/conversion', $this->payload($order, ['platform' => 'tiktok']))
             ->assertCreated();
+    }
+
+    public function test_cross_platform_logs_are_dropped_for_a_paid_source(): void
+    {
+        // A Google-Ads order (gclid + utm_source=google).
+        $order = Order::factory()->create([
+            'source' => 'google', 'medium' => 'cpc', 'gclid' => 'abc123', 'fbclid' => null, 'ttclid' => null,
+        ]);
+
+        // Facebook / TikTok must not log for a Google-Ads order.
+        $this->postJson('/checkout/conversion', $this->payload($order, ['platform' => 'facebook_pixel']))
+            ->assertOk()
+            ->assertJson(['logged' => false, 'reason' => 'not-eligible']);
+        $this->assertSame(0, ConversionLog::count());
+
+        // The matching Google Ads pixel still logs normally.
+        $this->postJson('/checkout/conversion', $this->payload($order, ['platform' => 'google_ads']))
+            ->assertCreated();
+        $this->assertSame(1, ConversionLog::count());
     }
 }

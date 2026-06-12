@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Services\Attribution\AttributionResolver;
+use App\Services\Conversions\ConversionEligibility;
 use App\Services\Geo\IpCountry;
 use App\Services\Notifications\OrderNotifier;
 use App\Services\Payments\IceNoxGateway;
@@ -122,7 +123,8 @@ class CheckoutController extends Controller
                 // Prefer the server-built summary; fall back to the client label for
                 // plain products that carry no structured selections.
                 'option' => $summary !== '' ? $summary : ($row['option'] ?? null),
-                'selections' => $selections,
+                // Per-field [label => value] map for the order details display.
+                'breakdown' => $pricing->breakdown($product, $selections),
             ];
         }
 
@@ -167,12 +169,11 @@ class CheckoutController extends Controller
             ]);
 
             foreach ($lines as $line) {
-                $formData = [];
+                // One key per chosen field (rendered line-by-line everywhere),
+                // plus a compact 'option' summary for table columns.
+                $formData = $line['breakdown'];
                 if (filled($line['option'])) {
                     $formData['option'] = $line['option'];
-                }
-                if (! empty($line['selections'])) {
-                    $formData['selections'] = $line['selections'];
                 }
 
                 $order->items()->create([
@@ -343,15 +344,14 @@ class CheckoutController extends Controller
                 'subtotal' => (float) $order->subtotal,
                 'discount' => (float) $order->discount,
                 'total' => (float) $order->total,
+                // Ad pixels allowed to fire for this order's traffic source
+                // (null = no paid source detected → fire all configured pixels).
+                'conversionPlatforms' => ConversionEligibility::for($order),
                 'items' => $order->items->map(fn ($item): array => [
                     'id' => (string) $item->product_id,
                     'name' => $item->product_name,
-                    'option' => $item->form_data['option'] ?? null,
-                    'details' => array_filter(
-                        is_array($item->form_data) ? $item->form_data : [],
-                        fn ($v, $k): bool => $k !== 'option' && filled($v) && ! is_array($v),
-                        ARRAY_FILTER_USE_BOTH,
-                    ),
+                    // One entry per chosen option, rendered on its own line.
+                    'lines' => $item->detailLines(),
                     'qty' => $item->quantity,
                     'price' => (float) $item->price,
                 ])->all(),

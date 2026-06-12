@@ -76,13 +76,9 @@
                                         <td style="font-size:14px;color:#ffffff;font-weight:600;">{{ $item->product_name }} <span style="color:{{ $muted }};font-weight:400;">× {{ $item->quantity }}</span></td>
                                         <td style="font-size:14px;color:#ffffff;text-align:right;white-space:nowrap;">{{ number_format((float) $item->price, 2) }} {{ $order->currency }}</td>
                                     </tr>
-                                    @if(is_array($item->form_data))
-                                        @foreach($item->form_data as $k => $v)
-                                            @if(filled($v) && ! is_array($v))
-                                                <tr><td colspan="2" style="font-size:12px;color:{{ $muted }};padding-top:2px;">— {{ \Illuminate\Support\Str::headline($k) }}: {{ $v }}</td></tr>
-                                            @endif
-                                        @endforeach
-                                    @endif
+                                    @foreach($item->detailLines() as $line)
+                                        <tr><td colspan="2" style="font-size:12px;color:{{ $muted }};padding-top:2px;">— @if($line['label']){{ $line['label'] }}: @endif{{ $line['value'] }}</td></tr>
+                                    @endforeach
                                 </table>
                             @endforeach
                         </td>

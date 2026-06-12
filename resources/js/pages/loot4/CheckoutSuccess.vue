@@ -36,10 +36,6 @@ function money(value) {
   return formatPrice(value)
 }
 
-function detailLabel(key) {
-  return key.replace(/[_-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
-}
-
 function pushPurchaseEvent() {
   const orderNumber = props.order?.number
   if (!orderNumber || typeof window === 'undefined') return
@@ -142,12 +138,12 @@ function pushPurchaseEvent() {
             </div>
             <span class="ty_item_price">{{ money(item.price * item.qty) }} {{ order.currency }}</span>
           </div>
-          <div v-if="item.option || Object.keys(item.details || {}).length" class="ty_badges">
-            <span v-if="item.option" class="ty_badge">{{ item.option }}</span>
-            <span v-for="(val, key) in item.details" :key="key" class="ty_badge">
-              {{ detailLabel(key) }}: <strong>{{ val }}</strong>
-            </span>
-          </div>
+          <ul v-if="item.lines && item.lines.length" class="ty_lines">
+            <li v-for="(line, j) in item.lines" :key="j" class="ty_line">
+              <span v-if="line.label" class="ty_line_label">{{ line.label }}:</span>
+              <span class="ty_line_value">{{ line.value }}</span>
+            </li>
+          </ul>
         </div>
 
         <div class="ty_totals">
@@ -257,21 +253,25 @@ function pushPurchaseEvent() {
   font-weight: 700;
   white-space: nowrap;
 }
-.ty_badges {
+.ty_lines {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ty_line {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.4;
 }
-.ty_badge {
-  padding: 6px 12px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+.ty_line_label {
+  color: rgba(255, 255, 255, 0.5);
 }
-.ty_badge strong {
+.ty_line_value {
   color: #fff;
   font-weight: 600;
 }

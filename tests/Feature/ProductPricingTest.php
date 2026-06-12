@@ -183,4 +183,23 @@ class ProductPricingTest extends TestCase
         $expected = '$10M · PlayStation nickname (ID): '.str_repeat('a', ProductPricing::INPUT_MAX_LENGTH);
         $this->assertSame($expected, $summary);
     }
+
+    public function test_breakdown_is_a_per_field_label_to_value_map_in_display_order(): void
+    {
+        $product = $this->variantProduct();
+
+        $breakdown = $this->pricing()->breakdown($product, ['amount' => '25m', 'addons' => ['max', 'lsc']]);
+
+        // Keyed by field label, in sort order; multi-selects are comma-joined.
+        $this->assertSame(['Amount' => '$25M', 'Add-ons' => 'Max Stats, LSC Unlocks'], $breakdown);
+    }
+
+    public function test_breakdown_includes_typed_text_value(): void
+    {
+        $product = $this->productWithTextField();
+
+        $breakdown = $this->pricing()->breakdown($product, ['amount' => '10m', 'psn_id' => 'Ghost']);
+
+        $this->assertSame(['Amount' => '$10M', 'PlayStation nickname (ID)' => 'Ghost'], $breakdown);
+    }
 }

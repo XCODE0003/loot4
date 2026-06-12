@@ -55,7 +55,7 @@ class AccountController extends Controller
                 'statusLabel' => $order->status->getLabel(),
                 'items' => $order->items->map(fn ($item): array => [
                     'name' => $item->product_name,
-                    'option' => $item->form_data['option'] ?? null,
+                    'lines' => $item->detailLines(),
                     'qty' => $item->quantity,
                     'price' => (float) $item->price,
                 ])->all(),

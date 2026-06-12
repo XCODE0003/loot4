@@ -121,22 +121,19 @@ class OrderNotifier
     }
 
     /**
+     * One string per chosen option, e.g. "Select platform: PlayStation 5",
+     * each rendered on its own line in the Telegram message.
+     *
      * @return list<string>
      */
     private function itemDetails($item): array
     {
-        $data = is_array($item->form_data) ? $item->form_data : [];
-        $details = [];
-
-        foreach ($data as $key => $value) {
-            if (blank($value) || is_array($value)) {
-                continue;
-            }
-
-            $details[] = Str::headline((string) $key).': '.$value;
-        }
-
-        return $details;
+        return array_map(
+            fn (array $line): string => $line['label'] !== null
+                ? $line['label'].': '.$line['value']
+                : $line['value'],
+            $item->detailLines(),
+        );
     }
 
     private function paymentLabel(Order $order): string

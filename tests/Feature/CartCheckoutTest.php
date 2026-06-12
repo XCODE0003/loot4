@@ -94,7 +94,10 @@ class CartCheckoutTest extends TestCase
         $this->assertEquals(40.05, (float) $order->total); // 30.05 + 10
         $this->assertEquals(40.05, (float) $item->price);
         $this->assertSame('$25M · Max Stats', $item->form_data['option']); // server-built summary
-        $this->assertSame(['amount' => '25m', 'addons' => ['max']], $item->form_data['selections']);
+        // Per-field breakdown stored under field labels for line-by-line display.
+        $this->assertSame('$25M', $item->form_data['Amount']);
+        $this->assertSame('Max Stats', $item->form_data['Add-ons']);
+        $this->assertArrayNotHasKey('selections', $item->form_data);
     }
 
     public function test_checkout_drops_line_missing_a_required_selection(): void

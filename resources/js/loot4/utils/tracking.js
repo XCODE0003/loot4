@@ -23,15 +23,28 @@ export function hasMarketingConsent() {
     return readCookie(CONSENT_COOKIE) === 'accepted';
 }
 
-/** Load every configured tracker (gtag for GA4 + Google Ads, fbq, ttq). */
-export function loadTrackers(tracking = {}) {
+/**
+ * Load configured trackers (gtag for GA4 + Google Ads, fbq, ttq). When `keys`
+ * is given, only trackers for those platform keys are loaded — so a Google-Ads
+ * order never even boots the Facebook / TikTok pixel (which would otherwise
+ * fire a PageView for the wrong platform).
+ */
+export function loadTrackers(tracking = {}, keys = null) {
     if (typeof window === 'undefined') {
         return;
     }
 
-    loadGtag(tracking);
-    loadFacebookPixel(tracking.facebookPixelId);
-    loadTikTokPixel(tracking.tiktokPixelId);
+    const want = (key) => !Array.isArray(keys) || keys.includes(key);
+
+    if (want('google_ads')) {
+        loadGtag(tracking);
+    }
+    if (want('facebook_pixel')) {
+        loadFacebookPixel(tracking.facebookPixelId);
+    }
+    if (want('tiktok')) {
+        loadTikTokPixel(tracking.tiktokPixelId);
+    }
 }
 
 function loadGtag({ gaId, googleAdsId }) {
@@ -219,8 +232,26 @@ function purchasePlatforms(tracking, order) {
 }
 
 /**
- * Fire the Purchase conversion on every configured platform exactly once per
- * order (localStorage dedup) and report each attempt to the conversion log.
+ * Restrict the platform list to the ones this order's traffic source is allowed
+ * to fire (server-provided). When the order carries no restriction (organic /
+ * direct), every configured platform stays in — preserving the old behaviour.
+ */
+function selectedPlatforms(platforms, order) {
+    const allowed = order.conversionPlatforms;
+
+    if (!Array.isArray(allowed)) {
+        return platforms;
+    }
+
+    return platforms.filter((platform) => allowed.includes(platform.key));
+}
+
+/**
+ * Fire the Purchase conversion on each eligible platform exactly once per order
+ * and report a single attempt per order+platform to the conversion log. A
+ * localStorage dedup key means refreshing / revisiting the success page never
+ * adds duplicate rows, and source gating means a Google-Ads order only logs the
+ * Google Ads pixel (not Facebook / TikTok).
  */
 export function firePurchaseConversions(tracking = {}, order) {
     if (typeof window === 'undefined' || !order?.number) {
@@ -228,55 +259,45 @@ export function firePurchaseConversions(tracking = {}, order) {
     }
 
     const consent = hasMarketingConsent();
+    const platforms = selectedPlatforms(purchasePlatforms(tracking, order), order);
 
     if (consent) {
-        loadTrackers(tracking);
+        loadTrackers(
+            tracking,
+            platforms.map((platform) => platform.key),
+        );
     }
 
-    for (const platform of purchasePlatforms(tracking, order)) {
-        if (!platform.configured) {
-            // Settings missing (e.g. Google Ads conversion ID/label) — log it
-            // so the admin sees WHY nothing fired instead of an empty table.
-            logConversion({
-                order: order.number,
-                platform: platform.key,
-                event: 'Purchase',
-                sent: false,
-                reason: 'not-configured',
-                url: window.location.href,
-            });
-
-            continue;
-        }
-
+    for (const platform of platforms) {
         const dedupKey = `l4_conv_${platform.key}_${order.number}`;
-        let alreadySent = false;
+        let handled = false;
 
         try {
-            alreadySent = window.localStorage.getItem(dedupKey) === '1';
+            handled = window.localStorage.getItem(dedupKey) === '1';
         } catch {
             /* private mode — fall through and fire */
+        }
+
+        // Already handled for this order+platform (refresh / revisit) — don't
+        // fire or log again, so the table shows one row per platform per order.
+        if (handled) {
+            continue;
         }
 
         let sent = false;
         let reason;
 
-        if (!consent) {
+        if (!platform.configured) {
+            // Settings missing (e.g. Google Ads conversion ID/label) — log it
+            // once so the admin sees WHY nothing fired.
+            reason = 'not-configured';
+        } else if (!consent) {
             reason = 'no-consent';
-        } else if (alreadySent) {
-            reason = 'localStorage-skip';
         } else if (!platform.ready()) {
             reason = platform.blockedReason;
         } else {
             try {
                 platform.fire();
-
-                try {
-                    window.localStorage.setItem(dedupKey, '1');
-                } catch {
-                    /* ignore */
-                }
-
                 sent = true;
                 reason = 'sent';
             } catch (error) {
@@ -292,5 +313,11 @@ export function firePurchaseConversions(tracking = {}, order) {
             reason,
             url: window.location.href,
         });
+
+        try {
+            window.localStorage.setItem(dedupKey, '1');
+        } catch {
+            /* ignore */
+        }
     }
 }
