@@ -16,7 +16,7 @@ onMounted(() => hydrate())
 const email = ref('')
 const emailInput = ref(null)
 const emailError = ref('')
-const method = ref('stripe-cards')
+const method = ref('')
 const processing = ref(false)
 const formError = ref('')
 const agreed = ref(true)
@@ -42,12 +42,12 @@ const paymentMethods = [
   { value: 'stripe-revolut-pay', label: 'Revolut Pay',         icons: ['/payment_methods/revolut-white.svg'] },
 ]
 
-// Collapsible "Pay with" dropdown (mobile only). A method is auto-selected, so
-// it starts collapsed showing that method as the select header; tapping opens
-// the list and choosing a method collapses it again (animated).
-const methodsOpen = ref(false)
+// Collapsible "Pay with" dropdown (mobile only). No method is pre-selected, so
+// it starts open with the list shown; choosing a method collapses it (animated)
+// to a select header showing the chosen method.
+const methodsOpen = ref(true)
 const selectedMethod = computed(
-  () => paymentMethods.find((m) => m.value === method.value) ?? paymentMethods[0],
+  () => paymentMethods.find((m) => m.value === method.value) ?? null,
 )
 
 const grandTotal = computed(() => total.value)
@@ -109,6 +109,11 @@ function placeOrder() {
     focusEmail()
     return
   }
+  if (!method.value) {
+    formError.value = 'Please choose a payment method.'
+    methodsOpen.value = true
+    return
+  }
   if (!agreed.value) {
     formError.value = 'Please read and agree to the terms and conditions.'
     return
@@ -167,8 +172,8 @@ function placeOrder() {
             <h2 class="co_section_title">Pay with</h2>
             <!-- Mobile-only collapsed header showing the chosen method. -->
             <button type="button" class="co_methods_head" @click="methodsOpen = !methodsOpen">
-              <span class="co_methods_head_label">{{ selectedMethod.label }}</span>
-              <span class="co_method_icons co_methods_head_icons">
+              <span class="co_methods_head_label">{{ selectedMethod ? selectedMethod.label : 'Select payment method' }}</span>
+              <span v-if="selectedMethod" class="co_method_icons co_methods_head_icons">
                 <img v-for="(icon, idx) in selectedMethod.icons" :key="idx" :src="icon" alt="" />
               </span>
               <svg class="co_methods_chevron" width="13" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -935,12 +940,18 @@ function placeOrder() {
   .co_orderbox.is-open .co_orderbox_chevron {
     transform: rotate(180deg);
   }
+  /* Animated expand/collapse of the order summary (matches the Pay-with dropdown). */
   .co_orderbox_body {
-    display: none;
-    padding: 0 14px 14px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 14px;
+    transition: max-height 0.34s ease, opacity 0.25s ease, padding 0.34s ease;
   }
   .co_orderbox.is-open .co_orderbox_body {
-    display: flex;
+    max-height: 1200px;
+    opacity: 1;
+    padding: 0 14px 14px;
   }
 }
 </style>
