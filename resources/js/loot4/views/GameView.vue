@@ -14,6 +14,12 @@ const props = defineProps({
 })
 
 const items = computed(() => props.products ?? fallbackGames)
+
+// "Buy right now!" CTA in the intro smooth-scrolls to the start of the products.
+function scrollToProducts() {
+  if (typeof document === 'undefined') return
+  document.getElementById('game-products')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
 </script>
 
 <style scoped>
@@ -25,16 +31,20 @@ const items = computed(() => props.products ?? fallbackGames)
   margin-top: 24px;
 }
 /* On mobile the Trustpilot badge moves up next to the game title (rendered
-   inside GameIntroSection), so the standalone one here is hidden. */
+   inside GameIntroSection), so the standalone one here is hidden — and the big
+   gap above the filter/products is tightened. */
 @media (max-width: 1100px) {
   .game_cards_trust {
     display: none;
+  }
+  .game_cards--with-trust :deep(.game_cards_up) {
+    margin-top: 10px;
   }
 }
 </style>
 
 <template>
-  <GameIntroSection :game-page="gamePage" />
+  <GameIntroSection :game-page="gamePage" @scroll-to-products="scrollToProducts" />
   <section class="game_cards game_cards--with-trust">
     <Container>
       <div class="game_cards_trust">

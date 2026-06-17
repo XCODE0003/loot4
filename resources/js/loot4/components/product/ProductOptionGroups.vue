@@ -687,30 +687,30 @@ function back() {
   }
   /* Compact option rows on phones — 95% of traffic is mobile. */
   .pog {
-    gap: 16px;
+    gap: 14px;
     margin: 4px 0;
   }
   .pog_group {
-    gap: 8px;
+    gap: 6px;
   }
   .pog_group_title {
-    font-size: 14px;
+    font-size: 13px;
   }
   .pog_list,
   .pog_list--cols2 {
-    gap: 6px;
+    gap: 5px;
   }
   .pog_row {
-    padding: 9px 12px;
-    gap: 8px;
-    border-radius: 10px;
+    padding: 7px 11px;
+    gap: 7px;
+    border-radius: 9px;
   }
   .pog_list--cols2 .pog_row {
-    padding: 9px 10px;
+    padding: 7px 9px;
   }
   .pog_mark {
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    height: 15px;
     border-radius: 5px;
   }
   .pog_mark--radio {

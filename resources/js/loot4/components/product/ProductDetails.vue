@@ -230,4 +230,37 @@ function buy() {
     max-height: 200px;
   }
 }
+
+/* Compact breadcrumb on mobile — keep it on a single (scrollable) line so the
+   long product name no longer wraps to a second row. */
+@media (max-width: 768px) {
+  .product_main_navs {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .product_main_navs::-webkit-scrollbar {
+    display: none;
+  }
+  .product_main_navs > * {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .product_main_navs_link,
+  .product_main_navs_text {
+    font-size: 11px;
+    margin-left: 5px;
+  }
+  .product_main_navs_arrow,
+  .product_main_navs_icon {
+    margin-left: 5px;
+  }
+  .product_main_navs_platform {
+    width: 15px;
+    height: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+}
 </style>

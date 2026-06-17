@@ -1,7 +1,7 @@
 <script setup>
 const props = defineProps({
   reviewUrl: { type: String, default: 'https://www.trustpilot.com/review/loot4you.gg' },
-  ratingText: { type: String, default: 'Excellent 4.9 out of 5.0' },
+  ratingText: { type: String, default: 'Excellent 5.0' },
 })
 </script>
 

@@ -9,6 +9,8 @@ const props = defineProps({
   gamePage: { type: Object, default: null },
 })
 
+defineEmits(['scrollToProducts'])
+
 const page = computed(() => props.gamePage ?? fallbackGamePage)
 </script>
 
@@ -27,6 +29,8 @@ const page = computed(() => props.gamePage ?? fallbackGamePage)
               <li v-for="(text, i) in page.guarantees" :key="i" class="game_intro_block_texts_item">{{ text }}</li>
             </ul>
           </div>
+          <!-- Mobile CTA that fills the freed space and jumps to the products. -->
+          <button type="button" class="game_intro_cta" @click="$emit('scrollToProducts')">Buy right now!</button>
         </div>
         <div class="game_intro_block">
           <img v-if="page.image" :src="asset(page.image)" alt="" class="game_intro_block_image" />
@@ -47,10 +51,23 @@ const page = computed(() => props.gamePage ?? fallbackGamePage)
   display: none;
 }
 
+/* The "Buy right now!" CTA only shows on mobile (where the banner is hidden). */
+.game_intro_cta {
+  display: none;
+}
+
 @media (max-width: 1100px) {
   /* Tighten the whole intro so the catalog rises up the page. */
   .game_intro {
     margin-top: 16px;
+  }
+  /* Drop the big intro banner on mobile — it only added dead space above the
+     filter/products (the cards already carry their own banners). */
+  .game_intro_blocks {
+    gap: 0;
+  }
+  .game_intro_block_image {
+    display: none;
   }
   .game_intro_head {
     justify-content: space-between;
@@ -75,6 +92,27 @@ const page = computed(() => props.gamePage ?? fallbackGamePage)
     font-size: 13px;
     line-height: 1.4;
     margin-left: 18px;
+  }
+  .game_intro_cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 14px;
+    padding: 13px 22px;
+    border: 0;
+    border-radius: 12px;
+    background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
+    box-shadow: inset 0 6px 32px 0 rgba(81, 255, 159, 0.25), inset 0 -4px 6px 0 rgba(0, 0, 0, 0.25);
+    color: #fff;
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: filter 0.15s ease;
+  }
+  .game_intro_cta:active {
+    filter: brightness(1.08);
   }
   /* Keep the badge compact next to the title (override its full-width mobile rule). */
   .game_intro_trust :deep(.catalog-hero__trustpilot-mobile) {

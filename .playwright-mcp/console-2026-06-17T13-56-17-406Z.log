@@ -1,0 +1,2 @@
+[     230ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8012/_boost/browser-logs @ http://127.0.0.1:8012/game/ipsam-dolorem-45273:196
+[ 2791089ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://y.clarity.ms/collect:0

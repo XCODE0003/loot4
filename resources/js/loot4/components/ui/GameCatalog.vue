@@ -63,7 +63,7 @@ function setGameFilter(value) {
       <input v-model="searchQuery" type="text" class="game_cards_up_item_search" placeholder="Search" />
     </div>
   </div>
-  <div class="game_cards_blocks" :class="[gridClass, { 'is-empty': isEmpty }]">
+  <div id="game-products" class="game_cards_blocks" :class="[gridClass, { 'is-empty': isEmpty }]">
     <GameCard
       v-for="item in items"
       :key="item.id"
@@ -201,6 +201,11 @@ function setGameFilter(value) {
   }
 }
 
+/* Anchor for the "Buy right now!" CTA scroll. */
+.game_cards_blocks {
+  scroll-margin-top: 16px;
+}
+
 /* Compact search box — the global default is oversized and pushes products down. */
 .game_cards_up_item_search {
   padding: 10px 20px 10px 46px;
@@ -210,13 +215,13 @@ function setGameFilter(value) {
 }
 @media (max-width: 768px) {
   .game_cards_up {
-    gap: 10px;
+    gap: 8px;
   }
   .game_cards_up_item_search {
-    padding: 9px 16px 9px 42px;
-    font-size: 14px;
-    background-position-x: 16px;
-    background-size: 16px auto;
+    padding: 7px 14px 7px 36px;
+    font-size: 13px;
+    background-position-x: 13px;
+    background-size: 14px auto;
   }
 }
 </style>

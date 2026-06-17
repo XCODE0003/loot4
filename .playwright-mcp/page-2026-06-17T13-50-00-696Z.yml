@@ -1,0 +1,216 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "Loot4you" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Loot4you" [ref=e7]
+        - button "Open menu" [ref=e8] [cursor=pointer]
+        - generic [ref=e12]:
+          - list [ref=e13]:
+            - listitem [ref=e14]:
+              - link "Home" [ref=e15] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e16]:
+              - button "Choose Game" [ref=e17] [cursor=pointer]:
+                - text: Choose Game
+                - img [ref=e18]
+            - listitem [ref=e20]:
+              - link "Contact Us" [ref=e21] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=e22]:
+              - link "Sell to Us" [ref=e23] [cursor=pointer]:
+                - /url: /sell
+            - listitem [ref=e24]:
+              - link "Reviews" [ref=e25] [cursor=pointer]:
+                - /url: https://www.trustpilot.com/review/loot4you.gg/
+          - generic [ref=e26]:
+            - generic [ref=e27]:
+              - button "EN" [ref=e29] [cursor=pointer]:
+                - generic [ref=e30]: EN
+                - img [ref=e31]
+              - button "USD" [ref=e34] [cursor=pointer]:
+                - generic [ref=e35]: USD
+                - img [ref=e36]
+            - button "Open cart" [ref=e38] [cursor=pointer]:
+              - img [ref=e39]
+          - link "Login" [ref=e43] [cursor=pointer]:
+            - /url: /login
+    - main [ref=e44]:
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - link "Home" [ref=e48] [cursor=pointer]:
+            - /url: /
+          - img [ref=e49]
+          - link "Ipsam Dolorem" [ref=e51] [cursor=pointer]:
+            - /url: /game/ipsam-dolorem-45273
+          - img [ref=e52]
+          - paragraph [ref=e54]: GTA 5 Online - Cash + Assets PS4&PS5
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - img "Payment methods" [ref=e58]
+            - link "Excellent 5.0 Trustpilot" [ref=e61] [cursor=pointer]:
+              - /url: https://www.trustpilot.com/review/loot4you.gg
+              - generic [ref=e62]: Excellent 5.0
+              - generic [ref=e63]:
+                - img [ref=e65]
+                - generic [ref=e69]: Trustpilot
+          - generic [ref=e70]:
+            - heading "GTA 5 Online - Cash + Assets PS4&PS5" [level=1] [ref=e71]
+            - generic [ref=e72]:
+              - generic [ref=e73]:
+                - generic [ref=e75]: "1"
+                - generic [ref=e78]: "2"
+              - generic [ref=e79]:
+                - paragraph [ref=e80]: Select platform
+                - generic [ref=e81]:
+                  - button "PlayStation 4" [ref=e82] [cursor=pointer]:
+                    - generic [ref=e84]: PlayStation 4
+                  - button "PlayStation 5" [ref=e85] [cursor=pointer]:
+                    - generic [ref=e87]: PlayStation 5
+              - generic [ref=e88]:
+                - paragraph [ref=e89]: Select amount
+                - generic [ref=e90]:
+                  - button "25 Million $22.99" [ref=e91] [cursor=pointer]:
+                    - generic [ref=e93]: 25 Million
+                    - generic [ref=e94]: $22.99
+                  - button "50 Million $32.99" [ref=e95] [cursor=pointer]:
+                    - generic [ref=e97]: 50 Million
+                    - generic [ref=e98]: $32.99
+                  - button "75 Million $37.99" [ref=e99] [cursor=pointer]:
+                    - generic [ref=e101]: 75 Million
+                    - generic [ref=e102]: $37.99
+                  - button "100 Million $42.99" [ref=e103] [cursor=pointer]:
+                    - generic [ref=e105]: 100 Million
+                    - generic [ref=e106]: $42.99
+              - generic [ref=e107]:
+                - button "Back" [disabled] [ref=e108]
+                - button "Next" [ref=e109] [cursor=pointer]
+            - paragraph [ref=e112]: $22.99
+        - generic [ref=e113]:
+          - generic [ref=e114]: Description
+          - paragraph
+        - generic [ref=e115]:
+          - heading "Recommended products" [level=4] [ref=e116]
+          - generic [ref=e117]:
+            - generic [ref=e118] [cursor=pointer]:
+              - img "Et Accusamus Sequi" [ref=e119]
+              - heading "Et Accusamus Sequi" [level=4] [ref=e120]
+              - generic [ref=e121]:
+                - generic [ref=e122]:
+                  - paragraph [ref=e123]: $156.90
+                  - paragraph [ref=e124]: $108.21
+                - button "Buy now" [ref=e125]
+            - generic [ref=e126] [cursor=pointer]:
+              - img "Doloribus Qui Voluptates" [ref=e127]
+              - heading "Doloribus Qui Voluptates" [level=4] [ref=e128]
+              - generic [ref=e129]:
+                - paragraph [ref=e131]: $68.37
+                - button "Buy now" [ref=e132]
+      - generic [ref=e134]:
+        - paragraph [ref=e135]:
+          - img [ref=e136]
+          - text: FAQ
+        - heading "Frequently asked questions" [level=4] [ref=e139]
+        - paragraph [ref=e140]: Find everything you need to know about our digital keys, accounts, delivery, and guarantees.
+        - generic [ref=e141]:
+          - generic [ref=e143]:
+            - button "What is Loot4You?" [ref=e144] [cursor=pointer]:
+              - heading "What is Loot4You?" [level=4] [ref=e145]
+              - img [ref=e146]
+            - generic [ref=e148]: Loot4You is a trusted digital marketplace specializing in gaming services. We provide a wide selection of in-game assets, rare accounts, premium items, and more across the most popular online games. Our mission is to deliver a fast, secure, and seamless purchasing experience for gamers worldwide.
+          - generic [ref=e150]:
+            - button "Is Loot4You legit and secure?" [ref=e151] [cursor=pointer]:
+              - heading "Is Loot4You legit and secure?" [level=4] [ref=e152]
+              - img [ref=e153]
+            - generic: Yes. Loot4You is a legitimate and secure platform with a strong reputation for customer satisfaction. All our transactions are protected with industry-standard security protocols, and we work with trusted partners like Stripe and Cryptomus to ensure safe and reliable payment processing.
+          - generic [ref=e156]:
+            - button "Why choose Loot4You over competitors?" [ref=e157] [cursor=pointer]:
+              - heading "Why choose Loot4You over competitors?" [level=4] [ref=e158]
+              - img [ref=e159]
+            - generic: We stand out for our wide selection of top games and digital items, fast delivery and 24/7 availability, secure and hassle-free checkout process, and friendly customer support. Whether you're looking for coins, points, accounts, or premium subscriptions, Loot4You ensures a smooth and reliable experience.
+          - generic [ref=e162]:
+            - button "What payment methods do you accept?" [ref=e163] [cursor=pointer]:
+              - heading "What payment methods do you accept?" [level=4] [ref=e164]
+              - img [ref=e165]
+            - generic: "We offer a flexible and secure range of payment options: All major credit and debit cards, Apple Pay & Google Pay (via Stripe), and a wide variety of cryptocurrencies (via Cryptomus). This allows our customers around the world to shop with ease, using their preferred payment method."
+          - generic [ref=e168]:
+            - button "How fast is delivery and order processing?" [ref=e169] [cursor=pointer]:
+              - heading "How fast is delivery and order processing?" [level=4] [ref=e170]
+              - img [ref=e171]
+            - generic: Most digital products are delivered instantly or within minutes of purchase confirmation. For account-based services, delivery typically takes 1-24 hours depending on the complexity. You'll receive email notifications and can track your order status in real-time through your customer dashboard.
+          - generic [ref=e174]:
+            - button "Can I get help if I have an issue or question?" [ref=e175] [cursor=pointer]:
+              - heading "Can I get help if I have an issue or question?" [level=4] [ref=e176]
+              - img [ref=e177]
+            - generic: Absolutely. Our dedicated support team is ready to assist you with any questions, concerns, or issues you may encounter. You can reach out to us through our contact page, support tickets, or directly via live chat. We're here to ensure you have a smooth and satisfying experience every step of the way.
+    - contentinfo [ref=e179]:
+      - generic [ref=e180]:
+        - generic [ref=e181]:
+          - generic [ref=e182]:
+            - link "Loot4You" [ref=e183] [cursor=pointer]:
+              - /url: /
+              - img "Loot4You" [ref=e184]
+            - paragraph [ref=e185]: The fastest, safest way to buy gaming credits and coins. Delivered in minutes — every time.
+            - generic [ref=e186]:
+              - paragraph [ref=e187]: Support
+              - generic [ref=e188]:
+                - img [ref=e189]
+                - generic [ref=e192]:
+                  - generic [ref=e193]: Mon – Fri, 9:00 AM – 6:00 PM
+                  - generic [ref=e194]: Email responses within 12 hours.
+              - generic [ref=e195]:
+                - img [ref=e196]
+                - link "support@loot4you.gg" [ref=e199] [cursor=pointer]:
+                  - /url: mailto:support@loot4you.gg
+              - generic [ref=e200]:
+                - img [ref=e201]
+                - link "+44 7455 903679" [ref=e203] [cursor=pointer]:
+                  - /url: tel:+447455903679
+              - generic [ref=e204]:
+                - img [ref=e205]
+                - paragraph [ref=e208]:
+                  - text: First Floor Office, 3 Hornton Place,
+                  - text: London, United Kingdom
+            - generic [ref=e209]:
+              - link "Discord" [ref=e210] [cursor=pointer]:
+                - /url: https://discord.gg/AyTrerusGZ
+                - img [ref=e211]
+              - link "Email" [ref=e213] [cursor=pointer]:
+                - /url: mailto:support@loot4you.gg
+                - img [ref=e214]
+              - link "WhatsApp" [ref=e217] [cursor=pointer]:
+                - /url: https://wa.me/380730882668
+                - img [ref=e218]
+          - generic [ref=e220]:
+            - paragraph [ref=e221]: Company
+            - navigation [ref=e222]:
+              - link "About Us" [ref=e223] [cursor=pointer]:
+                - /url: /about
+              - link "FAQ" [ref=e224] [cursor=pointer]:
+                - /url: /faq
+              - link "How It Works" [ref=e225] [cursor=pointer]:
+                - /url: /how-it-works
+              - link "Contact Us" [ref=e226] [cursor=pointer]:
+                - /url: /contact
+          - generic [ref=e227]:
+            - paragraph [ref=e228]: Legal
+            - navigation [ref=e229]:
+              - link "Privacy Policy" [ref=e230] [cursor=pointer]:
+                - /url: /privacy
+              - link "Terms & Conditions" [ref=e231] [cursor=pointer]:
+                - /url: /terms
+              - link "Refund Policy" [ref=e232] [cursor=pointer]:
+                - /url: /refunds
+              - link "Payment Policy" [ref=e233] [cursor=pointer]:
+                - /url: /payment-policy
+              - link "Shipping Policy" [ref=e234] [cursor=pointer]:
+                - /url: /shipping-policy
+              - link "Cookies Policy" [ref=e235] [cursor=pointer]:
+                - /url: /cookies-policy
+        - generic [ref=e237]:
+          - img "Accepted payment methods" [ref=e239]
+          - paragraph [ref=e240]: © 2026 Loot4You — All rights reserved.
+          - paragraph [ref=e241]: Loot4You is an independent platform not affiliated with, endorsed by, or sponsored by any video game developers or publishers, including Rockstar Games, Take-Two Interactive, Riot Games, Activision Blizzard, Electronic Arts, Epic Games, Tencent, Bungie, Grinding Gear Games, Square Enix, Valve, Battlestate Games, Wargaming.net, Amazon, Jagex, Smilegate RPG, Digital Extremes, and Ubisoft. All trademarks, game titles, logos and images featured on this website are property of their respective publishers and owners. The views and opinions expressed by Loot4You do not reflect those of any game developers or publishers.
+  - button "Contact us" [ref=e243] [cursor=pointer]:
+    - img [ref=e244]

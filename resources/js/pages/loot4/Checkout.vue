@@ -42,6 +42,13 @@ const paymentMethods = [
   { value: 'stripe-revolut-pay', label: 'Revolut Pay',         icons: ['/payment_methods/revolut-white.svg'] },
 ]
 
+// Collapsible "Pay with" dropdown (mobile only). Starts open and collapses once
+// a method is chosen — the chosen method then shows as the dropdown header.
+const methodsOpen = ref(true)
+const selectedMethod = computed(
+  () => paymentMethods.find((m) => m.value === method.value) ?? paymentMethods[0],
+)
+
 const grandTotal = computed(() => total.value)
 
 function money(value) {
@@ -155,14 +162,25 @@ function placeOrder() {
             <p v-if="emailError" class="co_field_err">{{ emailError }}</p>
           </div>
 
-          <div class="co_section co_section--methods">
+          <div class="co_section co_section--methods" :class="{ 'is-open': methodsOpen }">
             <h2 class="co_section_title">Pay with</h2>
+            <!-- Mobile-only collapsed header showing the chosen method. -->
+            <button type="button" class="co_methods_head" @click="methodsOpen = !methodsOpen">
+              <span class="co_methods_head_label">{{ selectedMethod.label }}</span>
+              <span class="co_method_icons co_methods_head_icons">
+                <img v-for="(icon, idx) in selectedMethod.icons" :key="idx" :src="icon" alt="" />
+              </span>
+              <svg class="co_methods_chevron" width="13" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1.5 6 6.5 11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
             <div class="co_methods">
               <label
                 v-for="m in paymentMethods"
                 :key="m.value"
                 class="co_method"
                 :class="{ 'is-active': method === m.value }"
+                @click="methodsOpen = false"
               >
                 <input v-model="method" type="radio" name="method" :value="m.value" />
                 <span class="co_method_radio" aria-hidden="true"></span>
@@ -385,6 +403,10 @@ function placeOrder() {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+/* The dropdown header is a mobile-only affordance. */
+.co_methods_head {
+  display: none;
 }
 .co_method {
   position: relative;
@@ -820,12 +842,54 @@ function placeOrder() {
   .co_right {
     display: contents;
   }
-  /* Order Summary → Email → consent + Pay Now → payment methods. */
+  /* Order Summary → Email → Pay with (dropdown) → consent + Pay Now. */
   .co_title { order: 0; }
   .co_orderbox { order: 1; }
   .co_section--email { order: 2; }
-  .co_paybox { order: 3; }
-  .co_section--methods { order: 4; }
+  .co_section--methods { order: 3; }
+  .co_paybox { order: 4; }
+
+  /* "Pay with" becomes a dropdown: open by default, collapses to the chosen
+     method's header once a method is picked. */
+  .co_methods_head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-family: var(--font-family);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .co_section--methods.is-open .co_methods_head {
+    display: none;
+  }
+  .co_methods_head_label {
+    flex: 1;
+    text-align: left;
+  }
+  .co_methods_head_icons img {
+    height: 18px;
+    width: auto;
+    max-height: 18px;
+    object-fit: contain;
+    opacity: 0.85;
+  }
+  .co_methods_chevron {
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .co_methods {
+    display: none;
+  }
+  .co_section--methods.is-open .co_methods {
+    display: flex;
+  }
   /* rely on the flex gap, not per-section margins, so spacing stays even */
   .co_section {
     margin-bottom: 0;
