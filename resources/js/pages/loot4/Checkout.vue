@@ -42,9 +42,10 @@ const paymentMethods = [
   { value: 'stripe-revolut-pay', label: 'Revolut Pay',         icons: ['/payment_methods/revolut-white.svg'] },
 ]
 
-// Collapsible "Pay with" dropdown (mobile only). Starts open and collapses once
-// a method is chosen — the chosen method then shows as the dropdown header.
-const methodsOpen = ref(true)
+// Collapsible "Pay with" dropdown (mobile only). A method is auto-selected, so
+// it starts collapsed showing that method as the select header; tapping opens
+// the list and choosing a method collapses it again (animated).
+const methodsOpen = ref(false)
 const selectedMethod = computed(
   () => paymentMethods.find((m) => m.value === method.value) ?? paymentMethods[0],
 )
@@ -866,9 +867,6 @@ function placeOrder() {
     font-weight: 600;
     cursor: pointer;
   }
-  .co_section--methods.is-open .co_methods_head {
-    display: none;
-  }
   .co_methods_head_label {
     flex: 1;
     text-align: left;
@@ -883,12 +881,24 @@ function placeOrder() {
   .co_methods_chevron {
     flex-shrink: 0;
     color: rgba(255, 255, 255, 0.55);
+    transition: transform 0.25s ease;
   }
+  .co_section--methods.is-open .co_methods_chevron {
+    transform: rotate(180deg);
+  }
+  /* Animated expand/collapse (display:none can't transition). */
   .co_methods {
-    display: none;
+    display: flex;
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.32s ease, opacity 0.25s ease, margin-top 0.32s ease;
   }
   .co_section--methods.is-open .co_methods {
-    display: flex;
+    max-height: 820px;
+    margin-top: 10px;
+    opacity: 1;
   }
   /* rely on the flex gap, not per-section margins, so spacing stays even */
   .co_section {
