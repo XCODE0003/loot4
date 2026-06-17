@@ -53,7 +53,7 @@ onBeforeUnmount(() => {
     <div class="container">
       <div class="header_items">
         <Link href="/" class="header_logo" @click="closeMenu">
-          <img :src="asset('header_logo.svg')" alt="Loot4you" />
+          <img :src="asset('/logol4u.svg')" alt="Loot4you" class="header_logo_img" />
         </Link>
         <button
           type="button"
@@ -184,6 +184,17 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+/* The logo SVG embeds a large raster, so constrain its height explicitly. */
+.header_logo_img {
+  display: block;
+  height: 38px;
+  width: auto;
+}
+@media (max-width: 1100px) {
+  .header_logo_img {
+    height: 30px;
+  }
+}
 /* wrapper keeps desktop layout untouched, becomes a row on mobile */
 .header_tools {
   display: contents;

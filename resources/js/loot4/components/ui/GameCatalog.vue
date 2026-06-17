@@ -7,6 +7,7 @@ const props = defineProps({
   items: { type: Array, required: true },
   gameFilters: { type: Object, default: null },
   showLogo: { type: Boolean, default: false },
+  showSearch: { type: Boolean, default: true },
   gridClass: { type: String, default: '' },
 })
 
@@ -58,7 +59,7 @@ function setGameFilter(value) {
         </button>
       </div>
     </div>
-    <div class="game_cards_up_item">
+    <div v-if="showSearch" class="game_cards_up_item">
       <input v-model="searchQuery" type="text" class="game_cards_up_item_search" placeholder="Search" />
     </div>
   </div>
@@ -197,6 +198,25 @@ function setGameFilter(value) {
     flex: 0 0 auto;
     padding: 10px 16px;
     font-size: 13px;
+  }
+}
+
+/* Compact search box — the global default is oversized and pushes products down. */
+.game_cards_up_item_search {
+  padding: 10px 20px 10px 46px;
+  font-size: 15px;
+  background-position-x: 20px;
+  background-size: 18px auto;
+}
+@media (max-width: 768px) {
+  .game_cards_up {
+    gap: 10px;
+  }
+  .game_cards_up_item_search {
+    padding: 9px 16px 9px 42px;
+    font-size: 14px;
+    background-position-x: 16px;
+    background-size: 16px auto;
   }
 }
 </style>

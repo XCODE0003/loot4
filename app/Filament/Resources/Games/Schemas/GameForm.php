@@ -10,6 +10,7 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
@@ -65,6 +66,11 @@ class GameForm
                             ->helperText('Lower number = higher in the "Choose Game" dropdown. You can also drag rows to reorder in the games list.')
                             ->numeric()
                             ->default(0),
+                        Toggle::make('show_search')
+                            ->label('Show search bar')
+                            ->helperText('Show the product search box on this game\'s page.')
+                            ->default(true)
+                            ->inline(false),
                         Textarea::make('description')
                             ->rows(3)
                             ->columnSpanFull(),

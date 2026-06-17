@@ -85,6 +85,15 @@ class FormsRelationManager extends RelationManager
                             ->prefix('$')
                             ->default(0)
                             ->visible(fn (Get $get): bool => self::stateValue($get('pricing_mode')) !== PricingMode::Absolute->value),
+                        Select::make('options_columns')
+                            ->label('Options per row')
+                            ->options([1 => '1 per row', 2 => '2 per row'])
+                            ->default(1)
+                            ->helperText('Radio/checkbox layout on the product page.')
+                            ->visible(fn (Get $get): bool => in_array(self::stateValue($get('type')), [
+                                FieldType::Radio->value,
+                                FieldType::Checkbox->value,
+                            ], true)),
                         Toggle::make('required')
                             ->inline(false),
                         TextInput::make('tooltip'),

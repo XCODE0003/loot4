@@ -179,4 +179,55 @@ function buy() {
 .product_gallery_thumb.is-active {
   border-color: #2bff95;
 }
+
+/* Mobile: move the payments + Trustpilot block below the Buy button, and shrink
+   the title + banner image so the options sit higher. 95% of traffic is mobile. */
+@media (max-width: 1100px) {
+  .product_main_sections {
+    display: flex;
+    flex-direction: column;
+  }
+  /* Flatten the left column so its children can be reordered individually. */
+  .product_main_section:first-child {
+    display: contents;
+  }
+  .product_main_section_image,
+  .product_gallery_thumbs {
+    order: 1;
+  }
+  .product_main_section:last-child {
+    order: 2;
+  }
+  .product_main_section_payments {
+    order: 3;
+    margin-top: 24px;
+  }
+  .product_main_section_trustpilot {
+    order: 4;
+    margin-top: 16px;
+  }
+  .product_main_section_title {
+    font-size: 26px;
+  }
+  .product_main_section_image {
+    max-height: 300px;
+  }
+}
+@media (max-width: 768px) {
+  .product_main_section_title {
+    font-size: 22px;
+  }
+  .product_main_section_image {
+    max-height: 240px;
+  }
+}
+@media (max-width: 480px) {
+  .product_main_section_title {
+    font-size: 19px;
+    line-height: 1.25;
+  }
+  .product_main_section_image {
+    max-height: 200px;
+  }
+}
 </style>

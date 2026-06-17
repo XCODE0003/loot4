@@ -10,6 +10,7 @@ const props = defineProps({
   products: { type: Array, default: null },
   gameFilters: { type: Object, default: null },
   gamePage: { type: Object, default: null },
+  showSearch: { type: Boolean, default: true },
 })
 
 const items = computed(() => props.products ?? fallbackGames)
@@ -23,6 +24,13 @@ const items = computed(() => props.products ?? fallbackGames)
 .game_cards--with-trust :deep(.game_cards_up) {
   margin-top: 24px;
 }
+/* On mobile the Trustpilot badge moves up next to the game title (rendered
+   inside GameIntroSection), so the standalone one here is hidden. */
+@media (max-width: 1100px) {
+  .game_cards_trust {
+    display: none;
+  }
+}
 </style>
 
 <template>
@@ -32,7 +40,7 @@ const items = computed(() => props.products ?? fallbackGames)
       <div class="game_cards_trust">
         <TrustpilotWidget />
       </div>
-      <GameCatalog :items="items" :game-filters="gameFilters" />
+      <GameCatalog :items="items" :game-filters="gameFilters" :show-search="showSearch" />
     </Container>
   </section>
 </template>

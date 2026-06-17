@@ -25,6 +25,7 @@ class Game extends Model implements HasMedia
         'landing_settings',
         'game_filters',
         'guarantees',
+        'show_search',
     ];
 
     protected function casts(): array
@@ -35,6 +36,7 @@ class Game extends Model implements HasMedia
             'landing_settings' => 'array',
             'game_filters' => 'array',
             'guarantees' => 'array',
+            'show_search' => 'boolean',
             'sort_order' => 'integer',
         ];
     }

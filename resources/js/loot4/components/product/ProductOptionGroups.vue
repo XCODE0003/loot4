@@ -18,7 +18,19 @@ const props = defineProps({
 const emit = defineEmits(['change'])
 const { formatPrice } = useLocale()
 
-const isSteps = computed(() => props.layout === 'steps' && props.groups.length > 1)
+// Group the flat list into blocks (one block per admin "form"). In step-by-step
+// layout each block becomes a single step holding all of its fields.
+const blocks = computed(() => {
+  const byBlock = new Map()
+  for (const group of props.groups) {
+    const key = group.block ?? 0
+    if (!byBlock.has(key)) byBlock.set(key, [])
+    byBlock.get(key).push(group)
+  }
+  return [...byBlock.values()]
+})
+
+const isSteps = computed(() => props.layout === 'steps' && blocks.value.length > 1)
 
 // Free-form fields the customer types into (no predefined options).
 const INPUT_CONTROLS = ['text', 'number', 'textarea']
@@ -75,12 +87,16 @@ function isGroupSatisfied(group) {
   return !group.required || selectedValues(group).length > 0
 }
 
+function isBlockSatisfied(block) {
+  return block.every(isGroupSatisfied)
+}
+
 // A required group with no selection shows an error once the customer tried to
-// advance (steps) or buy (single page).
-function groupHasError(group, gi) {
+// advance (steps) or buy (single page). `bi` is the group's block index.
+function groupHasError(group, bi) {
   if (isGroupSatisfied(group)) return false
   if (props.showErrors) return true
-  return isSteps.value && gi === step.value && stepAttempted.value
+  return isSteps.value && bi === step.value && stepAttempted.value
 }
 
 function select(group, value) {
@@ -168,8 +184,8 @@ function plainSelections() {
 }
 
 const valid = computed(() => props.groups.every(isGroupSatisfied))
-// In steps mode the buy button only shows on the final step.
-const isLastStep = computed(() => !isSteps.value || step.value >= props.groups.length - 1)
+// In steps mode the buy button only shows on the final step (last block).
+const isLastStep = computed(() => !isSteps.value || step.value >= blocks.value.length - 1)
 
 watch(
   [price, summary, () => JSON.stringify(selections), () => step.value],
@@ -183,23 +199,23 @@ watch(
   { immediate: true },
 )
 
-// When a buy is blocked, jump the wizard to the first unsatisfied required group.
+// When a buy is blocked, jump the wizard to the first unsatisfied block.
 watch(
   () => props.showErrors,
   (on) => {
     if (!on || !isSteps.value) return
-    const idx = props.groups.findIndex((g) => !isGroupSatisfied(g))
+    const idx = blocks.value.findIndex((b) => !isBlockSatisfied(b))
     if (idx >= 0) step.value = idx
   },
 )
 
 function next() {
-  const group = props.groups[step.value]
-  if (group && !isGroupSatisfied(group)) {
+  const block = blocks.value[step.value]
+  if (block && !isBlockSatisfied(block)) {
     stepAttempted.value = true
     return
   }
-  if (step.value < props.groups.length - 1) {
+  if (step.value < blocks.value.length - 1) {
     step.value += 1
     stepAttempted.value = false
   }
@@ -215,23 +231,24 @@ function back() {
 <template>
   <div v-if="groups.length" class="pog" :class="{ 'pog--steps': isSteps }">
     <div v-if="isSteps" class="pog_steps" aria-hidden="true">
-      <template v-for="(g, i) in groups" :key="`step-${g.key}`">
+      <template v-for="(b, i) in blocks" :key="`step-${i}`">
         <div class="pog_step" :class="{ 'is-active': i === step, 'is-done': i < step }">
           <svg v-if="i < step" width="12" height="10" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9.298 1.673 3.798 7.173a.57.57 0 0 1-.398.165.57.57 0 0 1-.399-.165L.376 4.548a.563.563 0 0 1 0-.797.563.563 0 0 1 .797 0L3.4 5.978 8.502.877a.564.564 0 0 1 .797.797z" fill="currentColor" />
           </svg>
           <span v-else>{{ i + 1 }}</span>
         </div>
-        <div v-if="i < groups.length - 1" class="pog_step_line" :class="{ 'is-done': i < step }" />
+        <div v-if="i < blocks.length - 1" class="pog_step_line" :class="{ 'is-done': i < step }" />
       </template>
     </div>
 
+    <template v-for="(block, bi) in blocks" :key="`block-${bi}`">
     <div
-      v-for="(group, gi) in groups"
-      v-show="!isSteps || gi === step"
+      v-for="group in block"
+      v-show="!isSteps || bi === step"
       :key="group.key"
       class="pog_group"
-      :class="{ 'has-error': groupHasError(group, gi) }"
+      :class="{ 'has-error': groupHasError(group, bi) }"
     >
       <p class="pog_group_title">
         {{ group.label }}
@@ -277,7 +294,7 @@ function back() {
         </svg>
       </div>
 
-      <div v-else class="pog_list">
+      <div v-else class="pog_list" :class="{ 'pog_list--cols2': group.columns === 2 }">
         <button
           v-for="opt in group.options"
           :key="opt.value"
@@ -314,15 +331,16 @@ function back() {
 
       <p v-if="isInput(group) && group.tooltip" class="pog_hint">{{ group.tooltip }}</p>
 
-      <p v-if="groupHasError(group, gi)" class="pog_error">
+      <p v-if="groupHasError(group, bi)" class="pog_error">
         {{ isInput(group) ? 'Please fill in this field.' : 'Please select an option to continue.' }}
       </p>
     </div>
+    </template>
 
     <div v-if="isSteps" class="pog_nav">
       <button type="button" class="pog_nav_btn" :disabled="step === 0" @click="back">Back</button>
       <button
-        v-if="step < groups.length - 1"
+        v-if="step < blocks.length - 1"
         type="button"
         class="pog_nav_btn pog_nav_btn--next"
         @click="next"
@@ -404,6 +422,15 @@ function back() {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+/* Two options per row (admin per-field setting). */
+.pog_list--cols2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.pog_list--cols2 .pog_row {
+  padding: 11px 12px;
 }
 .pog_row {
   position: relative;
@@ -657,6 +684,50 @@ function back() {
 @media (max-width: 768px) {
   .pog_tooltip {
     max-width: 200px;
+  }
+  /* Compact option rows on phones — 95% of traffic is mobile. */
+  .pog {
+    gap: 16px;
+    margin: 4px 0;
+  }
+  .pog_group {
+    gap: 8px;
+  }
+  .pog_group_title {
+    font-size: 14px;
+  }
+  .pog_list,
+  .pog_list--cols2 {
+    gap: 6px;
+  }
+  .pog_row {
+    padding: 9px 12px;
+    gap: 8px;
+    border-radius: 10px;
+  }
+  .pog_list--cols2 .pog_row {
+    padding: 9px 10px;
+  }
+  .pog_mark {
+    width: 16px;
+    height: 16px;
+    border-radius: 5px;
+  }
+  .pog_mark--radio {
+    border-radius: 50%;
+  }
+  .pog_name,
+  .pog_price {
+    font-size: 13px;
+  }
+  .pog_select,
+  .pog_input {
+    padding: 11px 14px;
+    font-size: 13px;
+  }
+  .pog_tag {
+    font-size: 9px;
+    padding: 1px 6px;
   }
 }
 </style>

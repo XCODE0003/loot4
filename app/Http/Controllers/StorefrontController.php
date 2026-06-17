@@ -67,6 +67,7 @@ class StorefrontController extends Controller
         return Inertia::render('loot4/Game', [
             'products' => $products->map(fn (Product $p, int $i): array => $this->card($p, $i))->all(),
             'gameFilters' => null,
+            'showSearch' => true,
             'gamePage' => $featured ? [
                 'title' => $featured->name,
                 'image' => $featured->getFirstMediaUrl('image') ?: null,
@@ -94,6 +95,7 @@ class StorefrontController extends Controller
         return Inertia::render('loot4/Game', [
             'products' => $products->map(fn (Product $p, int $i): array => $this->card($p, $i))->all(),
             'gameFilters' => $this->gameFilters($game),
+            'showSearch' => (bool) ($game->show_search ?? true),
             'gamePage' => [
                 'title' => $game->name,
                 'image' => $game->getFirstMediaUrl('image') ?: null,
@@ -299,16 +301,33 @@ class StorefrontController extends Controller
      */
     private function optionGroups(Product $product): array
     {
-        return $product->forms
+        $groups = [];
+
+        $forms = $product->forms
             ->filter(fn ($form): bool => (bool) $form->is_active)
-            ->flatMap(fn ($form) => $form->fields)
-            ->filter(fn ($field): bool => ($field->type->hasOptions() && filled($field->options)) || $field->type->isInput())
             ->sortBy('sort_order')
-            ->values()
-            ->map(fn ($field): array => $field->type->isInput()
-                ? $this->inputGroup($field)
-                : $this->choiceGroup($field))
-            ->all();
+            ->values();
+
+        // Each active form is one "block": in step-by-step layout it becomes a
+        // single step holding all of its fields (platform + amount together,
+        // add-ons + delivery together, etc.).
+        foreach ($forms as $blockIndex => $form) {
+            $fields = $form->fields
+                ->filter(fn ($field): bool => ($field->type->hasOptions() && filled($field->options)) || $field->type->isInput())
+                ->sortBy('sort_order')
+                ->values();
+
+            foreach ($fields as $field) {
+                $group = $field->type->isInput()
+                    ? $this->inputGroup($field)
+                    : $this->choiceGroup($field);
+                $group['block'] = $blockIndex;
+                $group['blockLabel'] = (string) $form->name;
+                $groups[] = $group;
+            }
+        }
+
+        return $groups;
     }
 
     /**
@@ -326,6 +345,8 @@ class StorefrontController extends Controller
             'pricingMode' => $field->pricing_mode->value,
             'required' => (bool) $field->required,
             'tooltip' => (string) ($field->tooltip ?? ''),
+            // Radio/checkbox layout: 1 or 2 options per row (selects ignore it).
+            'columns' => max(1, min(2, (int) ($field->options_columns ?? 1))),
             'options' => collect($field->options)
                 ->map(fn ($o): array => [
                     'value' => (string) ($o['value'] ?? $o['label'] ?? ''),
@@ -359,6 +380,7 @@ class StorefrontController extends Controller
             'tooltip' => (string) ($field->tooltip ?? ''),
             'price' => round((float) ($field->extra_price ?? 0), 2),
             'maxLength' => ProductPricing::INPUT_MAX_LENGTH,
+            'columns' => 1,
             'options' => [],
         ];
     }
