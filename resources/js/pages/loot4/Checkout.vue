@@ -46,9 +46,20 @@ const paymentMethods = [
 // it starts open with the list shown; choosing a method collapses it (animated)
 // to a select header showing the chosen method.
 const methodsOpen = ref(true)
+const methodError = ref(false)
+const methodsRef = ref(null)
 const selectedMethod = computed(
   () => paymentMethods.find((m) => m.value === method.value) ?? null,
 )
+
+function onMethodPick() {
+  methodsOpen.value = false
+  methodError.value = false
+}
+
+function scrollToMethods() {
+  methodsRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+}
 
 const grandTotal = computed(() => total.value)
 
@@ -110,8 +121,9 @@ function placeOrder() {
     return
   }
   if (!method.value) {
-    formError.value = 'Please choose a payment method.'
+    methodError.value = true
     methodsOpen.value = true
+    scrollToMethods()
     return
   }
   if (!agreed.value) {
@@ -168,7 +180,7 @@ function placeOrder() {
             <p v-if="emailError" class="co_field_err">{{ emailError }}</p>
           </div>
 
-          <div class="co_section co_section--methods" :class="{ 'is-open': methodsOpen }">
+          <div ref="methodsRef" class="co_section co_section--methods" :class="{ 'is-open': methodsOpen, 'has-error': methodError }">
             <h2 class="co_section_title">Pay with</h2>
             <!-- Mobile-only collapsed header showing the chosen method. -->
             <button type="button" class="co_methods_head" @click="methodsOpen = !methodsOpen">
@@ -180,13 +192,14 @@ function placeOrder() {
                 <path d="M1 1.5 6 6.5 11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </button>
+            <p v-if="methodError" class="co_method_err">Please choose a payment method.</p>
             <div class="co_methods">
               <label
                 v-for="m in paymentMethods"
                 :key="m.value"
                 class="co_method"
                 :class="{ 'is-active': method === m.value }"
-                @click="methodsOpen = false"
+                @click="onMethodPick"
               >
                 <input v-model="method" type="radio" name="method" :value="m.value" />
                 <span class="co_method_radio" aria-hidden="true"></span>
@@ -413,6 +426,11 @@ function placeOrder() {
 /* The dropdown header is a mobile-only affordance. */
 .co_methods_head {
   display: none;
+}
+.co_method_err {
+  margin: 8px 4px 0;
+  color: #ff6b6b;
+  font-size: 13px;
 }
 .co_method {
   position: relative;
@@ -890,6 +908,11 @@ function placeOrder() {
   }
   .co_section--methods.is-open .co_methods_chevron {
     transform: rotate(180deg);
+  }
+  /* No method chosen on a blocked "Pay Now" — mark the select red. */
+  .co_section--methods.has-error .co_methods_head {
+    border-color: #ff6b6b;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.18);
   }
   /* Animated expand/collapse (display:none can't transition). */
   .co_methods {
