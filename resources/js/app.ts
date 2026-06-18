@@ -39,6 +39,8 @@ createInertiaApp({
 
         if (el) {
             app.mount(el);
+            // The app has rendered — drop the dark loading splash from app.blade.php.
+            document.getElementById('app-splash')?.remove();
         }
 
         return app;

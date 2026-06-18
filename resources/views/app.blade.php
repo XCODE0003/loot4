@@ -3,6 +3,10 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        {{-- Tell the browser to paint a DARK default canvas (not white) before any
+             CSS/JS loads — this is what stops the white flash on cold reloads. --}}
+        <meta name="color-scheme" content="dark">
+        <meta name="theme-color" content="#020202">
 
         {{-- Microsoft Clarity --}}
         <script type="text/javascript">
@@ -28,14 +32,53 @@
             })();
         </script>
 
-        {{-- Avoid white flash on first paint before storefront CSS loads. --}}
+        {{-- Avoid white flash on first paint before storefront CSS/JS loads, and
+             show a dark branded loader while the client-rendered app mounts. --}}
         <style>
-            html {
+            :root {
+                color-scheme: dark;
+            }
+            html,
+            body {
                 background-color: #020202;
             }
-
-            html.dark {
+            html.dark,
+            html.dark body {
                 background-color: #020202;
+            }
+            /* Full-screen loader shown until Inertia mounts (removed in app.ts).
+               If JS fails to load, this stays dark with a spinner instead of a
+               blank white window. */
+            #app-splash {
+                position: fixed;
+                inset: 0;
+                z-index: 2147483647;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #020202;
+            }
+            #app-splash .app-splash__spinner {
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                border: 3px solid rgba(255, 255, 255, 0.14);
+                border-top-color: #2bff95;
+                opacity: 0;
+                /* spin always; fade the spinner in only after 180ms so fast loads
+                   don't flash it */
+                animation: app-splash-spin 0.8s linear infinite,
+                    app-splash-fade 0.01s linear 0.18s forwards;
+            }
+            @keyframes app-splash-spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+            @keyframes app-splash-fade {
+                to {
+                    opacity: 1;
+                }
             }
         </style>
         @php($gtmId = env('GTM_CONTAINER_ID'))
@@ -93,5 +136,6 @@
             <!-- End Google Tag Manager (noscript) -->
         @endif
         <x-inertia::app />
+        <div id="app-splash" aria-hidden="true"><div class="app-splash__spinner"></div></div>
     </body>
 </html>
