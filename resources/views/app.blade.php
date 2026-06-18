@@ -94,11 +94,12 @@
             <!-- End Google Tag Manager -->
         @endif
 
-        <link rel="icon" type="image/x-icon" href="/favicon.ico">
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        {{-- ?v= busts the long-lived (immutable) CDN/browser cache when icons change. --}}
+        <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2">
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=2">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=2">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2">
         <link rel="manifest" href="/site.webmanifest">
         @php($customFavicon = rescue(fn () => \App\Models\Setting::get('favicon'), null, false))
         @if($customFavicon)

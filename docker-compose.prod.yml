@@ -5,6 +5,9 @@ services:
       context: .
       dockerfile: Dockerfile
       target: app
+    # Fixed name so queue/scheduler reuse this exact image instead of each
+    # rebuilding the same heavy Dockerfile (3× npm/composer builds = OOM).
+    image: loot4you-app:latest
     restart: unless-stopped
     volumes:
       - ./storage:/var/www/html/storage
@@ -72,10 +75,8 @@ services:
       - loot4
 
   queue:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: app
+    # Reuse the app image (built once by the `app` service) — no separate build.
+    image: loot4you-app:latest
     restart: unless-stopped
     command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
     volumes:
@@ -88,10 +89,8 @@ services:
       - loot4
 
   scheduler:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: app
+    # Reuse the app image (built once by the `app` service) — no separate build.
+    image: loot4you-app:latest
     restart: unless-stopped
     command: php artisan schedule:work
     volumes:
