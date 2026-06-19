@@ -33,7 +33,13 @@ const page = computed(() => props.gamePage ?? fallbackGamePage)
           <button type="button" class="game_intro_cta" @click="$emit('scrollToProducts')">Buy right now!</button>
         </div>
         <div class="game_intro_block">
-          <img v-if="page.image" :src="asset(page.image)" alt="" class="game_intro_block_image" />
+          <img
+            v-if="page.image"
+            :src="asset(page.image)"
+            alt=""
+            class="game_intro_block_image"
+            @click="$emit('scrollToProducts')"
+          />
         </div>
       </div>
     </Container>
@@ -54,6 +60,16 @@ const page = computed(() => props.gamePage ?? fallbackGamePage)
 /* The "Buy right now!" CTA only shows on mobile (where the banner is hidden). */
 .game_intro_cta {
   display: none;
+}
+
+/* The banner is a big CTA on desktop — click it to jump to the products. */
+.game_intro_block_image {
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+.game_intro_block_image:hover {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
 }
 
 @media (max-width: 1100px) {

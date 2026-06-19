@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useLocale } from '@/loot4/composables/useLocale'
 
 const props = defineProps({
@@ -17,6 +17,27 @@ const props = defineProps({
 
 const emit = defineEmits(['change'])
 const { formatPrice } = useLocale()
+
+// Custom dropdown (replaces the native <select> so there's no ugly iOS/Android
+// picker — a styled popover list opens instead). Only one open at a time.
+const openSelect = ref(null)
+function toggleSelect(group) {
+  openSelect.value = openSelect.value === group.key ? null : group.key
+}
+function chooseOption(group, value) {
+  select(group, value)
+  openSelect.value = null
+}
+function selectedOptionText(group) {
+  const v = selections[group.key]
+  const opt = v ? optionByValue(group, v) : null
+  return opt ? optionText(group, opt) : 'Choose…'
+}
+function onDocClick(e) {
+  if (!e.target?.closest?.('.pog_dd')) openSelect.value = null
+}
+onMounted(() => document.addEventListener('click', onDocClick))
+onBeforeUnmount(() => document.removeEventListener('click', onDocClick))
 
 // Group the flat list into blocks (one block per admin "form"). In step-by-step
 // layout each block becomes a single step holding all of its fields.
@@ -251,7 +272,8 @@ function back() {
       :class="{ 'has-error': groupHasError(group, bi) }"
     >
       <p class="pog_group_title">
-        {{ group.label }}
+        <span v-if="!isSteps" class="pog_group_num">{{ groups.indexOf(group) + 1 }}</span>
+        <span class="pog_group_label">{{ group.label }}</span>
         <span v-if="isInput(group) && group.price > 0" class="pog_title_price">+{{ formatPrice(group.price) }}</span>
       </p>
 
@@ -276,22 +298,33 @@ function back() {
 
       <div
         v-else-if="group.control === 'select'"
-        class="pog_select_wrap"
-        :class="{ 'is-active': (selections[group.key] ?? '') !== '' }"
+        class="pog_dd"
+        :class="{ 'is-open': openSelect === group.key, 'is-active': (selections[group.key] ?? '') !== '' }"
       >
-        <select
-          class="pog_select"
-          :value="selections[group.key] ?? ''"
-          @change="select(group, $event.target.value)"
-        >
-          <option value="" disabled>Choose…</option>
-          <option v-for="opt in group.options" :key="opt.value" :value="opt.value">
-            {{ optionText(group, opt) }}
-          </option>
-        </select>
-        <svg class="pog_select_arrow" width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M1 1.5 6 6.5 11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+        <button type="button" class="pog_dd_head" @click.stop="toggleSelect(group)">
+          <span class="pog_dd_head_label" :class="{ 'is-placeholder': !(selections[group.key] ?? '') }">
+            {{ selectedOptionText(group) }}
+          </span>
+          <svg class="pog_dd_arrow" width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M1 1.5 6 6.5 11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div v-show="openSelect === group.key" class="pog_dd_menu">
+          <button
+            v-for="opt in group.options"
+            :key="opt.value"
+            type="button"
+            class="pog_dd_opt"
+            :class="{ 'is-active': selections[group.key] === opt.value }"
+            @click="chooseOption(group, opt.value)"
+          >
+            <span class="pog_dd_opt_name">{{ opt.label }}</span>
+            <span v-if="priceLabel(group, opt)" class="pog_dd_opt_price">{{ priceLabel(group, opt) }}</span>
+            <svg v-if="selections[group.key] === opt.value" class="pog_dd_opt_check" width="12" height="10" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.298 1.673 3.798 7.173a.57.57 0 0 1-.398.165.57.57 0 0 1-.399-.165L.376 4.548a.563.563 0 0 1 0-.797.563.563 0 0 1 .797 0L3.4 5.978 8.502.877a.564.564 0 0 1 .797.797z" fill="currentColor" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <div v-else class="pog_list" :class="{ 'pog_list--cols2': group.columns === 2 }">
@@ -366,11 +399,31 @@ function back() {
   gap: 12px;
 }
 .pog_group_title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin: 0;
   font-family: var(--font-family);
   font-size: 16px;
   font-weight: 600;
   color: #fff;
+}
+/* Numbered step badge (single layout) — brand gradient circle. */
+.pog_group_num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--pog-grad);
+  color: #06281b;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pog_group_label {
+  min-width: 0;
 }
 .pog_error {
   margin: 0;
@@ -380,7 +433,7 @@ function back() {
   color: #ff6b6b;
 }
 .pog_group.has-error .pog_row,
-.pog_group.has-error .pog_select,
+.pog_group.has-error .pog_dd_head,
 .pog_group.has-error .pog_input {
   border-color: #ff6b6b;
 }
@@ -556,15 +609,16 @@ function back() {
   transform: translateY(0);
 }
 
-/* Dropdown */
-.pog_select_wrap {
+/* Custom dropdown (no native <select> picker) */
+.pog_dd {
   position: relative;
 }
-.pog_select {
+.pog_dd_head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-  padding: 14px 44px 14px 16px;
+  padding: 14px 16px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
@@ -572,18 +626,38 @@ function back() {
   font-family: var(--font-family);
   font-size: 14px;
   font-weight: 500;
+  text-align: left;
   cursor: pointer;
+  transition: border-color 0.15s ease;
 }
-.pog_select:focus {
-  outline: none;
+.pog_dd_head:hover {
+  border-color: rgba(43, 255, 149, 0.4);
+}
+.pog_dd_head_label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pog_dd_head_label.is-placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+.pog_dd_arrow {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.6);
+  transition: transform 0.2s ease;
+}
+.pog_dd.is-open .pog_dd_arrow {
+  transform: rotate(180deg);
+}
+/* Brand-gradient ring on the open/selected dropdown head (mask keeps the 1px). */
+.pog_dd.is-active .pog_dd_head,
+.pog_dd.is-open .pog_dd_head {
   border-color: transparent;
 }
-.pog_select_wrap.is-active .pog_select {
-  border-color: transparent;
-}
-/* Brand-gradient border on the selected/focused dropdown (mask keeps the 1px ring). */
-.pog_select_wrap.is-active::after,
-.pog_select_wrap:focus-within::after {
+.pog_dd.is-active::after,
+.pog_dd.is-open::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -597,17 +671,60 @@ function back() {
   mask-composite: exclude;
   pointer-events: none;
 }
-.pog_select option {
-  background: #16161d;
+.pog_dd_menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #11131c;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
+}
+.pog_dd_opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 12px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.pog_dd_opt:hover {
+  background: rgba(255, 255, 255, 0.06);
   color: #fff;
 }
-.pog_select_arrow {
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
-  color: rgba(255, 255, 255, 0.6);
-  pointer-events: none;
+.pog_dd_opt.is-active {
+  background: linear-gradient(135deg, rgba(43, 255, 149, 0.14), rgba(5, 71, 146, 0.14));
+  color: #fff;
+}
+.pog_dd_opt_name {
+  flex: 1;
+  min-width: 0;
+}
+.pog_dd_opt_price {
+  flex-shrink: 0;
+  font-weight: 700;
+  color: #fff;
+}
+.pog_dd_opt_check {
+  flex-shrink: 0;
+  color: #2bff95;
 }
 
 /* Step progress + nav */
@@ -720,10 +837,19 @@ function back() {
   .pog_price {
     font-size: 13px;
   }
-  .pog_select,
+  .pog_dd_head,
   .pog_input {
     padding: 11px 14px;
     font-size: 13px;
+  }
+  .pog_dd_opt {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .pog_group_num {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
   }
   .pog_tag {
     font-size: 9px;

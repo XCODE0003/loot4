@@ -122,11 +122,38 @@ function buy() {
           />
           <div class="product_main_section_price">
             <div class="product_main_section_price_items">
-              <p class="product_main_section_price_new">
-                {{ formatPrice(displayPrice) }}
-                <span v-if="data.priceOld != null">{{ formatPrice(data.priceOld) }}</span>
-              </p>
-              <button v-if="canBuy" type="button" class="product_main_section_price_button" @click="buy">Buy now</button>
+              <div class="product_price_left">
+                <p class="product_main_section_price_new">
+                  {{ formatPrice(displayPrice) }}
+                  <span v-if="data.priceOld != null">{{ formatPrice(data.priceOld) }}</span>
+                </p>
+                <p class="product_secure">
+                  <svg width="13" height="14" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect x="2" y="6.8" width="10" height="7.5" rx="1.6" stroke="currentColor" stroke-width="1.3" />
+                    <path d="M4.3 6.8V4.6a2.7 2.7 0 0 1 5.4 0v2.2" stroke="currentColor" stroke-width="1.3" />
+                  </svg>
+                  Secure Checkout
+                </p>
+              </div>
+              <button v-if="canBuy" type="button" class="product_main_section_price_button" @click="buy">
+                Buy now <span class="product_buy_arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+            <div class="product_trust_row">
+              <span class="product_trust_item">
+                <svg width="15" height="16" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M8 1l6 2v6c0 4-3 6.5-6 8-3-1.5-6-4-6-8V3l6-2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+                  <path d="M5.4 9l1.8 1.8L10.8 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                100% Safe &amp; Secure
+              </span>
+              <span class="product_trust_dot" aria-hidden="true"></span>
+              <span class="product_trust_item">
+                <svg width="15" height="15" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true">
+                  <path d="M9 1.5l2.06 4.17 4.6.67-3.33 3.24.79 4.58L9 12.98l-4.12 2.16.79-4.58L2.34 6.34l4.6-.67L9 1.5z" />
+                </svg>
+                Excellent 5.0 on Trustpilot
+              </span>
             </div>
           </div>
         </div>
@@ -178,6 +205,53 @@ function buy() {
 }
 .product_gallery_thumb.is-active {
   border-color: #2bff95;
+}
+
+/* Price area extras (mockup): "Secure Checkout" under the price + a trust row. */
+.product_price_left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.product_secure {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+}
+.product_buy_arrow {
+  margin-left: 4px;
+}
+.product_trust_row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.product_trust_item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+}
+.product_trust_item svg {
+  color: #2bff95;
+}
+.product_trust_dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* Mobile: move the payments + Trustpilot block below the Buy button, and shrink
@@ -239,6 +313,9 @@ function buy() {
     flex-wrap: nowrap;
     overflow-x: auto;
     scrollbar-width: none;
+    /* One even gap between every crumb instead of the mixed per-element margins
+       (those caused the uneven spaces on mobile). */
+    gap: 6px;
   }
   .product_main_navs::-webkit-scrollbar {
     display: none;
@@ -246,21 +323,15 @@ function buy() {
   .product_main_navs > * {
     flex-shrink: 0;
     white-space: nowrap;
+    margin: 0;
   }
   .product_main_navs_link,
   .product_main_navs_text {
     font-size: 11px;
-    margin-left: 5px;
-  }
-  .product_main_navs_arrow,
-  .product_main_navs_icon {
-    margin-left: 5px;
   }
   .product_main_navs_platform {
     width: 15px;
     height: 15px;
-    margin-left: 5px;
-    margin-right: 5px;
   }
 }
 </style>

@@ -109,7 +109,7 @@
         {{-- Base SEO / social sharing defaults (per-page <Head> may override the title) --}}
         @php($seoDescription = 'Unlock premium in-game assets, rare accounts, and exclusive items with Loot4You. Experience a secure, fast, and simple purchasing process for all your gaming needs.')
         @php($seoTitle = 'Loot4You - Your Trusted Marketplace for Digital Gaming Products')
-        @php($seoImage = url('/preview.png'))
+        @php($seoImage = url('/preview.png?v=1'))
         <meta name="description" content="{{ $seoDescription }}">
         <meta property="og:type" content="website">
         <meta property="og:site_name" content="Loot4You">
