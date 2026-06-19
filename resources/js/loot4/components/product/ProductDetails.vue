@@ -111,6 +111,7 @@ function buy() {
         </div>
         <div class="product_main_section">
           <h1 class="product_main_section_title">{{ data.title }}</h1>
+          <div class="product_config_card">
           <ProductOptionGroups
             v-if="hasGroups"
             ref="optionsRef"
@@ -155,6 +156,7 @@ function buy() {
                 Excellent 5.0 on Trustpilot
               </span>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -205,6 +207,15 @@ function buy() {
 }
 .product_gallery_thumb.is-active {
   border-color: #2bff95;
+}
+
+/* Bordered configurator card wrapping the options + price + trust row. */
+.product_config_card {
+  margin-top: 18px;
+  padding: 26px 28px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.015);
 }
 
 /* Price area extras (mockup): "Secure Checkout" under the price + a trust row. */
@@ -293,6 +304,11 @@ function buy() {
   }
   .product_main_section_image {
     max-height: 240px;
+  }
+  .product_config_card {
+    margin-top: 12px;
+    padding: 16px 16px 18px;
+    border-radius: 16px;
   }
 }
 @media (max-width: 480px) {

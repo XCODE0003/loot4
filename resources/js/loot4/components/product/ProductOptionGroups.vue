@@ -388,10 +388,10 @@ function back() {
 .pog {
   --pog-grad: radial-gradient(136.56% 99.31% at 37.02% 26.55%, rgb(43, 255, 149) 0%, rgb(5, 71, 146) 100%);
   display: flex;
-  max-width: 400px;
+  max-width: 100%;
   flex-direction: column;
   gap: 24px;
-  margin: 8px 0 4px;
+  margin: 0 0 4px;
 }
 .pog_group {
   display: flex;
