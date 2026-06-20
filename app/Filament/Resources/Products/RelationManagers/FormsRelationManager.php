@@ -94,6 +94,12 @@ class FormsRelationManager extends RelationManager
                                 FieldType::Radio->value,
                                 FieldType::Checkbox->value,
                             ], true)),
+                        TextInput::make('step')
+                            ->label('Step')
+                            ->numeric()
+                            ->minValue(1)
+                            ->placeholder('auto')
+                            ->helperText('Step-by-step layout only: fields with the SAME number share one step. Leave blank to give this field its own step.'),
                         Toggle::make('required')
                             ->inline(false),
                         TextInput::make('tooltip'),

@@ -301,33 +301,23 @@ class StorefrontController extends Controller
      */
     private function optionGroups(Product $product): array
     {
-        $groups = [];
-
-        $forms = $product->forms
+        // Fields across all active forms, in display order.
+        $fields = $product->forms
             ->filter(fn ($form): bool => (bool) $form->is_active)
             ->sortBy('sort_order')
+            ->flatMap(fn ($form) => $form->fields->sortBy('sort_order')->values())
+            ->filter(fn ($field): bool => ($field->type->hasOptions() && filled($field->options)) || $field->type->isInput())
             ->values();
 
-        // Each active form is one "block": in step-by-step layout it becomes a
-        // single step holding all of its fields (platform + amount together,
-        // add-ons + delivery together, etc.).
-        foreach ($forms as $blockIndex => $form) {
-            $fields = $form->fields
-                ->filter(fn ($field): bool => ($field->type->hasOptions() && filled($field->options)) || $field->type->isInput())
-                ->sortBy('sort_order')
-                ->values();
-
-            foreach ($fields as $field) {
-                $group = $field->type->isInput()
-                    ? $this->inputGroup($field)
-                    : $this->choiceGroup($field);
-                $group['block'] = $blockIndex;
-                $group['blockLabel'] = (string) $form->name;
-                $groups[] = $group;
-            }
-        }
-
-        return $groups;
+        // "block" = the wizard step a field belongs to (step-by-step layout).
+        // A field with an explicit `step` number shares that step with any other
+        // field of the same number; a field with no step gets its own step. So
+        // the default is one-field-per-step, and the admin merges fields by
+        // giving them the same Step number.
+        return $fields->map(fn ($field): array => array_merge(
+            $field->type->isInput() ? $this->inputGroup($field) : $this->choiceGroup($field),
+            ['block' => $field->step !== null ? 's'.$field->step : 'f'.$field->id],
+        ))->all();
     }
 
     /**
