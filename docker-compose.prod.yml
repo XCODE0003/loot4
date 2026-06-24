@@ -102,6 +102,17 @@ services:
     networks:
       - loot4
 
+  ssr:
+    # Reuse the app image (built once by the `app` service). Runs the
+    # self-contained Inertia SSR bundle on 0.0.0.0:13714; the app reaches it at
+    # http://ssr:13714 (set INERTIA_SSR_URL in .env). Needs no DB/env — it just
+    # renders the Vue tree from the page payload PHP sends it.
+    image: loot4you-app:latest
+    restart: unless-stopped
+    command: node bootstrap/ssr/ssr.js
+    networks:
+      - loot4
+
 volumes:
   mysql_data:
   redis_data:

@@ -7,9 +7,16 @@ import { bunny } from 'laravel-vite-plugin/fonts';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+    // Bundle every dependency into the SSR build so the SSR server (a Node
+    // process in its own container) needs only `node` + bootstrap/ssr — no
+    // node_modules to ship into the PHP-FPM runtime image.
+    ssr: {
+        noExternal: true,
+    },
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.ts'],
+            ssr: 'resources/js/ssr.ts',
             refresh: true,
             fonts: [
                 bunny('Instrument Sans', {

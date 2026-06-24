@@ -16,15 +16,14 @@ return [
     */
 
     'ssr' => [
-        // Disabled: there is no SSR entry (resources/js/ssr.*), no built SSR
-        // bundle, and no SSR server running, so Inertia's per-request SSR
-        // roundtrip always failed and fell back to client render — which
-        // produced a blank first paint (fixed only on reload). The app is
-        // built to render client-side, so SSR stays off until set up properly.
-        'enabled' => false,
-        'url' => 'http://127.0.0.1:13714',
-        // 'bundle' => base_path('bootstrap/ssr/ssr.mjs'),
-
+        // Toggle via env so SSR can be rolled back instantly (set
+        // INERTIA_SSR_ENABLED=false + `php artisan config:clear`) without a
+        // redeploy. Entry: resources/js/ssr.ts -> bootstrap/ssr/ssr.js, served
+        // by the `ssr` container (php artisan inertia:start-ssr). If the SSR
+        // server is unreachable Inertia falls back to client render.
+        'enabled' => env('INERTIA_SSR_ENABLED', false),
+        'url' => env('INERTIA_SSR_URL', 'http://127.0.0.1:13714'),
+        'bundle' => base_path('bootstrap/ssr/ssr.js'),
     ],
 
     /*

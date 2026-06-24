@@ -7,7 +7,7 @@ RUN npm ci
 
 COPY . .
 # public/storage is a symlink not present in build context; create the dir
-RUN rm -rf public/storage && mkdir -p public/storage && DOCKER_BUILD=1 npm run build
+RUN rm -rf public/storage && mkdir -p public/storage && DOCKER_BUILD=1 npm run build:ssr
 
 # ── Stage 2: PHP-FPM application ─────────────────────────────────────────────
 FROM php:8.4-fpm-alpine AS app
@@ -46,6 +46,10 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
  && docker-php-ext-enable redis \
  && apk del $PHPIZE_DEPS
 
+# Node.js runtime — only used by the `ssr` service to run the self-contained
+# Inertia SSR bundle (node bootstrap/ssr/ssr.js). app/queue/scheduler ignore it.
+RUN apk add --no-cache nodejs
+
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -54,6 +58,9 @@ COPY . .
 
 # Copy built frontend assets from stage 1
 COPY --from=assets /app/public/build ./public/build
+
+# Copy the self-contained SSR bundle from stage 1 (run by the `ssr` service)
+COPY --from=assets /app/bootstrap/ssr ./bootstrap/ssr
 
 # PHP production deps only
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
