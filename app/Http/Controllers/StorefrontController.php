@@ -38,9 +38,8 @@ class StorefrontController extends Controller
             ->values()
             ->map(fn (Game $game, int $i): array => [
                 'slug' => $game->slug,
-                'image' => $game->getFirstMediaUrl('discover_image')
-                    ?: $game->getFirstMediaUrl('image')
-                    ?: null,
+                'image' => $game->optimizedMediaUrl('discover_image')
+                    ?: $game->optimizedMediaUrl('image'),
                 'alt' => $game->name,
             ]);
 
@@ -70,7 +69,7 @@ class StorefrontController extends Controller
             'showSearch' => true,
             'gamePage' => $featured ? [
                 'title' => $featured->name,
-                'image' => $featured->getFirstMediaUrl('image') ?: null,
+                'image' => $featured->optimizedMediaUrl('image'),
                 'guarantees' => $this->guarantees($featured),
             ] : null,
         ]);
@@ -98,7 +97,7 @@ class StorefrontController extends Controller
             'showSearch' => (bool) ($game->show_search ?? true),
             'gamePage' => [
                 'title' => $game->name,
-                'image' => $game->getFirstMediaUrl('image') ?: null,
+                'image' => $game->optimizedMediaUrl('image'),
                 'guarantees' => $this->guarantees($game),
             ],
         ]);
@@ -132,7 +131,7 @@ class StorefrontController extends Controller
             'id' => (string) $product->id,
             'slug' => $product->slug,
             'title' => $product->name,
-            'image' => $product->getFirstMediaUrl('main') ?: null,
+            'image' => $product->optimizedMediaUrl('main'),
             'category' => $product->type->value,
             'filterValues' => $product->filter_values ?? [],
             'priceOld' => ($comparePrice !== null && $comparePrice !== $price) ? $comparePrice : null,
@@ -165,13 +164,13 @@ class StorefrontController extends Controller
         return [
             'slug' => $product->slug,
             'title' => $product->name,
-            'image' => $product->getFirstMediaUrl('main') ?: null,
+            'image' => $product->optimizedMediaUrl('main'),
             'gallery' => $this->galleryImages($product),
             'trustImage' => 'product_trust.png',
             'breadcrumb' => [
                 'game' => $product->game?->name ?? 'Games',
                 'gameTo' => $product->game ? '/game/'.$product->game->slug : '/game',
-                'gameIcon' => $product->game?->getFirstMediaUrl('icon') ?: $product->game?->getFirstMediaUrl('image') ?: null,
+                'gameIcon' => $product->game?->getFirstMediaUrl('icon') ?: $product->game?->optimizedMediaUrl('image'),
                 'name' => $product->name,
             ],
             'payments' => self::PAYMENT_ICONS,
@@ -281,8 +280,10 @@ class StorefrontController extends Controller
      */
     private function galleryImages(Product $product): array
     {
-        return collect([$product->getFirstMediaUrl('main')])
-            ->merge($product->getMedia('gallery')->map(fn ($m): string => $m->getUrl()))
+        $url = fn ($m): string => $m->hasGeneratedConversion('web') ? $m->getUrl('web') : $m->getUrl();
+
+        return collect([$product->optimizedMediaUrl('main')])
+            ->merge($product->getMedia('gallery')->map($url))
             ->filter()
             ->unique()
             ->values()

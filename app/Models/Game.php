@@ -3,15 +3,17 @@
 namespace App\Models;
 
 use App\Enums\GameStatus;
+use App\Models\Concerns\ServesOptimizedMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Game extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory, InteractsWithMedia, ServesOptimizedMedia;
 
     protected $fillable = [
         'slug',
@@ -52,5 +54,16 @@ class Game extends Model implements HasMedia
         $this->addMediaCollection('image')->singleFile()->useDisk('public');
         $this->addMediaCollection('icon')->singleFile()->useDisk('public');
         $this->addMediaCollection('discover_image')->singleFile()->useDisk('public');
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        // Resized WebP for the storefront. The small icon stays as-is.
+        $this->addMediaConversion('web')
+            ->format('webp')
+            ->width(800)
+            ->quality(80)
+            ->performOnCollections('image', 'discover_image')
+            ->nonQueued();
     }
 }

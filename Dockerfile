@@ -20,6 +20,7 @@ RUN apk add --no-cache \
     curl \
     libpng-dev \
     libjpeg-turbo-dev \
+    libwebp-dev \
     freetype-dev \
     libzip-dev \
     icu-dev \
@@ -30,7 +31,7 @@ RUN apk add --no-cache \
     $PHPIZE_DEPS
 
 # PHP extensions + Redis PECL (all compiled while build tools are present)
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
  && docker-php-ext-install -j"$(nproc)" \
       pdo_mysql \
       mbstring \

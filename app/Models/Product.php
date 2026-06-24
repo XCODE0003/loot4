@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\OptionsLayout;
 use App\Enums\ProductStatus;
 use App\Enums\ProductType;
+use App\Models\Concerns\ServesOptimizedMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,10 +15,11 @@ use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Product extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia, LogsActivity;
+    use HasFactory, InteractsWithMedia, LogsActivity, ServesOptimizedMedia;
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -136,5 +138,17 @@ class Product extends Model implements HasMedia
     {
         $this->addMediaCollection('main')->singleFile()->useDisk('public');
         $this->addMediaCollection('gallery')->useDisk('public');
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        // Resized WebP served to the storefront (originals are large uploads).
+        // Generated synchronously so new uploads are immediately optimized.
+        $this->addMediaConversion('web')
+            ->format('webp')
+            ->width(900)
+            ->quality(80)
+            ->performOnCollections('main', 'gallery')
+            ->nonQueued();
     }
 }
