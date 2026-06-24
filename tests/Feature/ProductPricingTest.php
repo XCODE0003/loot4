@@ -82,6 +82,74 @@ class ProductPricingTest extends TestCase
         $this->assertSame(65.05, $price);
     }
 
+    /**
+     * Build a product whose absolute group carries a discounted option, plus a
+     * discounted add-on, to exercise the per-option discount percentage.
+     */
+    private function discountedProduct(): Product
+    {
+        $product = Product::factory()->create(['slug' => 'gta-discount', 'price' => 5]);
+
+        $form = $product->forms()->create(['name' => 'Config', 'is_active' => true, 'sort_order' => 0]);
+
+        $form->fields()->create([
+            'label' => 'Amount',
+            'key' => 'amount',
+            'type' => FieldType::Radio,
+            'pricing_mode' => PricingMode::Absolute,
+            'required' => true,
+            'sort_order' => 0,
+            'options' => [
+                // 100 with 25% off -> 75 charged.
+                ['label' => '$100M', 'value' => '100m', 'extra_price' => 100, 'discount' => 25],
+                // No discount -> 50.
+                ['label' => '$50M', 'value' => '50m', 'extra_price' => 50],
+            ],
+        ]);
+
+        $form->fields()->create([
+            'label' => 'Add-ons',
+            'key' => 'addons',
+            'type' => FieldType::Checkbox,
+            'pricing_mode' => PricingMode::Addon,
+            'required' => false,
+            'sort_order' => 1,
+            'options' => [
+                // 20 with 10% off -> 18 added.
+                ['label' => 'Boost', 'value' => 'boost', 'extra_price' => 20, 'discount' => 10],
+            ],
+        ]);
+
+        return $product->fresh(['forms.fields']);
+    }
+
+    public function test_option_price_applies_discount_percentage(): void
+    {
+        $this->assertSame(75.0, ProductPricing::optionPrice(['extra_price' => 100, 'discount' => 25]));
+        $this->assertSame(100.0, ProductPricing::optionPrice(['extra_price' => 100]));
+        // Out-of-range discounts are clamped (never below 1% of price, never negative).
+        $this->assertSame(1.0, ProductPricing::optionPrice(['extra_price' => 100, 'discount' => 250]));
+        $this->assertSame(100.0, ProductPricing::optionPrice(['extra_price' => 100, 'discount' => -50]));
+    }
+
+    public function test_from_price_uses_discounted_option_price(): void
+    {
+        $product = $this->discountedProduct();
+
+        // min(75 discounted, 50 plain) = 50.
+        $this->assertSame(50.0, $this->pricing()->fromPrice($product));
+    }
+
+    public function test_line_price_charges_discounted_option_and_addon(): void
+    {
+        $product = $this->discountedProduct();
+
+        // 75 (100 - 25%) + 18 (20 - 10%) = 93.
+        $price = $this->pricing()->linePrice($product, ['amount' => '100m', 'addons' => ['boost']]);
+
+        $this->assertSame(93.0, $price);
+    }
+
     public function test_line_price_ignores_unknown_selection_values(): void
     {
         $product = $this->variantProduct();

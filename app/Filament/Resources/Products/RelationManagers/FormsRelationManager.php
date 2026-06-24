@@ -134,6 +134,14 @@ class FormsRelationManager extends RelationManager
                                     ->numeric()
                                     ->prefix('$')
                                     ->default(0),
+                                TextInput::make('discount')
+                                    ->label('Discount %')
+                                    ->numeric()
+                                    ->suffix('%')
+                                    ->minValue(0)
+                                    ->maxValue(99)
+                                    ->default(0)
+                                    ->helperText('Optional. Shows the old price struck-through and charges Price minus this %.'),
                                 TextInput::make('tooltip')
                                     ->label('Tooltip')
                                     ->helperText('Optional info shown on hover.'),

@@ -338,14 +338,23 @@ class StorefrontController extends Controller
             // Radio/checkbox layout: 1 or 2 options per row (selects ignore it).
             'columns' => max(1, min(2, (int) ($field->options_columns ?? 1))),
             'options' => collect($field->options)
-                ->map(fn ($o): array => [
-                    'value' => (string) ($o['value'] ?? $o['label'] ?? ''),
-                    'label' => (string) ($o['label'] ?? $o['value'] ?? ''),
-                    'price' => round((float) ($o['extra_price'] ?? 0), 2),
-                    'tooltip' => (string) ($o['tooltip'] ?? ''),
-                    'popular' => (bool) ($o['popular'] ?? false),
-                    'default' => (bool) ($o['default'] ?? false),
-                ])
+                ->map(function ($o): array {
+                    // `price` is the discounted amount actually charged; `priceOld`
+                    // is the original (pre-discount) amount shown struck-through.
+                    $discount = max(0, min(99, (int) ($o['discount'] ?? 0)));
+                    $original = round((float) ($o['extra_price'] ?? 0), 2);
+
+                    return [
+                        'value' => (string) ($o['value'] ?? $o['label'] ?? ''),
+                        'label' => (string) ($o['label'] ?? $o['value'] ?? ''),
+                        'price' => ProductPricing::optionPrice($o),
+                        'priceOld' => $discount > 0 ? $original : null,
+                        'discount' => $discount,
+                        'tooltip' => (string) ($o['tooltip'] ?? ''),
+                        'popular' => (bool) ($o['popular'] ?? false),
+                        'default' => (bool) ($o['default'] ?? false),
+                    ];
+                })
                 ->values()
                 ->all(),
         ];

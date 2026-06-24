@@ -42,7 +42,7 @@ class ProductPricing
         // Cheapest achievable base: the minimum option of each absolute group
         // (there is normally exactly one such group).
         $base = $absolute->sum(fn (ProductFormField $f): float => (float) (collect($f->options)
-            ->map(fn ($o): float => (float) ($o['extra_price'] ?? 0))
+            ->map(fn ($o): float => self::optionPrice($o))
             ->min() ?? 0.0));
 
         return round((float) $base, 2);
@@ -272,6 +272,22 @@ class ProductPricing
      */
     private function sumPrices(array $options): float
     {
-        return array_sum(array_map(fn ($o): float => (float) ($o['extra_price'] ?? 0), $options));
+        return array_sum(array_map(fn ($o): float => self::optionPrice($o), $options));
+    }
+
+    /**
+     * The price actually charged for a single option: its `extra_price` reduced
+     * by an optional per-option `discount` percentage (0–99). This is the single
+     * place the discount is applied so the storefront display and the checkout
+     * recompute always agree on the amount.
+     *
+     * @param  array<string, mixed>  $option
+     */
+    public static function optionPrice(array $option): float
+    {
+        $price = (float) ($option['extra_price'] ?? 0);
+        $discount = max(0, min(99, (int) ($option['discount'] ?? 0)));
+
+        return round($price * (1 - $discount / 100), 2);
     }
 }

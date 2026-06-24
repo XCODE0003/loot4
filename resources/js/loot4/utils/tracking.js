@@ -269,6 +269,13 @@ export function firePurchaseConversions(tracking = {}, order) {
     }
 
     for (const platform of platforms) {
+        // No pixel ID configured for this platform — its conversions run via GTM
+        // instead, so skip silently (don't log a misleading "not-configured" /
+        // "Skipped" row).
+        if (!platform.configured) {
+            continue;
+        }
+
         const dedupKey = `l4_conv_${platform.key}_${order.number}`;
         let handled = false;
 
@@ -287,11 +294,7 @@ export function firePurchaseConversions(tracking = {}, order) {
         let sent = false;
         let reason;
 
-        if (!platform.configured) {
-            // Settings missing (e.g. Google Ads conversion ID/label) — log it
-            // once so the admin sees WHY nothing fired.
-            reason = 'not-configured';
-        } else if (!consent) {
+        if (!consent) {
             reason = 'no-consent';
         } else if (!platform.ready()) {
             reason = platform.blockedReason;

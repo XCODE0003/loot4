@@ -137,6 +137,14 @@ function priceLabel(group, opt) {
   return ''
 }
 
+// Original (pre-discount) price, shown struck-through next to the live price.
+// Only when the server flagged a discount (priceOld set and above the charged
+// price); formatted the same way priceLabel formats the live price.
+function oldPriceLabel(group, opt) {
+  if (!opt.priceOld || opt.priceOld <= opt.price) return ''
+  return group.pricingMode === 'absolute' ? formatPrice(opt.priceOld) : `+${formatPrice(opt.priceOld)}`
+}
+
 function optionText(group, opt) {
   const label = priceLabel(group, opt)
   return label ? `${opt.label} — ${label}` : opt.label
@@ -319,7 +327,10 @@ function back() {
             @click="chooseOption(group, opt.value)"
           >
             <span class="pog_dd_opt_name">{{ opt.label }}</span>
-            <span v-if="priceLabel(group, opt)" class="pog_dd_opt_price">{{ priceLabel(group, opt) }}</span>
+            <span v-if="priceLabel(group, opt)" class="pog_dd_opt_price">
+              <span v-if="oldPriceLabel(group, opt)" class="pog_price_old">{{ oldPriceLabel(group, opt) }}</span>
+              {{ priceLabel(group, opt) }}
+            </span>
             <svg v-if="selections[group.key] === opt.value" class="pog_dd_opt_check" width="12" height="10" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9.298 1.673 3.798 7.173a.57.57 0 0 1-.398.165.57.57 0 0 1-.399-.165L.376 4.548a.563.563 0 0 1 0-.797.563.563 0 0 1 .797 0L3.4 5.978 8.502.877a.564.564 0 0 1 .797.797z" fill="currentColor" />
             </svg>
@@ -351,7 +362,10 @@ function back() {
           </span>
           <span class="pog_name">{{ opt.label }}</span>
           <span v-if="opt.popular" class="pog_tag">Popular</span>
-          <span v-if="priceLabel(group, opt)" class="pog_price">{{ priceLabel(group, opt) }}</span>
+          <span v-if="priceLabel(group, opt)" class="pog_price">
+            <span v-if="oldPriceLabel(group, opt)" class="pog_price_old">{{ oldPriceLabel(group, opt) }}</span>
+            {{ priceLabel(group, opt) }}
+          </span>
           <span v-if="opt.tooltip" class="pog_info" @click.stop>
             <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="9" cy="9" r="8" fill="currentColor" opacity="0.18" />
@@ -721,6 +735,14 @@ function back() {
   flex-shrink: 0;
   font-weight: 700;
   color: #fff;
+}
+/* Original price shown struck-through before the discounted price (in both the
+   dropdown options and the radio/checkbox rows). */
+.pog_price_old {
+  margin-right: 4px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: line-through;
 }
 .pog_dd_opt_check {
   flex-shrink: 0;
