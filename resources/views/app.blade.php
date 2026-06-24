@@ -64,9 +64,25 @@
                 inset: 0;
                 z-index: 2147483647;
                 display: flex;
+                flex-direction: column;
+                gap: 26px;
                 align-items: center;
                 justify-content: center;
                 background-color: #020202;
+            }
+            /* Contentful wordmark painted straight from this HTML (system font,
+               no request) so First Contentful Paint fires immediately instead of
+               waiting for the JS bundle to download, parse and mount. */
+            #app-splash .app-splash__brand {
+                font-family: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+                font-size: 30px;
+                font-weight: 700;
+                letter-spacing: 0.14em;
+                color: #fff;
+                line-height: 1;
+            }
+            #app-splash .app-splash__brand span {
+                color: #2bff95;
             }
             #app-splash .app-splash__spinner {
                 width: 38px;
@@ -147,6 +163,6 @@
             <!-- End Google Tag Manager (noscript) -->
         @endif
         <x-inertia::app />
-        <div id="app-splash" aria-hidden="true"><div class="app-splash__spinner"></div></div>
+        <div id="app-splash" aria-hidden="true"><div class="app-splash__brand">LOOT<span>4</span>YOU</div><div class="app-splash__spinner"></div></div>
     </body>
 </html>

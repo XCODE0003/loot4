@@ -16,21 +16,24 @@ set -euo pipefail
 cd "$(dirname "$0")"
 COMPOSE="docker compose -f docker-compose.prod.yml"
 
-echo "==> [1/5] Pulling latest code"
+echo "==> [1/6] Pulling latest code"
 git pull --ff-only
 
-echo "==> [2/5] Building app image (once)"
+echo "==> [2/6] Building app image (once)"
 # Build only the `app` service; queue/scheduler reuse its image.
 $COMPOSE build app
 
-echo "==> [3/5] Recreating containers"
+echo "==> [3/6] Recreating containers"
 $COMPOSE up -d
 
-echo "==> [4/5] Running migrations"
+echo "==> [4/6] Running migrations"
 $COMPOSE exec -T app php artisan migrate --force
 
-echo "==> [5/5] Caching config / routes / views"
+echo "==> [5/6] Caching config / routes / views"
 $COMPOSE exec -T app php artisan optimize
+
+echo "==> [6/6] Warming up (prime opcache + PHP-FPM so the first real request isn't cold)"
+for _ in 1 2 3 4 5; do curl -sk -o /dev/null -H "Host: loot4you.gg" https://localhost/ || true; done
 
 echo "==> Done. Current state:"
 $COMPOSE ps
