@@ -12,5 +12,8 @@ for (const key in modules) {
 export function asset(path) {
   if (!path) return ''
   if (/^https?:\/\//.test(path) || path.startsWith('/')) return path
-  return images[path] ?? ''
+  // Prefer an optimized .webp twin when one exists in the bundle (e.g.
+  // intro_image.png -> intro_image.webp), falling back to the original.
+  const webp = path.replace(/\.(png|jpe?g)$/i, '.webp')
+  return images[webp] ?? images[path] ?? ''
 }

@@ -12,7 +12,15 @@ import { asset } from '@/loot4/utils/asset'
       <h4 class="why_title">Why Choose Us?</h4>
       <div class="why_blocks">
         <div v-for="block in whyBlocks" :key="block.title" class="why_block">
-          <img :src="asset(block.image)" :alt="block.title" class="why_block_image" />
+          <img
+            :src="asset(block.image)"
+            :alt="block.title"
+            class="why_block_image"
+            width="546"
+            height="290"
+            loading="lazy"
+            decoding="async"
+          />
           <p class="why_block_title">{{ block.title }}</p>
           <p class="why_block_text">{{ block.text }}</p>
         </div>

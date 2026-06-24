@@ -25,7 +25,15 @@ import { asset } from '@/loot4/utils/asset'
           </div>
         </div>
         <div class="intro_block">
-          <img :src="asset('intro_image.png')" alt="" class="intro_block_image" />
+          <img
+            :src="asset('intro_image.png')"
+            alt=""
+            class="intro_block_image"
+            width="950"
+            height="980"
+            fetchpriority="high"
+            decoding="async"
+          />
         </div>
       </div>
     </Container>

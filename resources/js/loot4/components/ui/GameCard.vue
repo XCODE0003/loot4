@@ -37,7 +37,7 @@ function buy(e) {
     :class="{ 'is-hidden': hidden }"
     @click="goProduct"
   >
-    <img v-if="image" :src="asset(image)" :alt="title" class="game_cards_block_image" />
+    <img v-if="image" :src="asset(image)" :alt="title" class="game_cards_block_image" loading="lazy" decoding="async" />
     <h4 class="game_cards_block_title">{{ title }}</h4>
     <div class="game_cards_block_bottom">
       <div class="game_cards_block_bottom_texts">
