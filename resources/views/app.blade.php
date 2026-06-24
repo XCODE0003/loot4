@@ -150,6 +150,14 @@
 
         @fonts
 
+        @if(($page['component'] ?? '') === 'loot4/Home')
+            {{-- The home LCP element is the .intro section; its CSS-background
+                 (intro_bg) and hero image are otherwise only fetched after Vue
+                 mounts. Preload them so they download in parallel with the JS. --}}
+            <link rel="preload" as="image" href="{{ Vite::asset('resources/js/loot4/assets/img/intro_bg.png') }}" fetchpriority="high">
+            <link rel="preload" as="image" href="{{ Vite::asset('resources/js/loot4/assets/img/intro_image.webp') }}">
+        @endif
+
         @vite(['resources/css/app.css', 'resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
         <x-inertia::head>
             <title>{{ config('app.name', 'Laravel') }}</title>
