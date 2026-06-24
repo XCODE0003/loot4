@@ -97,6 +97,38 @@ class StorefrontTest extends TestCase
         );
     }
 
+    public function test_option_discount_inflates_struck_through_old_price_only(): void
+    {
+        $product = Product::factory()->create([
+            'slug' => 'discount-product',
+            'status' => ProductStatus::Active,
+            'price' => 5,
+        ]);
+        $form = $product->forms()->create(['name' => 'Config', 'is_active' => true, 'sort_order' => 0]);
+        $form->fields()->create([
+            'label' => 'Amount',
+            'key' => 'amount',
+            'type' => FieldType::Radio,
+            'pricing_mode' => PricingMode::Absolute,
+            'required' => true,
+            'sort_order' => 0,
+            'options' => [
+                ['label' => '$100M', 'value' => '100m', 'extra_price' => 100, 'discount' => 25],
+            ],
+        ]);
+
+        $this->get('/product/discount-product')->assertOk()->assertInertia(
+            fn (Assert $page) => $page
+                ->component('loot4/Product')
+                // Charged price stays the real 100 (the discount never reduces it).
+                ->where('product.price', 100)
+                ->where('product.optionGroups.0.options.0.price', 100)
+                // Struck-through "old" price is inflated: 100 + 25% = 125.
+                ->where('product.optionGroups.0.options.0.priceOld', 125)
+                ->etc(),
+        );
+    }
+
     public function test_product_page_falls_back_to_first_product_without_slug(): void
     {
         Product::factory()->create(['status' => ProductStatus::Active]);

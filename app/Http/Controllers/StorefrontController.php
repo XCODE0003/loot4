@@ -339,16 +339,18 @@ class StorefrontController extends Controller
             'columns' => max(1, min(2, (int) ($field->options_columns ?? 1))),
             'options' => collect($field->options)
                 ->map(function ($o): array {
-                    // `price` is the discounted amount actually charged; `priceOld`
-                    // is the original (pre-discount) amount shown struck-through.
+                    // Marketing "fake" discount: the customer is charged the real
+                    // `price` (= extra_price); a higher `priceOld` (price + N%) is
+                    // shown struck-through so it looks like a discount. The charged
+                    // price is never reduced.
                     $discount = max(0, min(99, (int) ($o['discount'] ?? 0)));
-                    $original = round((float) ($o['extra_price'] ?? 0), 2);
+                    $price = round((float) ($o['extra_price'] ?? 0), 2);
 
                     return [
                         'value' => (string) ($o['value'] ?? $o['label'] ?? ''),
                         'label' => (string) ($o['label'] ?? $o['value'] ?? ''),
-                        'price' => ProductPricing::optionPrice($o),
-                        'priceOld' => $discount > 0 ? $original : null,
+                        'price' => $price,
+                        'priceOld' => $discount > 0 ? round($price * (1 + $discount / 100), 2) : null,
                         'discount' => $discount,
                         'tooltip' => (string) ($o['tooltip'] ?? ''),
                         'popular' => (bool) ($o['popular'] ?? false),

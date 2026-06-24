@@ -141,7 +141,7 @@ class FormsRelationManager extends RelationManager
                                     ->minValue(0)
                                     ->maxValue(99)
                                     ->default(0)
-                                    ->helperText('Optional. Shows the old price struck-through and charges Price minus this %.'),
+                                    ->helperText('Optional marketing discount. The customer still pays Price; a higher "old" price (Price + this %) is shown struck-through so it looks discounted.'),
                                 TextInput::make('tooltip')
                                     ->label('Tooltip')
                                     ->helperText('Optional info shown on hover.'),
