@@ -8,12 +8,22 @@
         <meta name="color-scheme" content="dark">
         <meta name="theme-color" content="#020202">
 
-        {{-- Microsoft Clarity --}}
+        {{-- Microsoft Clarity — loaded after the page is interactive (or on first
+             interaction) so it doesn't compete with the critical render on mobile.
+             The clarity() queue stub buffers any early calls, so nothing is lost. --}}
         <script type="text/javascript">
-            (function(c,l,a,r,i,t,y){
+            (function(c,l,a,r,i){
                 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                function load(){
+                    if(c[a].__l)return;c[a].__l=1;
+                    var t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                    var y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                }
+                if(document.readyState==="complete"){setTimeout(load,2500);}
+                else{window.addEventListener("load",function(){setTimeout(load,2500);});}
+                ["scroll","pointerdown","keydown","touchstart"].forEach(function(e){
+                    window.addEventListener(e,load,{once:true,passive:true});
+                });
             })(window, document, "clarity", "script", "x5nr2lbzif");
         </script>
 

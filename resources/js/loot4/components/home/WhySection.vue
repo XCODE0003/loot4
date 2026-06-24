@@ -9,7 +9,7 @@ import { asset } from '@/loot4/utils/asset'
   <section class="why">
     <Container>
       <SectionTag>Features</SectionTag>
-      <h4 class="why_title">Why Choose Us?</h4>
+      <h2 class="why_title">Why Choose Us?</h2>
       <div class="why_blocks">
         <div v-for="block in whyBlocks" :key="block.title" class="why_block">
           <img

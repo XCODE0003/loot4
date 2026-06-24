@@ -35,7 +35,7 @@ function viewAllGames() {
       <SectionTag>Elite Gaming</SectionTag>
       <div class="discover_up">
         <div class="discover_up_texts">
-          <h4 class="discover_up_title">Discover Epic Games</h4>
+          <h2 class="discover_up_title">Discover Epic Games</h2>
           <p class="discover_up_text">
             Explore our elite collection of accounts, currency, and boosting services.
           </p>

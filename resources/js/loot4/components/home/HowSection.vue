@@ -15,7 +15,7 @@ function activate(index) {
   <section class="how">
     <Container>
       <SectionTag>Features</SectionTag>
-      <h4 class="how_title">How Does It Work? <br />Safe and faster.</h4>
+      <h2 class="how_title">How Does It Work? <br />Safe and faster.</h2>
       <p class="how_subtitle">
         Everything you need to know about our marketing services, workflows, and how we support gaming brands.
       </p>
@@ -31,7 +31,7 @@ function activate(index) {
           @keydown.enter="activate(index)"
         >
           <div class="how_block_content">
-            <h4 class="how_block_title">{{ block.title }}</h4>
+            <h3 class="how_block_title">{{ block.title }}</h3>
             <p class="how_block_text" v-html="block.html" />
           </div>
         </div>
