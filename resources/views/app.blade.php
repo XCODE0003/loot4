@@ -172,5 +172,15 @@
         @endif
         <x-inertia::app />
         <div id="app-splash" aria-hidden="true"><div class="app-splash__brand">LOOT<span>4</span>YOU</div><div class="app-splash__spinner"></div></div>
+        <script>
+            // When SSR rendered the page, #app already holds the real content —
+            // drop the splash immediately (during parse, before paint) so it never
+            // covers it. On a client-only render #app is empty, so the splash stays
+            // until app.ts mounts and removes it.
+            (function () {
+                var a = document.getElementById('app');
+                if (a && a.firstElementChild) document.getElementById('app-splash')?.remove();
+            })();
+        </script>
     </body>
 </html>
