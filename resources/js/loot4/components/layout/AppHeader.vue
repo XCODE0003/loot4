@@ -55,6 +55,43 @@ onBeforeUnmount(() => {
         <Link href="/" class="header_logo" @click="closeMenu">
           <img :src="asset('/logol4u.svg')" alt="Loot4you" class="header_logo_img" />
         </Link>
+        <!-- Language + currency in the top bar on mobile. Mirrors the picks that
+             live in the slide-out menu on desktop (shared singleton state via
+             useLocale); shown only ≤1100px, where the slide-out copy is hidden. -->
+        <div class="header_locale header_locale--mobile">
+          <div class="header_pick">
+            <button type="button" class="header_pick_btn">
+              <span class="header_pick_val">{{ lang }}</span>
+              <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M0.5 0.5L4 4L7.5 0.5" stroke="currentColor" stroke-linecap="round"/></svg>
+            </button>
+            <div class="header_pick_drop">
+              <button
+                v-for="l in langs"
+                :key="l"
+                type="button"
+                class="header_pick_opt"
+                :class="{ 'is-active': l === lang }"
+                @click="setLang(l)"
+              >{{ l }}</button>
+            </div>
+          </div>
+          <div class="header_pick">
+            <button type="button" class="header_pick_btn">
+              <span class="header_pick_val">{{ currency }}</span>
+              <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M0.5 0.5L4 4L7.5 0.5" stroke="currentColor" stroke-linecap="round"/></svg>
+            </button>
+            <div class="header_pick_drop">
+              <button
+                v-for="c in currencyList"
+                :key="c.code"
+                type="button"
+                class="header_pick_opt"
+                :class="{ 'is-active': c.code === currency }"
+                @click="setCurrency(c.code)"
+              >{{ c.code }}</button>
+            </div>
+          </div>
+        </div>
         <button
           type="button"
           class="header_burger"
@@ -204,6 +241,10 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 6px;
   margin-left: 20px;
+}
+/* The top-bar mirror is desktop-hidden; it appears only on mobile (below). */
+.header_locale--mobile {
+  display: none;
 }
 .header_pick {
   position: relative;
@@ -439,6 +480,20 @@ onBeforeUnmount(() => {
   }
   .header_cart {
     margin: 0;
+  }
+  /* Show the language/currency picks in the top bar (right side, before the
+     burger) and hide the copy that lives in the slide-out menu. */
+  .header_locale--mobile {
+    display: flex;
+    order: 1;
+    margin-left: auto;
+    margin-right: 2px;
+  }
+  .header_menu .header_locale {
+    display: none;
+  }
+  .header_burger {
+    margin-left: 10px;
   }
 }
 </style>
