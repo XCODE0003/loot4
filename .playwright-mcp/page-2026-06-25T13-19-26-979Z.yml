@@ -1,0 +1,224 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "Loot4you" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Loot4you" [ref=e7]
+        - generic [ref=e8]:
+          - button "EN" [ref=e10] [cursor=pointer]:
+            - generic [ref=e11]: EN
+            - img [ref=e12]
+          - button "USD" [ref=e15] [cursor=pointer]:
+            - generic [ref=e16]: USD
+            - img [ref=e17]
+        - button "Open menu" [ref=e19] [cursor=pointer]
+        - generic [ref=e23]:
+          - list [ref=e24]:
+            - listitem [ref=e25]:
+              - link "Home" [ref=e26] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e27]:
+              - button "Choose Game" [ref=e28] [cursor=pointer]:
+                - text: Choose Game
+                - img [ref=e29]
+            - listitem [ref=e31]:
+              - link "Contact Us" [ref=e32] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=e33]:
+              - link "Sell to Us" [ref=e34] [cursor=pointer]:
+                - /url: /sell
+            - listitem [ref=e35]:
+              - link "Reviews" [ref=e36] [cursor=pointer]:
+                - /url: https://www.trustpilot.com/review/loot4you.gg/
+          - button "Open cart" [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+          - link "Login" [ref=e43] [cursor=pointer]:
+            - /url: /login
+    - main [ref=e44]:
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - heading "GTA 5 Online" [level=1] [ref=e50]
+          - link "Excellent 5.0 Trustpilot" [ref=e53] [cursor=pointer]:
+            - /url: https://www.trustpilot.com/review/loot4you.gg
+            - generic [ref=e54]: Excellent 5.0
+            - generic [ref=e55]:
+              - img [ref=e57]
+              - generic [ref=e61]: Trustpilot
+        - list [ref=e63]:
+          - listitem [ref=e64]: Buy GTA 5 Modded & Boost Accounts — Money, Levels, Unlocks and more. Available for PlayStation 4/5, Xbox One&Series & PC.
+        - button "Buy right now!" [ref=e65] [cursor=pointer]
+      - generic [ref=e67]:
+        - generic [ref=e70]:
+          - button "All" [ref=e71] [cursor=pointer]
+          - button "PC" [ref=e72] [cursor=pointer]
+          - button "PlayStation 4/5" [ref=e73] [cursor=pointer]
+          - button "Xbox One&Series" [ref=e74] [cursor=pointer]
+        - generic [ref=e75]:
+          - generic [ref=e76] [cursor=pointer]:
+            - img "GTA 5 Online - Cash + Assets PS4&PS5" [ref=e77]
+            - heading "GTA 5 Online - Cash + Assets PS4&PS5" [level=4] [ref=e78]
+            - generic [ref=e79]:
+              - paragraph [ref=e81]: $22.99
+              - button "Buy now" [ref=e82]
+          - generic [ref=e83] [cursor=pointer]:
+            - img "GTA 5 Online - Cash Boost PS4&PS5" [ref=e84]
+            - heading "GTA 5 Online - Cash Boost PS4&PS5" [level=4] [ref=e85]
+            - generic [ref=e86]:
+              - paragraph [ref=e88]: $24.99
+              - button "Buy now" [ref=e89]
+          - generic [ref=e90] [cursor=pointer]:
+            - img "GTA 5 Online - Unlock ALL PS4&PS5" [ref=e91]
+            - heading "GTA 5 Online - Unlock ALL PS4&PS5" [level=4] [ref=e92]
+            - generic [ref=e93]:
+              - paragraph [ref=e95]: $1.00
+              - button "Buy now" [ref=e96]
+          - generic [ref=e97] [cursor=pointer]:
+            - img "GTA 5 Online - Level PS4&PS5" [ref=e98]
+            - heading "GTA 5 Online - Level PS4&PS5" [level=4] [ref=e99]
+            - generic [ref=e100]:
+              - paragraph [ref=e102]: $34.99
+              - button "Buy now" [ref=e103]
+          - generic [ref=e104] [cursor=pointer]:
+            - img "GTA 5 Online - Modded Cars PS4&PS5" [ref=e105]
+            - heading "GTA 5 Online - Modded Cars PS4&PS5" [level=4] [ref=e106]
+            - generic [ref=e107]:
+              - paragraph [ref=e109]: $43.99
+              - button "Buy now" [ref=e110]
+          - generic [ref=e111] [cursor=pointer]:
+            - img "GTA 5 Online - Modded Account PS4&PS5" [ref=e112]
+            - heading "GTA 5 Online - Modded Account PS4&PS5" [level=4] [ref=e113]
+            - generic [ref=e114]:
+              - paragraph [ref=e116]: $29.99
+              - button "Buy now" [ref=e117]
+          - generic [ref=e118] [cursor=pointer]:
+            - img "GTA 5 Online - Modded Outfits PS4&PS5" [ref=e119]
+            - heading "GTA 5 Online - Modded Outfits PS4&PS5" [level=4] [ref=e120]
+            - generic [ref=e121]:
+              - paragraph [ref=e123]: $89.99
+              - button "Buy now" [ref=e124]
+          - generic [ref=e125] [cursor=pointer]:
+            - img "GTA 5 Online - Modded Package PS4&PS5" [ref=e126]
+            - heading "GTA 5 Online - Modded Package PS4&PS5" [level=4] [ref=e127]
+            - generic [ref=e128]:
+              - paragraph [ref=e130]: $92.99
+              - button "Buy now" [ref=e131]
+          - generic [ref=e132] [cursor=pointer]:
+            - img "GTA 5 Online - Cash&Unlocks PC" [ref=e133]
+            - heading "GTA 5 Online - Cash&Unlocks PC" [level=4] [ref=e134]
+            - generic [ref=e135]:
+              - paragraph [ref=e137]: $13.99
+              - button "Buy now" [ref=e138]
+          - generic [ref=e139] [cursor=pointer]:
+            - img "GTA 5 Online - Modded Account PC" [ref=e140]
+            - heading "GTA 5 Online - Modded Account PC" [level=4] [ref=e141]
+            - generic [ref=e142]:
+              - paragraph [ref=e144]: $27.99
+              - button "Buy now" [ref=e145]
+          - generic [ref=e146] [cursor=pointer]:
+            - img "GTA 5 Online - Cash + Assets Xbox One&Series" [ref=e147]
+            - heading "GTA 5 Online - Cash + Assets Xbox One&Series" [level=4] [ref=e148]
+            - generic [ref=e149]:
+              - paragraph [ref=e151]: $28.99
+              - button "Buy now" [ref=e152]
+          - generic [ref=e153] [cursor=pointer]:
+            - img "GTA 5 Online - Cash Boost Xbox One&Series" [ref=e154]
+            - heading "GTA 5 Online - Cash Boost Xbox One&Series" [level=4] [ref=e155]
+            - generic [ref=e156]:
+              - paragraph [ref=e158]: $28.99
+              - button "Buy now" [ref=e159]
+          - generic [ref=e160] [cursor=pointer]:
+            - img "GTA 5 Online - Unlock ALL Xbox One&Series" [ref=e161]
+            - heading "GTA 5 Online - Unlock ALL Xbox One&Series" [level=4] [ref=e162]
+            - generic [ref=e163]:
+              - paragraph [ref=e165]: $1.00
+              - button "Buy now" [ref=e166]
+          - generic [ref=e167] [cursor=pointer]:
+            - img "GTA 5 Online - Level Xbox One&Series" [ref=e168]
+            - heading "GTA 5 Online - Level Xbox One&Series" [level=4] [ref=e169]
+            - generic [ref=e170]:
+              - paragraph [ref=e172]: $34.99
+              - button "Buy now" [ref=e173]
+          - generic [ref=e174] [cursor=pointer]:
+            - img "GTA 5 Online - Modded Account Xbox One&Series" [ref=e175]
+            - heading "GTA 5 Online - Modded Account Xbox One&Series" [level=4] [ref=e176]
+            - generic [ref=e177]:
+              - paragraph [ref=e179]: $29.99
+              - button "Buy now" [ref=e180]
+          - generic [ref=e181] [cursor=pointer]:
+            - img "GTA 5 Online - Modded Package Xbox One&Series" [ref=e182]
+            - heading "GTA 5 Online - Modded Package Xbox One&Series" [level=4] [ref=e183]
+            - generic [ref=e184]:
+              - paragraph [ref=e186]: $92.99
+              - button "Buy now" [ref=e187]
+    - contentinfo [ref=e188]:
+      - generic [ref=e189]:
+        - generic [ref=e190]:
+          - generic [ref=e191]:
+            - link "Loot4You" [ref=e192] [cursor=pointer]:
+              - /url: /
+              - img "Loot4You" [ref=e193]
+            - paragraph [ref=e194]: The fastest, safest way to buy gaming credits and coins. Delivered in minutes — every time.
+            - generic [ref=e195]:
+              - paragraph [ref=e196]: Support
+              - generic [ref=e197]:
+                - img [ref=e198]
+                - generic [ref=e201]:
+                  - generic [ref=e202]: Mon – Fri, 9:00 AM – 6:00 PM
+                  - generic [ref=e203]: Email responses within 12 hours.
+              - generic [ref=e204]:
+                - img [ref=e205]
+                - link "support@loot4you.gg" [ref=e208] [cursor=pointer]:
+                  - /url: mailto:support@loot4you.gg
+              - generic [ref=e209]:
+                - img [ref=e210]
+                - link "+44 7455 903679" [ref=e212] [cursor=pointer]:
+                  - /url: tel:+447455903679
+              - generic [ref=e213]:
+                - img [ref=e214]
+                - paragraph [ref=e217]:
+                  - text: First Floor Office, 3 Hornton Place,
+                  - text: London, United Kingdom
+            - generic [ref=e218]:
+              - link "Discord" [ref=e219] [cursor=pointer]:
+                - /url: https://discord.gg/AyTrerusGZ
+                - img [ref=e220]
+              - link "Email" [ref=e222] [cursor=pointer]:
+                - /url: mailto:support@loot4you.gg
+                - img [ref=e223]
+              - link "WhatsApp" [ref=e226] [cursor=pointer]:
+                - /url: https://wa.me/380730882668
+                - img [ref=e227]
+          - generic [ref=e229]:
+            - paragraph [ref=e230]: Company
+            - navigation [ref=e231]:
+              - link "About Us" [ref=e232] [cursor=pointer]:
+                - /url: /about
+              - link "FAQ" [ref=e233] [cursor=pointer]:
+                - /url: /faq
+              - link "How It Works" [ref=e234] [cursor=pointer]:
+                - /url: /how-it-works
+              - link "Contact Us" [ref=e235] [cursor=pointer]:
+                - /url: /contact
+          - generic [ref=e236]:
+            - paragraph [ref=e237]: Legal
+            - navigation [ref=e238]:
+              - link "Privacy Policy" [ref=e239] [cursor=pointer]:
+                - /url: /privacy
+              - link "Terms & Conditions" [ref=e240] [cursor=pointer]:
+                - /url: /terms
+              - link "Refund Policy" [ref=e241] [cursor=pointer]:
+                - /url: /refunds
+              - link "Payment Policy" [ref=e242] [cursor=pointer]:
+                - /url: /payment-policy
+              - link "Shipping Policy" [ref=e243] [cursor=pointer]:
+                - /url: /shipping-policy
+              - link "Cookies Policy" [ref=e244] [cursor=pointer]:
+                - /url: /cookies-policy
+        - generic [ref=e246]:
+          - generic [ref=e247]:
+            - img "Accepted payment methods"
+          - paragraph [ref=e248]: © 2026 Loot4You — All rights reserved.
+          - paragraph [ref=e249]: Loot4You is an independent platform not affiliated with, endorsed by, or sponsored by any video game developers or publishers, including Rockstar Games, Take-Two Interactive, Riot Games, Activision Blizzard, Electronic Arts, Epic Games, Tencent, Bungie, Grinding Gear Games, Square Enix, Valve, Battlestate Games, Wargaming.net, Amazon, Jagex, Smilegate RPG, Digital Extremes, and Ubisoft. All trademarks, game titles, logos and images featured on this website are property of their respective publishers and owners. The views and opinions expressed by Loot4You do not reflect those of any game developers or publishers.
+  - button "Contact us" [ref=e251] [cursor=pointer]:
+    - img [ref=e252]

@@ -1,0 +1,332 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "Loot4you" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Loot4you" [ref=e7]
+        - generic [ref=e8]:
+          - button "EN" [ref=e10] [cursor=pointer]:
+            - generic [ref=e11]: EN
+            - img [ref=e12]
+          - button "USD" [ref=e15] [cursor=pointer]:
+            - generic [ref=e16]: USD
+            - img [ref=e17]
+        - button "Open menu" [ref=e19] [cursor=pointer]
+        - generic [ref=e23]:
+          - list [ref=e24]:
+            - listitem [ref=e25]:
+              - link "Home" [ref=e26] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e27]:
+              - button "Choose Game" [ref=e28] [cursor=pointer]:
+                - text: Choose Game
+                - img [ref=e29]
+            - listitem [ref=e31]:
+              - link "Contact Us" [ref=e32] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=e33]:
+              - link "Sell to Us" [ref=e34] [cursor=pointer]:
+                - /url: /sell
+            - listitem [ref=e35]:
+              - link "Reviews" [ref=e36] [cursor=pointer]:
+                - /url: https://www.trustpilot.com/review/loot4you.gg/
+          - button "Open cart" [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+          - link "Login" [ref=e43] [cursor=pointer]:
+            - /url: /login
+    - main [ref=e44]:
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - link "Home" [ref=e48] [cursor=pointer]:
+            - /url: /
+          - img [ref=e49]
+          - link "GTA 5 Online" [ref=e51] [cursor=pointer]:
+            - /url: /game/gta-5-online
+          - img [ref=e52]
+          - paragraph [ref=e54]: GTA 5 Online - Modded Cars PS4&PS5
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - img "Payment methods" [ref=e58]
+            - link "Excellent 5.0 Trustpilot" [ref=e61] [cursor=pointer]:
+              - /url: https://www.trustpilot.com/review/loot4you.gg
+              - generic [ref=e62]: Excellent 5.0
+              - generic [ref=e63]:
+                - img [ref=e65]
+                - generic [ref=e69]: Trustpilot
+          - generic [ref=e70]:
+            - heading "GTA 5 Online - Modded Cars PS4&PS5" [level=1] [ref=e71]
+            - generic [ref=e72]:
+              - generic [ref=e73]:
+                - generic [ref=e74]:
+                  - generic [ref=e76]: "1"
+                  - generic [ref=e79]: "2"
+                - generic [ref=e80]:
+                  - paragraph [ref=e81]:
+                    - generic [ref=e82]: Select your platform
+                  - generic [ref=e83]:
+                    - button "PS4" [ref=e84] [cursor=pointer]:
+                      - generic [ref=e86]: PS4
+                    - button "PS5" [ref=e87] [cursor=pointer]:
+                      - generic [ref=e89]: PS5
+                - generic [ref=e90]:
+                  - paragraph [ref=e91]:
+                    - generic [ref=e92]: Select amount cars
+                  - generic [ref=e93]:
+                    - button "5 Modded Cars $43.99" [ref=e94] [cursor=pointer]:
+                      - img [ref=e96]
+                      - generic [ref=e98]: 5 Modded Cars
+                      - generic [ref=e99]: $43.99
+                    - button "10 Modded Cars $83.99" [ref=e100] [cursor=pointer]:
+                      - generic [ref=e102]: 10 Modded Cars
+                      - generic [ref=e103]: $83.99
+                    - button "15 Modded Cars $114.98" [ref=e104] [cursor=pointer]:
+                      - generic [ref=e106]: 15 Modded Cars
+                      - generic [ref=e107]: $114.98
+                    - button "20 Modded Cars $144.98" [ref=e108] [cursor=pointer]:
+                      - generic [ref=e110]: 20 Modded Cars
+                      - generic [ref=e111]: $144.98
+                    - button "25 Modded Cars $188.98" [ref=e112] [cursor=pointer]:
+                      - generic [ref=e114]: 25 Modded Cars
+                      - generic [ref=e115]: $188.98
+                - generic [ref=e116]:
+                  - button "Back" [disabled] [ref=e117]
+                  - button "Next" [ref=e118] [cursor=pointer]
+              - generic [ref=e119]:
+                - generic [ref=e121]:
+                  - paragraph [ref=e122]: $43.99
+                  - paragraph [ref=e123]:
+                    - img [ref=e124]
+                    - text: Secure Checkout
+                - generic [ref=e127]:
+                  - generic [ref=e128]:
+                    - img [ref=e129]
+                    - text: 100% Safe & Secure
+                  - generic [ref=e133]:
+                    - img [ref=e134]
+                    - text: Excellent 5.0 on Trustpilot
+        - generic [ref=e136]:
+          - generic [ref=e137]: Description
+          - generic [ref=e139]:
+            - generic [ref=e140]:
+              - generic [ref=e143]:
+                - generic [ref=e144]: Need help with your order?
+                - generic [ref=e145]: Have questions about a product, or purchased but haven't received your order? Contact us immediately.
+              - generic [ref=e146]:
+                - link "Discord" [ref=e147] [cursor=pointer]:
+                  - /url: https://discord.com/invite/gkySAJz3Mz
+                  - img [ref=e148]
+                  - text: Discord
+                - link "WhatsApp" [ref=e150] [cursor=pointer]:
+                  - /url: https://wa.me/380730882668
+                  - img [ref=e151]
+                  - text: WhatsApp
+            - generic [ref=e153]:
+              - generic [ref=e154]:
+                - generic [ref=e155]:
+                  - generic [ref=e156]:
+                    - img [ref=e158]
+                    - generic [ref=e160]: Can I get banned?
+                  - generic [ref=e161]: 100% Safe
+                - generic [ref=e162]:
+                  - paragraph [ref=e163]: There has not been a single ban case — we use only safe methods.
+                  - paragraph [ref=e164]: "We back every order with a 100% guarantee: if anything happens to your account, the company provides a new one completely free of charge."
+              - generic [ref=e165]:
+                - generic [ref=e166]:
+                  - generic [ref=e167]:
+                    - img [ref=e169]
+                    - generic [ref=e174]: What is modded cars?
+                  - generic [ref=e175]: Explained
+                - generic [ref=e176]:
+                  - paragraph [ref=e177]: Our modded cars feature unique customizations that you could never replicate on your own.
+                  - generic [ref=e178]: Why choose modded cars?
+                  - generic [ref=e179]:
+                    - img [ref=e180]
+                    - generic [ref=e182]: Exclusive customizations unavailable in the regular game
+                  - generic [ref=e183]:
+                    - img [ref=e184]
+                    - generic [ref=e186]: Stand out from the crowd of ordinary vehicles
+                  - generic [ref=e187]:
+                    - img [ref=e188]
+                    - generic [ref=e190]: Unique look that no one else can replicate
+                  - link "View catalog cars PS4/PS5" [ref=e191] [cursor=pointer]:
+                    - /url: https://imgur.com/a/2rbur5k
+                    - img [ref=e192]
+                    - text: View catalog cars PS4/PS5
+              - generic [ref=e196]:
+                - generic [ref=e197]:
+                  - generic [ref=e198]:
+                    - img [ref=e200]
+                    - generic [ref=e203]: What happens after I buy a modded account?
+                  - generic [ref=e204]: Steps
+                - generic [ref=e205]:
+                  - generic [ref=e206]:
+                    - generic [ref=e207]: "1"
+                    - generic [ref=e208]: Full account info is sent to your email
+                  - generic [ref=e209]:
+                    - generic [ref=e210]: "2"
+                    - generic [ref=e211]: Enter the credentials on your console
+                  - generic [ref=e212]:
+                    - generic [ref=e213]: "3"
+                    - generic [ref=e214]: You're in — enjoy your account
+                  - separator [ref=e215]
+                  - paragraph [ref=e216]: Our support is available 24/7 via email, WhatsApp or Discord.
+              - generic [ref=e217]:
+                - generic [ref=e218]:
+                  - generic [ref=e219]:
+                    - img [ref=e221]
+                    - generic [ref=e224]: Delivery time
+                  - generic [ref=e225]: Fast
+                - generic [ref=e226]:
+                  - paragraph [ref=e227]: "Standard delivery: 24–48 hours. In practice usually much faster."
+                  - paragraph [ref=e229]: Delays may occur if incorrect or incomplete account info is provided. Double-check everything before submitting.
+              - generic [ref=e230]:
+                - generic [ref=e231]:
+                  - generic [ref=e232]:
+                    - img [ref=e234]
+                    - generic [ref=e236]: Is this legit?
+                  - generic [ref=e237]: Verified
+                - generic [ref=e238]:
+                  - generic [ref=e239]:
+                    - generic [ref=e240]: Verified reviews
+                    - paragraph [ref=e241]: 300+ verified Trustpilot reviews reflecting our track record of safe, smooth deliveries.
+                  - generic [ref=e242]:
+                    - generic [ref=e243]: Secure payments
+                    - paragraph [ref=e244]: All transactions are fully encrypted through our trusted payment processor. Your data is always protected.
+                  - generic [ref=e245]:
+                    - generic [ref=e246]: Zero compromises
+                    - paragraph [ref=e247]: We take every precaution to minimize risk. Our process is designed for a hassle-free experience from start to finish.
+        - generic [ref=e248]:
+          - heading "Recommended products" [level=4] [ref=e249]
+          - generic [ref=e250]:
+            - generic [ref=e251] [cursor=pointer]:
+              - img "GTA 5 Online - Cash Boost PS4&PS5" [ref=e252]
+              - heading "GTA 5 Online - Cash Boost PS4&PS5" [level=4] [ref=e253]
+              - generic [ref=e254]:
+                - paragraph [ref=e256]: $24.99
+                - button "Buy now" [ref=e257]
+            - generic [ref=e258] [cursor=pointer]:
+              - img "GTA 5 Online - Cash&Unlocks PC" [ref=e259]
+              - heading "GTA 5 Online - Cash&Unlocks PC" [level=4] [ref=e260]
+              - generic [ref=e261]:
+                - paragraph [ref=e263]: $13.99
+                - button "Buy now" [ref=e264]
+            - generic [ref=e265] [cursor=pointer]:
+              - img "GTA 5 Online - Unlock ALL PS4&PS5" [ref=e266]
+              - heading "GTA 5 Online - Unlock ALL PS4&PS5" [level=4] [ref=e267]
+              - generic [ref=e268]:
+                - paragraph [ref=e270]: $1.00
+                - button "Buy now" [ref=e271]
+            - generic [ref=e272] [cursor=pointer]:
+              - img "GTA 5 Online - Cash Boost Xbox One&Series" [ref=e273]
+              - heading "GTA 5 Online - Cash Boost Xbox One&Series" [level=4] [ref=e274]
+              - generic [ref=e275]:
+                - paragraph [ref=e277]: $28.99
+                - button "Buy now" [ref=e278]
+      - generic [ref=e280]:
+        - paragraph [ref=e281]:
+          - img [ref=e282]
+          - text: FAQ
+        - heading "Frequently asked questions" [level=4] [ref=e285]
+        - paragraph [ref=e286]: Find everything you need to know about our digital keys, accounts, delivery, and guarantees.
+        - generic [ref=e287]:
+          - generic [ref=e289]:
+            - button "What is Loot4You?" [ref=e290] [cursor=pointer]:
+              - heading "What is Loot4You?" [level=4] [ref=e291]
+              - img [ref=e292]
+            - generic [ref=e294]: Loot4You is a trusted digital marketplace specializing in gaming services. We provide a wide selection of in-game assets, rare accounts, premium items, and more across the most popular online games. Our mission is to deliver a fast, secure, and seamless purchasing experience for gamers worldwide.
+          - generic [ref=e296]:
+            - button "Is Loot4You legit and secure?" [ref=e297] [cursor=pointer]:
+              - heading "Is Loot4You legit and secure?" [level=4] [ref=e298]
+              - img [ref=e299]
+            - generic: Yes. Loot4You is a legitimate and secure platform with a strong reputation for customer satisfaction. All our transactions are protected with industry-standard security protocols, and we work with trusted partners like Stripe and Cryptomus to ensure safe and reliable payment processing.
+          - generic [ref=e302]:
+            - button "Why choose Loot4You over competitors?" [ref=e303] [cursor=pointer]:
+              - heading "Why choose Loot4You over competitors?" [level=4] [ref=e304]
+              - img [ref=e305]
+            - generic: We stand out for our wide selection of top games and digital items, fast delivery and 24/7 availability, secure and hassle-free checkout process, and friendly customer support. Whether you're looking for coins, points, accounts, or premium subscriptions, Loot4You ensures a smooth and reliable experience.
+          - generic [ref=e308]:
+            - button "What payment methods do you accept?" [ref=e309] [cursor=pointer]:
+              - heading "What payment methods do you accept?" [level=4] [ref=e310]
+              - img [ref=e311]
+            - generic: "We offer a flexible and secure range of payment options: All major credit and debit cards, Apple Pay & Google Pay (via Stripe), and a wide variety of cryptocurrencies (via Cryptomus). This allows our customers around the world to shop with ease, using their preferred payment method."
+          - generic [ref=e314]:
+            - button "How fast is delivery and order processing?" [ref=e315] [cursor=pointer]:
+              - heading "How fast is delivery and order processing?" [level=4] [ref=e316]
+              - img [ref=e317]
+            - generic: Most digital products are delivered instantly or within minutes of purchase confirmation. For account-based services, delivery typically takes 1-24 hours depending on the complexity. You'll receive email notifications and can track your order status in real-time through your customer dashboard.
+          - generic [ref=e320]:
+            - button "Can I get help if I have an issue or question?" [ref=e321] [cursor=pointer]:
+              - heading "Can I get help if I have an issue or question?" [level=4] [ref=e322]
+              - img [ref=e323]
+            - generic: Absolutely. Our dedicated support team is ready to assist you with any questions, concerns, or issues you may encounter. You can reach out to us through our contact page, support tickets, or directly via live chat. We're here to ensure you have a smooth and satisfying experience every step of the way.
+    - contentinfo [ref=e325]:
+      - generic [ref=e326]:
+        - generic [ref=e327]:
+          - generic [ref=e328]:
+            - link "Loot4You" [ref=e329] [cursor=pointer]:
+              - /url: /
+              - img "Loot4You" [ref=e330]
+            - paragraph [ref=e331]: The fastest, safest way to buy gaming credits and coins. Delivered in minutes — every time.
+            - generic [ref=e332]:
+              - paragraph [ref=e333]: Support
+              - generic [ref=e334]:
+                - img [ref=e335]
+                - generic [ref=e338]:
+                  - generic [ref=e339]: Mon – Fri, 9:00 AM – 6:00 PM
+                  - generic [ref=e340]: Email responses within 12 hours.
+              - generic [ref=e341]:
+                - img [ref=e342]
+                - link "support@loot4you.gg" [ref=e345] [cursor=pointer]:
+                  - /url: mailto:support@loot4you.gg
+              - generic [ref=e346]:
+                - img [ref=e347]
+                - link "+44 7455 903679" [ref=e349] [cursor=pointer]:
+                  - /url: tel:+447455903679
+              - generic [ref=e350]:
+                - img [ref=e351]
+                - paragraph [ref=e354]:
+                  - text: First Floor Office, 3 Hornton Place,
+                  - text: London, United Kingdom
+            - generic [ref=e355]:
+              - link "Discord" [ref=e356] [cursor=pointer]:
+                - /url: https://discord.gg/AyTrerusGZ
+                - img [ref=e357]
+              - link "Email" [ref=e359] [cursor=pointer]:
+                - /url: mailto:support@loot4you.gg
+                - img [ref=e360]
+              - link "WhatsApp" [ref=e363] [cursor=pointer]:
+                - /url: https://wa.me/380730882668
+                - img [ref=e364]
+          - generic [ref=e366]:
+            - paragraph [ref=e367]: Company
+            - navigation [ref=e368]:
+              - link "About Us" [ref=e369] [cursor=pointer]:
+                - /url: /about
+              - link "FAQ" [ref=e370] [cursor=pointer]:
+                - /url: /faq
+              - link "How It Works" [ref=e371] [cursor=pointer]:
+                - /url: /how-it-works
+              - link "Contact Us" [ref=e372] [cursor=pointer]:
+                - /url: /contact
+          - generic [ref=e373]:
+            - paragraph [ref=e374]: Legal
+            - navigation [ref=e375]:
+              - link "Privacy Policy" [ref=e376] [cursor=pointer]:
+                - /url: /privacy
+              - link "Terms & Conditions" [ref=e377] [cursor=pointer]:
+                - /url: /terms
+              - link "Refund Policy" [ref=e378] [cursor=pointer]:
+                - /url: /refunds
+              - link "Payment Policy" [ref=e379] [cursor=pointer]:
+                - /url: /payment-policy
+              - link "Shipping Policy" [ref=e380] [cursor=pointer]:
+                - /url: /shipping-policy
+              - link "Cookies Policy" [ref=e381] [cursor=pointer]:
+                - /url: /cookies-policy
+        - generic [ref=e383]:
+          - img "Accepted payment methods" [ref=e385]
+          - paragraph [ref=e386]: © 2026 Loot4You — All rights reserved.
+          - paragraph [ref=e387]: Loot4You is an independent platform not affiliated with, endorsed by, or sponsored by any video game developers or publishers, including Rockstar Games, Take-Two Interactive, Riot Games, Activision Blizzard, Electronic Arts, Epic Games, Tencent, Bungie, Grinding Gear Games, Square Enix, Valve, Battlestate Games, Wargaming.net, Amazon, Jagex, Smilegate RPG, Digital Extremes, and Ubisoft. All trademarks, game titles, logos and images featured on this website are property of their respective publishers and owners. The views and opinions expressed by Loot4You do not reflect those of any game developers or publishers.
+  - button "Contact us" [ref=e389] [cursor=pointer]:
+    - img [ref=e390]
