@@ -65,9 +65,10 @@ function setGameFilter(value) {
   </div>
   <div id="game-products" class="game_cards_blocks" :class="[gridClass, { 'is-empty': isEmpty }]">
     <GameCard
-      v-for="item in items"
+      v-for="(item, i) in items"
       :key="item.id"
       v-bind="item"
+      :priority="i === 0"
       :hidden="!filtered.some((f) => f.id === item.id)"
     />
   </div>

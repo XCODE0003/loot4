@@ -38,6 +38,8 @@ const page = computed(() => props.gamePage ?? fallbackGamePage)
             :src="asset(page.image)"
             alt=""
             class="game_intro_block_image"
+            loading="lazy"
+            decoding="async"
             @click="$emit('scrollToProducts')"
           />
         </div>

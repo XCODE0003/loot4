@@ -13,6 +13,9 @@ const props = defineProps({
   slug: { type: String, default: '' },
   category: { type: String, default: '' },
   hidden: { type: Boolean, default: false },
+  // The first card is typically the LCP element — load its image eagerly with
+  // high priority; the rest stay lazy.
+  priority: { type: Boolean, default: false },
 })
 
 const { formatPrice } = useLocale()
@@ -37,7 +40,15 @@ function buy(e) {
     :class="{ 'is-hidden': hidden }"
     @click="goProduct"
   >
-    <img v-if="image" :src="asset(image)" :alt="title" class="game_cards_block_image" loading="lazy" decoding="async" />
+    <img
+      v-if="image"
+      :src="asset(image)"
+      :alt="title"
+      class="game_cards_block_image"
+      :loading="priority ? 'eager' : 'lazy'"
+      :fetchpriority="priority ? 'high' : 'auto'"
+      decoding="async"
+    />
     <h4 class="game_cards_block_title">{{ title }}</h4>
     <div class="game_cards_block_bottom">
       <div class="game_cards_block_bottom_texts">
