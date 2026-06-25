@@ -89,7 +89,7 @@ function buy() {
 
       <div class="product_main_sections">
         <div class="product_main_section">
-          <img v-if="activeImage" :src="asset(activeImage)" alt="" class="product_main_section_image" />
+          <img v-if="activeImage" :src="asset(activeImage)" alt="" class="product_main_section_image" fetchpriority="high" decoding="async" />
           <div v-if="images.length > 1" class="product_gallery_thumbs">
             <button
               v-for="(img, i) in images"
