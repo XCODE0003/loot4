@@ -62,6 +62,15 @@ class ConversionLogsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                // Default view = real conversions only. Skipped rows are debug
+                // noise (no-consent, GTM-handled pixels), hidden until the admin
+                // toggles this off to inspect them.
+                Filter::make('hide_skipped')
+                    ->label('Hide skipped (debug) rows')
+                    ->toggle()
+                    ->default()
+                    ->query(fn (Builder $query): Builder => $query
+                        ->where('status', '!=', ConversionStatus::Skipped)),
                 SelectFilter::make('platform')
                     ->options(ConversionPlatform::class),
                 SelectFilter::make('status')

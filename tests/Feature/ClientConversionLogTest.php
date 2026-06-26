@@ -68,16 +68,18 @@ class ClientConversionLogTest extends TestCase
         $this->assertSame('client', $log->request_payload['origin'] ?? null);
     }
 
-    public function test_localstorage_skip_is_logged_as_skipped(): void
+    public function test_localstorage_skip_is_dropped_as_noise(): void
     {
         $order = $this->neutralOrder();
 
+        // A dedup echo from a stale/cached client carries zero signal — it must
+        // not create a row (the live client already dedups before posting).
         $this->postJson('/checkout/conversion', $this->payload($order, [
             'sent' => false,
             'reason' => 'localStorage-skip',
-        ]))->assertCreated();
+        ]))->assertOk()->assertJson(['logged' => false, 'reason' => 'noise-skipped']);
 
-        $this->assertSame(ConversionStatus::Skipped, ConversionLog::firstOrFail()->status);
+        $this->assertSame(0, ConversionLog::count());
     }
 
     public function test_no_consent_is_logged_as_skipped(): void
@@ -92,16 +94,19 @@ class ClientConversionLogTest extends TestCase
         $this->assertSame(ConversionStatus::Skipped, ConversionLog::firstOrFail()->status);
     }
 
-    public function test_not_configured_is_logged_as_skipped(): void
+    public function test_not_configured_is_dropped_as_noise(): void
     {
         $order = $this->neutralOrder();
 
+        // "not-configured" means the pixel runs via GTM (no native ID). It is a
+        // config state, not a per-order event, so it must never reach the table
+        // — even when a stale cached bundle keeps posting it.
         $this->postJson('/checkout/conversion', $this->payload($order, [
             'sent' => false,
             'reason' => 'not-configured',
-        ]))->assertCreated();
+        ]))->assertOk()->assertJson(['logged' => false, 'reason' => 'noise-skipped']);
 
-        $this->assertSame(ConversionStatus::Skipped, ConversionLog::firstOrFail()->status);
+        $this->assertSame(0, ConversionLog::count());
     }
 
     public function test_blocked_tracker_is_logged_as_failed(): void

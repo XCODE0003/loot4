@@ -22,6 +22,17 @@ class ConversionLogController extends Controller
     private const SKIP_REASONS = ['localStorage-skip', 'no-consent', 'consent-declined', 'not-configured'];
 
     /**
+     * Skip reasons that carry zero per-order signal and would only clutter the
+     * Conversion Logs table: the pixel runs via GTM (no native ID) or the row is
+     * a client-side dedup echo. These are NEVER persisted — not even when a
+     * stale, cached bundle keeps posting them. Real outcomes (Sent / Failed)
+     * and consent skips still get a row.
+     *
+     * @var list<string>
+     */
+    private const NOISE_REASONS = ['not-configured', 'localStorage-skip'];
+
+    /**
      * Upper bound of debug rows per order+platform — keeps a public endpoint
      * from flooding the table (the throttle alone can be sidestepped by
      * rotating forwarded IPs).
@@ -54,6 +65,13 @@ class ConversionLogController extends Controller
         $eligible = ConversionEligibility::for($order);
         if ($eligible !== null && ! in_array($data['platform'], $eligible, true)) {
             return response()->json(['logged' => false, 'reason' => 'not-eligible'], 200);
+        }
+
+        // Drop pure-noise skips before they ever reach the table. The live client
+        // already suppresses these, so anything arriving here is a stale/cached
+        // bundle — the server is the authoritative gate.
+        if (! $data['sent'] && in_array($data['reason'], self::NOISE_REASONS, true)) {
+            return response()->json(['logged' => false, 'reason' => 'noise-skipped'], 200);
         }
 
         $logged = ConversionLog::query()
