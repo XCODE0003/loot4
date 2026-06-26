@@ -67,6 +67,8 @@ class StorefrontController extends Controller
             'products' => $products->map(fn (Product $p, int $i): array => $this->card($p, $i))->all(),
             'gameFilters' => null,
             'showSearch' => true,
+            // Generic catalog landing — not a specific game.
+            'metaTitle' => 'Choose Game — Loot4you',
             'gamePage' => $featured ? [
                 'title' => $featured->name,
                 'image' => $featured->optimizedMediaUrl('image'),
@@ -95,6 +97,9 @@ class StorefrontController extends Controller
             'products' => $products->map(fn (Product $p, int $i): array => $this->card($p, $i))->all(),
             'gameFilters' => $this->gameFilters($game),
             'showSearch' => (bool) ($game->show_search ?? true),
+            // Browser-tab / SEO title: the admin's custom meta_title wins, else
+            // the game name with the brand suffix.
+            'metaTitle' => $game->meta_title ?: $game->name.' — Loot4you',
             'gamePage' => [
                 'title' => $game->name,
                 'image' => $game->optimizedMediaUrl('image'),
