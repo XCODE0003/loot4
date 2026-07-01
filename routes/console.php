@@ -15,3 +15,6 @@ Artisan::command('exchange-rates:fetch', function () {
 })->purpose('Fetch live USD exchange rates and store in cache');
 
 Schedule::job(new FetchExchangeRates)->hourly();
+
+// Remind customers who left an order unpaid (once per order, ~1h after checkout).
+Schedule::command('orders:remind-abandoned')->everyFifteenMinutes()->withoutOverlapping();

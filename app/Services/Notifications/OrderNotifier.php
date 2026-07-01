@@ -2,6 +2,7 @@
 
 namespace App\Services\Notifications;
 
+use App\Mail\AbandonedCartMail;
 use App\Mail\NewOrderMail;
 use App\Mail\OrderConfirmationMail;
 use App\Mail\OrderDeliveredMail;
@@ -65,6 +66,16 @@ class OrderNotifier
         $order->loadMissing('items');
 
         $this->mailTo($order->email, fn () => new OrderDeliveredMail($order), 'customer delivered');
+    }
+
+    /**
+     * An order left unpaid: remind the customer with a link to complete payment.
+     */
+    public function abandoned(Order $order): void
+    {
+        $order->loadMissing('items');
+
+        $this->mailTo($order->email, fn () => new AbandonedCartMail($order), 'abandoned cart');
     }
 
     private function newOrderText(Order $order): string

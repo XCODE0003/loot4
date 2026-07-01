@@ -258,6 +258,32 @@ class CheckoutController extends Controller
     }
 
     /**
+     * Re-open the hosted payment page for an unpaid order — target of the signed
+     * "complete payment" link in the abandoned-cart reminder email.
+     */
+    public function payAgain(Order $order, IceNoxGateway $gateway): HttpResponse
+    {
+        // Already paid — nothing to charge; show the confirmation page.
+        if ($order->payment_status === PaymentStatus::Paid) {
+            return redirect()->route('checkout.success', $order->order_number);
+        }
+
+        if ($gateway->isConfigured()) {
+            try {
+                $method = $this->icenoxMethod((string) ($order->payments()->first()?->method ?? self::PAYMENT_METHODS[0]));
+                $result = $gateway->createPayment($order, $method);
+                $order->payments()->update(['transaction_id' => $result['paymentid']]);
+
+                return Inertia::location($result['url']);
+            } catch (PaymentException $e) {
+                return redirect()->route('checkout')->withErrors(['payment' => $e->getMessage()]);
+            }
+        }
+
+        return redirect()->route('checkout');
+    }
+
+    /**
      * Supported IceNox payment-method identifiers (pay.icenox.com/docs).
      * The storefront sends these values directly; we just validate them.
      *

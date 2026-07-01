@@ -17,6 +17,9 @@ Route::get('/cart/coupon', [CheckoutController::class, 'coupon'])->name('cart.co
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'store']);
 Route::get('/checkout/success/{order:order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
+// Signed "complete payment" link from the abandoned-cart reminder email.
+Route::get('/checkout/pay/{order:order_number}', [CheckoutController::class, 'payAgain'])
+    ->middleware('signed')->name('checkout.pay');
 // Pixel-fire debug log written by the success page (Conversion Logs in admin).
 Route::post('/checkout/conversion', [ConversionLogController::class, 'store'])
     ->middleware('throttle:60,1')->name('checkout.conversion');

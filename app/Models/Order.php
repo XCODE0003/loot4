@@ -52,6 +52,7 @@ class Order extends Model
         'ttclid',
         'landing_page',
         'first_visit_at',
+        'abandoned_reminded_at',
         'form_data',
         'notes',
     ];
@@ -67,6 +68,7 @@ class Order extends Model
             'delivery_fee' => 'decimal:2',
             'total' => 'decimal:2',
             'first_visit_at' => 'datetime',
+            'abandoned_reminded_at' => 'datetime',
             'form_data' => 'array',
         ];
     }

@@ -104,6 +104,13 @@
                             </table>
                         </td>
                     </tr>
+                    @if($ctaUrl ?? null)
+                        <tr>
+                            <td style="padding:4px 32px 30px;text-align:center;">
+                                <a href="{{ $ctaUrl }}" style="display:inline-block;padding:15px 42px;border-radius:12px;background:{{ $accent }};color:#05221a;font-size:15px;font-weight:800;text-decoration:none;">{{ $ctaLabel ?? 'Complete your order' }}</a>
+                            </td>
+                        </tr>
+                    @endif
                     @if($forCustomer && ($showContact ?? false))
                         <tr>
                             <td style="padding:0 32px 28px;">
