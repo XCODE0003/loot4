@@ -9,9 +9,11 @@ import { asset } from '@/loot4/utils/asset'
 import { countries, regionsFor } from '@/loot4/data/countries'
 
 const props = defineProps({
-  // Server-authoritative Express delivery fee (config/checkout.php), so the
-  // displayed total matches what the server charges.
+  // Delivery settings from the admin (Settings → Delivery), so the displayed
+  // fee/times match what the server charges.
   expressFee: { type: Number, default: 20.99 },
+  standardTime: { type: String, default: '1–24 hours' },
+  expressTime: { type: String, default: '1–12 hours' },
 })
 
 const { t } = useI18n()
@@ -252,7 +254,7 @@ function placeOrder() {
                   @input="delete billingErrors.last_name"
                 />
               </div>
-              <div class="co_field_wrap co_field_wrap--full">
+              <div class="co_field_wrap">
                 <input
                   id="co-email"
                   ref="emailInput"
@@ -268,7 +270,7 @@ function placeOrder() {
                 />
                 <p v-if="emailError" class="co_field_err">{{ emailError }}</p>
               </div>
-              <div class="co_field_wrap co_field_wrap--full">
+              <div class="co_field_wrap">
                 <input
                   v-model="billing.phone"
                   type="tel"
@@ -349,15 +351,21 @@ function placeOrder() {
             <h2 class="co_section_title">Delivery</h2>
             <div class="co_delivery">
               <label class="co_delivery_opt" :class="{ 'is-active': delivery === 'standard' }">
-                <input v-model="delivery" type="radio" name="delivery" value="standard" />
-                <span class="co_method_radio" aria-hidden="true"></span>
-                <span class="co_delivery_label">Standard <span class="co_delivery_time">1–24 hours</span></span>
+                <span class="co_delivery_top">
+                  <input v-model="delivery" type="radio" name="delivery" value="standard" />
+                  <span class="co_method_radio" aria-hidden="true"></span>
+                  <span class="co_delivery_name">Standard</span>
+                </span>
+                <span class="co_delivery_time">{{ standardTime }}</span>
                 <span class="co_delivery_price">Free</span>
               </label>
               <label class="co_delivery_opt" :class="{ 'is-active': delivery === 'express' }">
-                <input v-model="delivery" type="radio" name="delivery" value="express" />
-                <span class="co_method_radio" aria-hidden="true"></span>
-                <span class="co_delivery_label">Express <span class="co_delivery_time">1–12 hours</span></span>
+                <span class="co_delivery_top">
+                  <input v-model="delivery" type="radio" name="delivery" value="express" />
+                  <span class="co_method_radio" aria-hidden="true"></span>
+                  <span class="co_delivery_name">Express</span>
+                </span>
+                <span class="co_delivery_time">{{ expressTime }}</span>
                 <span class="co_delivery_price">{{ money(expressFee) }}</span>
               </label>
             </div>
@@ -626,19 +634,19 @@ function placeOrder() {
   color: #111;
 }
 
-/* Delivery method options (reuse the payment-method radio visual). */
+/* Delivery method options — two compact cards side by side. */
 .co_delivery {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 .co_delivery_opt {
   position: relative;
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 20px;
-  height: 56px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px 18px;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -653,27 +661,30 @@ function placeOrder() {
   opacity: 0;
   pointer-events: none;
 }
+.co_delivery_top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .co_delivery_opt.is-active .co_method_radio {
   border-color: transparent;
   background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
   box-shadow: inset 0 0 0 4px #060b15;
 }
-.co_delivery_label {
-  flex: 1;
+.co_delivery_name {
   color: #fff;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
 }
 .co_delivery_time {
   color: rgba(255, 255, 255, 0.5);
   font-weight: 400;
   font-size: 13px;
-  margin-left: 6px;
 }
 .co_delivery_price {
   color: #2bff95;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
 }
 .co_field--error,
 .co_field--error:focus {

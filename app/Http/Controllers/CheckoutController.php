@@ -11,6 +11,7 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\Setting;
 use App\Services\Attribution\AttributionResolver;
 use App\Services\Conversions\ConversionEligibility;
 use App\Services\Geo\IpCountry;
@@ -63,8 +64,20 @@ class CheckoutController extends Controller
     public function index(): Response
     {
         return Inertia::render('loot4/Checkout', [
-            'expressFee' => (float) config('checkout.express_delivery_fee'),
+            'expressFee' => $this->expressFee(),
+            'standardTime' => (string) (Setting::get('delivery_standard_time') ?: '1–24 hours'),
+            'expressTime' => (string) (Setting::get('delivery_express_time') ?: '1–12 hours'),
         ]);
+    }
+
+    /**
+     * The Express delivery surcharge — admin setting first, config default second.
+     */
+    private function expressFee(): float
+    {
+        $fee = Setting::get('delivery_express_fee');
+
+        return (float) (is_numeric($fee) ? $fee : config('checkout.express_delivery_fee'));
     }
 
     /**
@@ -158,7 +171,7 @@ class CheckoutController extends Controller
         // offers it; otherwise the order falls back to free Standard delivery.
         $expressAllowed = $requestedExpress && $allExpress;
         $deliveryMethod = $expressAllowed ? 'express' : 'standard';
-        $deliveryFee = $expressAllowed ? (float) config('checkout.express_delivery_fee') : 0.0;
+        $deliveryFee = $expressAllowed ? $this->expressFee() : 0.0;
 
         $coupon = $this->resolveCoupon($data['coupon'] ?? null, $subtotal);
         $discount = $this->discountFor($coupon, $subtotal);

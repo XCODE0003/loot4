@@ -36,6 +36,7 @@ class Settings extends Page
         'telegram_bot_token', 'telegram_chat_id', 'telegram_failed_bot_token', 'telegram_failed_chat_id',
         'mail_host', 'mail_port', 'mail_username', 'mail_password', 'mail_encryption',
         'mail_from_address', 'mail_from_name', 'order_notify_email',
+        'delivery_standard_time', 'delivery_express_time', 'delivery_express_fee',
     ];
 
     /** @var array<string, mixed> */
@@ -115,6 +116,23 @@ class Settings extends Page
                         TextInput::make('mail_from_address')->label('From address')->email(),
                         TextInput::make('mail_from_name')->label('From name'),
                         TextInput::make('order_notify_email')->label('Send new-order emails to')->email(),
+                    ]),
+
+                Section::make('Delivery')
+                    ->description('Shown on checkout. Express appears only for products with "Express delivery" enabled.')
+                    ->columns(3)
+                    ->schema([
+                        TextInput::make('delivery_standard_time')
+                            ->label('Standard delivery time')
+                            ->placeholder('1–24 hours'),
+                        TextInput::make('delivery_express_time')
+                            ->label('Express delivery time')
+                            ->placeholder('1–12 hours'),
+                        TextInput::make('delivery_express_fee')
+                            ->label('Express surcharge')
+                            ->numeric()
+                            ->prefix('$')
+                            ->placeholder('20.99'),
                     ]),
             ]);
     }
