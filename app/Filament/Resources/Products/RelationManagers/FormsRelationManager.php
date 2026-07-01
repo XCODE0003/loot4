@@ -135,13 +135,12 @@ class FormsRelationManager extends RelationManager
                                     ->prefix('$')
                                     ->default(0),
                                 TextInput::make('discount')
-                                    ->label('Discount %')
+                                    ->label('Old price')
                                     ->numeric()
-                                    ->suffix('%')
+                                    ->prefix('$')
                                     ->minValue(0)
-                                    ->maxValue(99)
                                     ->default(0)
-                                    ->helperText('Optional marketing discount. The customer still pays Price; a higher "old" price (Price + this %) is shown struck-through so it looks discounted.'),
+                                    ->helperText('Optional marketing "old" price shown struck-through. Type the higher crossed-out price directly (e.g. Price 43.99, Old price 59.99). The customer still pays Price. Leave 0 for none.'),
                                 TextInput::make('tooltip')
                                     ->label('Tooltip')
                                     ->helperText('Optional info shown on hover.'),

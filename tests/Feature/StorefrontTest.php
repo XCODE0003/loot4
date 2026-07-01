@@ -97,7 +97,7 @@ class StorefrontTest extends TestCase
         );
     }
 
-    public function test_option_discount_inflates_struck_through_old_price_only(): void
+    public function test_option_old_price_is_the_typed_struck_through_value(): void
     {
         $product = Product::factory()->create([
             'slug' => 'discount-product',
@@ -113,18 +113,26 @@ class StorefrontTest extends TestCase
             'required' => true,
             'sort_order' => 0,
             'options' => [
-                ['label' => '$100M', 'value' => '100m', 'extra_price' => 100, 'discount' => 25],
+                // `discount` is the struck-through "old" price, typed directly.
+                ['label' => '$100M', 'value' => '100m', 'extra_price' => 100, 'discount' => 125],
+                // Old price not above the charged price → not shown.
+                ['label' => '$200M', 'value' => '200m', 'extra_price' => 200, 'discount' => 150],
+                // No old price set.
+                ['label' => '$50M', 'value' => '50m', 'extra_price' => 50, 'discount' => 0],
             ],
         ]);
 
         $this->get('/product/discount-product')->assertOk()->assertInertia(
             fn (Assert $page) => $page
                 ->component('loot4/Product')
-                // Charged price stays the real 100 (the discount never reduces it).
-                ->where('product.price', 100)
+                // Charged price stays the real 100 (the old price never reduces it).
                 ->where('product.optionGroups.0.options.0.price', 100)
-                // Struck-through "old" price is inflated: 100 + 25% = 125.
+                // Struck-through "old" price is exactly what was typed: 125.
                 ->where('product.optionGroups.0.options.0.priceOld', 125)
+                // Old price (150) below the charged price (200) → hidden.
+                ->where('product.optionGroups.0.options.1.priceOld', null)
+                // No old price set → hidden.
+                ->where('product.optionGroups.0.options.2.priceOld', null)
                 ->etc(),
         );
     }

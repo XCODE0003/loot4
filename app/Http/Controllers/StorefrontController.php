@@ -346,18 +346,17 @@ class StorefrontController extends Controller
             'options' => collect($field->options)
                 ->map(function ($o): array {
                     // Marketing "fake" discount: the customer is charged the real
-                    // `price` (= extra_price); a higher `priceOld` (price + N%) is
-                    // shown struck-through so it looks like a discount. The charged
-                    // price is never reduced.
-                    $discount = max(0, min(99, (int) ($o['discount'] ?? 0)));
+                    // `price` (= extra_price); the admin types the struck-through
+                    // "old" price directly in `discount`. It's only shown when it's
+                    // actually higher than the charged price. The price is never reduced.
                     $price = round((float) ($o['extra_price'] ?? 0), 2);
+                    $priceOld = round((float) ($o['discount'] ?? 0), 2);
 
                     return [
                         'value' => (string) ($o['value'] ?? $o['label'] ?? ''),
                         'label' => (string) ($o['label'] ?? $o['value'] ?? ''),
                         'price' => $price,
-                        'priceOld' => $discount > 0 ? round($price * (1 + $discount / 100), 2) : null,
-                        'discount' => $discount,
+                        'priceOld' => $priceOld > $price ? $priceOld : null,
                         'tooltip' => (string) ($o['tooltip'] ?? ''),
                         'popular' => (bool) ($o['popular'] ?? false),
                         'default' => (bool) ($o['default'] ?? false),
