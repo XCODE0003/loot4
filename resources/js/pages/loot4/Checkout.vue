@@ -52,8 +52,10 @@ watch(() => billing.value.country, () => {
 })
 
 // Delivery choice — Standard is free, Express adds the server-provided fee.
+// Express is offered only when every item in the cart supports it.
 const delivery = ref('standard')
-const deliveryFee = computed(() => (delivery.value === 'express' ? props.expressFee : 0))
+const expressAvailable = computed(() => items.value.length > 0 && items.value.every((i) => i.express === true))
+const deliveryFee = computed(() => (delivery.value === 'express' && expressAvailable.value ? props.expressFee : 0))
 
 // Collapsible "Order Summary" shutter (mobile only — always expanded on desktop).
 const summaryOpen = ref(false)
@@ -343,7 +345,7 @@ function placeOrder() {
             </div>
           </div>
 
-          <div class="co_section co_section--delivery">
+          <div v-if="expressAvailable" class="co_section co_section--delivery">
             <h2 class="co_section_title">Delivery</h2>
             <div class="co_delivery">
               <label class="co_delivery_opt" :class="{ 'is-active': delivery === 'standard' }">
@@ -472,7 +474,7 @@ function placeOrder() {
               <p v-if="promoError" class="co_promo_err">{{ promoError }}</p>
             </div>
 
-            <div class="co_row">
+            <div v-if="expressAvailable" class="co_row">
               <span>Delivery{{ delivery === 'express' ? ' (Express)' : '' }}</span>
               <span>{{ deliveryFee > 0 ? money(deliveryFee) : 'Free' }}</span>
             </div>

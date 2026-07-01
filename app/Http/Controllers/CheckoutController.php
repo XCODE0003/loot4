@@ -99,9 +99,10 @@ class CheckoutController extends Controller
 
         $method = $data['method'] ?? self::PAYMENT_METHODS[0];
 
-        // Delivery fee is server-authoritative — the client only names the choice.
-        $deliveryMethod = ($data['delivery'] ?? 'standard') === 'express' ? 'express' : 'standard';
-        $deliveryFee = $deliveryMethod === 'express' ? (float) config('checkout.express_delivery_fee') : 0.0;
+        // The client only names the delivery choice; whether Express is allowed
+        // and its fee are decided server-side below — every item must offer it.
+        $requestedExpress = ($data['delivery'] ?? 'standard') === 'express';
+        $allExpress = true;
 
         $lines = [];
         $subtotal = 0.0;
@@ -131,6 +132,7 @@ class CheckoutController extends Controller
             $price = $pricing->linePrice($product, $selections);
             $summary = $pricing->summary($product, $selections);
             $subtotal += $price * $qty;
+            $allExpress = $allExpress && (bool) $product->express_delivery;
 
             $lines[] = [
                 'product' => $product,
@@ -151,6 +153,12 @@ class CheckoutController extends Controller
         if ($lines === []) {
             return back()->withErrors(['items' => 'No valid items in the cart.']);
         }
+
+        // Express is honoured only when the customer asked for it AND every item
+        // offers it; otherwise the order falls back to free Standard delivery.
+        $expressAllowed = $requestedExpress && $allExpress;
+        $deliveryMethod = $expressAllowed ? 'express' : 'standard';
+        $deliveryFee = $expressAllowed ? (float) config('checkout.express_delivery_fee') : 0.0;
 
         $coupon = $this->resolveCoupon($data['coupon'] ?? null, $subtotal);
         $discount = $this->discountFor($coupon, $subtotal);

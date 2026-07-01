@@ -229,7 +229,7 @@ class CartCheckoutTest extends TestCase
 
     public function test_express_delivery_adds_fee_to_total(): void
     {
-        Product::factory()->create(['slug' => 'p5', 'status' => ProductStatus::Active, 'price' => 30]);
+        Product::factory()->create(['slug' => 'p5', 'status' => ProductStatus::Active, 'price' => 30, 'express_delivery' => true]);
         config(['checkout.express_delivery_fee' => 20.99]);
 
         $this->post('/checkout', [
@@ -243,6 +243,27 @@ class CartCheckoutTest extends TestCase
         $this->assertSame('express', $order->delivery_method);
         $this->assertEquals(20.99, (float) $order->delivery_fee);
         $this->assertEquals(50.99, (float) $order->total); // 30 + 20.99
+    }
+
+    public function test_express_is_ignored_when_a_product_does_not_offer_it(): void
+    {
+        // One item offers Express, the other does not → whole order falls back to
+        // free Standard (Express requires every item to support it).
+        Product::factory()->create(['slug' => 'ex-yes', 'status' => ProductStatus::Active, 'price' => 30, 'express_delivery' => true]);
+        Product::factory()->create(['slug' => 'ex-no', 'status' => ProductStatus::Active, 'price' => 10, 'express_delivery' => false]);
+        config(['checkout.express_delivery_fee' => 20.99]);
+
+        $this->post('/checkout', [
+            ...$this->billing(),
+            'email' => 'noexp@example.com',
+            'items' => [['slug' => 'ex-yes', 'qty' => 1], ['slug' => 'ex-no', 'qty' => 1]],
+            'delivery' => 'express',
+        ])->assertRedirect();
+
+        $order = Order::where('email', 'noexp@example.com')->firstOrFail();
+        $this->assertSame('standard', $order->delivery_method);
+        $this->assertEquals(0, (float) $order->delivery_fee);
+        $this->assertEquals(40, (float) $order->total); // 30 + 10, no express fee
     }
 
     public function test_standard_delivery_is_free(): void

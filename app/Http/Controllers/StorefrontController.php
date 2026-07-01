@@ -180,6 +180,9 @@ class StorefrontController extends Controller
             ],
             'payments' => self::PAYMENT_ICONS,
             'platforms' => $this->platforms($product),
+            // Whether this product offers Express delivery — carried into the cart
+            // so checkout only shows Express when every item offers it.
+            'express' => (bool) $product->express_delivery,
             // Displayed/starting price: cheapest selectable option for variant products.
             'price' => $this->pricing->fromPrice($product),
             'priceOld' => ($comparePrice !== null && $comparePrice !== $price) ? $comparePrice : null,

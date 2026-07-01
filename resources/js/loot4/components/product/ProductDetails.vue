@@ -64,6 +64,7 @@ function buy() {
       selections: selectedSelections.value,
       price: displayPrice.value,
       priceOld: props.data.priceOld,
+      express: props.data.express === true,
     },
     { open: false },
   )

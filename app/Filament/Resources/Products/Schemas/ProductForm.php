@@ -115,6 +115,10 @@ class ProductForm
                     ->columns(2)
                     ->schema([
                         Toggle::make('auto_delivery')->inline(false),
+                        Toggle::make('express_delivery')
+                            ->label('Express delivery')
+                            ->helperText('Offer the paid Express option at checkout. Shown only when every item in the cart offers it.')
+                            ->inline(false),
                         Toggle::make('featured')->inline(false),
                         Toggle::make('visibility')->default(true)->inline(false),
                         TextInput::make('sort_order')->numeric()->default(0),
