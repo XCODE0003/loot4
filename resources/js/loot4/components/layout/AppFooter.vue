@@ -13,7 +13,7 @@ const year = new Date().getFullYear()
       <div class="footer_grid">
         <div class="footer_brand">
           <Link href="/" class="footer_brand_logo">
-            <img :src="asset('header_logo.svg')" alt="Loot4You" />
+            <img :src="asset('/logol4u.svg')" alt="Loot4You" />
           </Link>
           <p class="footer_brand_text">
             The fastest, safest way to buy gaming credits and coins.
