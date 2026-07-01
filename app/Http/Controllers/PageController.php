@@ -48,7 +48,7 @@ class PageController extends Controller
                 ['n' => '03', 'title' => 'Select Payment Method & Delivery', 'text' => 'This is the last step — all you have to do is select the payment method of your choice and choose a delivery package.'],
                 ['n' => '04', 'title' => '24/7 Support Service', 'text' => 'After paying for the order, you will be taken to your personal account with all the order data and a live chat, in which you can clarify all the details of the order.'],
             ]],
-            ['type' => 'cta', 'text' => 'Ready to get started? Browse our full catalogue and find exactly what you need.', 'label' => 'Shop Now', 'href' => '/game'],
+            ['type' => 'cta', 'text' => 'Ready to get started? Browse our full catalogue and find exactly what you need.', 'label' => 'Shop Now', 'href' => '/'],
         ]);
     }
 
