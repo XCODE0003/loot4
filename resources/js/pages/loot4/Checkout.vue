@@ -1,11 +1,18 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Head, Link, router } from '@inertiajs/vue3'
 import '@/loot4/assets/styles/style.css'
 import { useCart } from '@/loot4/composables/useCart'
 import { useLocale } from '@/loot4/composables/useLocale'
 import { asset } from '@/loot4/utils/asset'
+import { countries, regionsFor } from '@/loot4/data/countries'
+
+const props = defineProps({
+  // Server-authoritative Express delivery fee (config/checkout.php), so the
+  // displayed total matches what the server charges.
+  expressFee: { type: Number, default: 20.99 },
+})
 
 const { t } = useI18n()
 const { items, subtotal, discount, total, coupon, count, remove, setQty, applyCoupon, clearCoupon, checkoutPayload, hydrate } = useCart()
@@ -20,6 +27,33 @@ const method = ref('')
 const processing = ref(false)
 const formError = ref('')
 const agreed = ref(true)
+
+// Billing details (compact 2-column form). State is required only for countries
+// that have regions; everything else except phone is required.
+const billing = ref({
+  first_name: '',
+  last_name: '',
+  phone: '',
+  country: '',
+  state: '',
+  town: '',
+  address: '',
+  postal_code: '',
+})
+const billingErrors = ref({})
+
+const regions = computed(() => regionsFor(billing.value.country))
+const hasRegions = computed(() => regions.value.length > 0)
+
+// Reset a stale region when the country changes.
+watch(() => billing.value.country, () => {
+  billing.value.state = ''
+  delete billingErrors.value.country
+})
+
+// Delivery choice — Standard is free, Express adds the server-provided fee.
+const delivery = ref('standard')
+const deliveryFee = computed(() => (delivery.value === 'express' ? props.expressFee : 0))
 
 // Collapsible "Order Summary" shutter (mobile only — always expanded on desktop).
 const summaryOpen = ref(false)
@@ -61,7 +95,7 @@ function scrollToMethods() {
   methodsRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
-const grandTotal = computed(() => total.value)
+const grandTotal = computed(() => total.value + deliveryFee.value)
 
 function money(value) {
   return formatPrice(value)
@@ -114,10 +148,30 @@ function validateEmail() {
   return true
 }
 
+// Required billing fields (state only when the country has regions). Returns
+// true when all pass; otherwise fills billingErrors and returns false.
+function validateBilling() {
+  const b = billing.value
+  const errs = {}
+  if (!b.first_name.trim()) errs.first_name = 'Required'
+  if (!b.last_name.trim()) errs.last_name = 'Required'
+  if (!b.country) errs.country = 'Required'
+  if (hasRegions.value && !b.state) errs.state = 'Required'
+  if (!b.town.trim()) errs.town = 'Required'
+  if (!b.address.trim()) errs.address = 'Required'
+  if (!b.postal_code.trim()) errs.postal_code = 'Required'
+  billingErrors.value = errs
+  return Object.keys(errs).length === 0
+}
+
 function placeOrder() {
   if (!items.value.length || processing.value) return
   if (!validateEmail()) {
     focusEmail()
+    return
+  }
+  if (!validateBilling()) {
+    formError.value = 'Please fill in all required billing fields.'
     return
   }
   if (!method.value) {
@@ -132,20 +186,29 @@ function placeOrder() {
   }
   formError.value = ''
   processing.value = true
-  router.post('/checkout', { ...checkoutPayload(email.value), method: method.value }, {
-    onError: (errors) => {
-      if (errors.email) {
-        emailError.value = errors.email
-        formError.value = ''
-        focusEmail()
-      } else {
-        formError.value = errors.items || errors.payment || 'Please check your details'
-      }
+  router.post(
+    '/checkout',
+    {
+      ...checkoutPayload(email.value),
+      ...billing.value,
+      delivery: delivery.value,
+      method: method.value,
     },
-    onFinish: () => {
-      processing.value = false
+    {
+      onError: (errors) => {
+        if (errors.email) {
+          emailError.value = errors.email
+          formError.value = ''
+          focusEmail()
+        } else {
+          formError.value = errors.items || errors.payment || 'Please check your details'
+        }
+      },
+      onFinish: () => {
+        processing.value = false
+      },
     },
-  })
+  )
 }
 </script>
 
@@ -162,22 +225,140 @@ function placeOrder() {
         <div class="co_left">
           <h1 class="co_title">Checkout</h1>
 
-          <div class="co_section co_section--email">
+          <div class="co_section co_section--billing">
             <p class="co_section_label">Customer information</p>
-            <input
-              id="co-email"
-              ref="emailInput"
-              v-model="email"
-              type="email"
-              class="co_field"
-              :class="{ 'co_field--error': emailError }"
-              placeholder="Email *"
-              aria-label="Email"
-              :aria-invalid="emailError ? 'true' : 'false'"
-              @input="emailError = ''"
-              @keyup.enter="placeOrder"
-            />
-            <p v-if="emailError" class="co_field_err">{{ emailError }}</p>
+            <div class="co_fields">
+              <div class="co_field_wrap">
+                <input
+                  v-model="billing.first_name"
+                  type="text"
+                  class="co_field"
+                  :class="{ 'co_field--error': billingErrors.first_name }"
+                  placeholder="First name *"
+                  aria-label="First name"
+                  @input="delete billingErrors.first_name"
+                />
+              </div>
+              <div class="co_field_wrap">
+                <input
+                  v-model="billing.last_name"
+                  type="text"
+                  class="co_field"
+                  :class="{ 'co_field--error': billingErrors.last_name }"
+                  placeholder="Last name *"
+                  aria-label="Last name"
+                  @input="delete billingErrors.last_name"
+                />
+              </div>
+              <div class="co_field_wrap co_field_wrap--full">
+                <input
+                  id="co-email"
+                  ref="emailInput"
+                  v-model="email"
+                  type="email"
+                  class="co_field"
+                  :class="{ 'co_field--error': emailError }"
+                  placeholder="Email *"
+                  aria-label="Email"
+                  :aria-invalid="emailError ? 'true' : 'false'"
+                  @input="emailError = ''"
+                  @keyup.enter="placeOrder"
+                />
+                <p v-if="emailError" class="co_field_err">{{ emailError }}</p>
+              </div>
+              <div class="co_field_wrap co_field_wrap--full">
+                <input
+                  v-model="billing.phone"
+                  type="tel"
+                  class="co_field"
+                  placeholder="Phone (optional)"
+                  aria-label="Phone"
+                />
+              </div>
+              <div class="co_field_wrap">
+                <select
+                  v-model="billing.country"
+                  class="co_field co_select"
+                  :class="{ 'co_field--error': billingErrors.country, 'is-placeholder': !billing.country }"
+                  aria-label="Country"
+                >
+                  <option value="" disabled>Country *</option>
+                  <option v-for="c in countries" :key="c.code" :value="c.code">{{ c.name }}</option>
+                </select>
+              </div>
+              <div class="co_field_wrap">
+                <select
+                  v-if="hasRegions"
+                  v-model="billing.state"
+                  class="co_field co_select"
+                  :class="{ 'co_field--error': billingErrors.state, 'is-placeholder': !billing.state }"
+                  aria-label="State or region"
+                  @change="delete billingErrors.state"
+                >
+                  <option value="" disabled>State / region *</option>
+                  <option v-for="r in regions" :key="r.code" :value="r.name">{{ r.name }}</option>
+                </select>
+                <input
+                  v-else
+                  v-model="billing.state"
+                  type="text"
+                  class="co_field"
+                  placeholder="State / region"
+                  aria-label="State or region"
+                />
+              </div>
+              <div class="co_field_wrap">
+                <input
+                  v-model="billing.town"
+                  type="text"
+                  class="co_field"
+                  :class="{ 'co_field--error': billingErrors.town }"
+                  placeholder="Town / City *"
+                  aria-label="Town"
+                  @input="delete billingErrors.town"
+                />
+              </div>
+              <div class="co_field_wrap">
+                <input
+                  v-model="billing.postal_code"
+                  type="text"
+                  class="co_field"
+                  :class="{ 'co_field--error': billingErrors.postal_code }"
+                  placeholder="Postal code *"
+                  aria-label="Postal code"
+                  @input="delete billingErrors.postal_code"
+                />
+              </div>
+              <div class="co_field_wrap co_field_wrap--full">
+                <input
+                  v-model="billing.address"
+                  type="text"
+                  class="co_field"
+                  :class="{ 'co_field--error': billingErrors.address }"
+                  placeholder="Address *"
+                  aria-label="Address"
+                  @input="delete billingErrors.address"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="co_section co_section--delivery">
+            <h2 class="co_section_title">Delivery</h2>
+            <div class="co_delivery">
+              <label class="co_delivery_opt" :class="{ 'is-active': delivery === 'standard' }">
+                <input v-model="delivery" type="radio" name="delivery" value="standard" />
+                <span class="co_method_radio" aria-hidden="true"></span>
+                <span class="co_delivery_label">Standard <span class="co_delivery_time">1–24 hours</span></span>
+                <span class="co_delivery_price">Free</span>
+              </label>
+              <label class="co_delivery_opt" :class="{ 'is-active': delivery === 'express' }">
+                <input v-model="delivery" type="radio" name="delivery" value="express" />
+                <span class="co_method_radio" aria-hidden="true"></span>
+                <span class="co_delivery_label">Express <span class="co_delivery_time">1–12 hours</span></span>
+                <span class="co_delivery_price">{{ money(expressFee) }}</span>
+              </label>
+            </div>
           </div>
 
           <div ref="methodsRef" class="co_section co_section--methods" :class="{ 'is-open': methodsOpen, 'has-error': methodError }">
@@ -289,6 +470,11 @@ function placeOrder() {
                 </button>
               </div>
               <p v-if="promoError" class="co_promo_err">{{ promoError }}</p>
+            </div>
+
+            <div class="co_row">
+              <span>Delivery{{ delivery === 'express' ? ' (Express)' : '' }}</span>
+              <span>{{ deliveryFee > 0 ? money(deliveryFee) : 'Free' }}</span>
             </div>
 
             <div class="co_row co_row_total">
@@ -406,6 +592,86 @@ function placeOrder() {
 }
 .co_field:focus {
   border-color: rgba(43, 255, 149, 0.5);
+}
+
+/* Compact 2-column billing grid so the form doesn't stretch down the page. */
+.co_fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.co_field_wrap {
+  min-width: 0;
+}
+.co_field_wrap--full {
+  grid-column: 1 / -1;
+}
+
+/* <select> styled to match .co_field, with a custom chevron. */
+.co_select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 44px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' stroke='%23ffffff' stroke-opacity='0.6' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+}
+.co_select.is-placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+.co_select option {
+  color: #111;
+}
+
+/* Delivery method options (reuse the payment-method radio visual). */
+.co_delivery {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.co_delivery_opt {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.co_delivery_opt.is-active {
+  border-color: rgba(43, 255, 149, 0.5);
+}
+.co_delivery_opt input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.co_delivery_opt.is-active .co_method_radio {
+  border-color: transparent;
+  background: radial-gradient(136.56% 99.31% at 37.02% 26.55%, #2bff95 0%, #054792 100%);
+  box-shadow: inset 0 0 0 4px #060b15;
+}
+.co_delivery_label {
+  flex: 1;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+}
+.co_delivery_time {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400;
+  font-size: 13px;
+  margin-left: 6px;
+}
+.co_delivery_price {
+  color: #2bff95;
+  font-weight: 700;
+  font-size: 15px;
 }
 .co_field--error,
 .co_field--error:focus {

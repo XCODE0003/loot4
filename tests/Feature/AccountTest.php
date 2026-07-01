@@ -101,6 +101,8 @@ class AccountTest extends TestCase
 
         $this->actingAs($user)->post('/checkout', [
             'email' => $user->email,
+            'first_name' => 'John', 'last_name' => 'Doe', 'country' => 'US',
+            'town' => 'LA', 'address' => '1 St', 'postal_code' => '90001',
             'items' => [['slug' => 'pp', 'qty' => 1]],
         ])->assertRedirect();
 

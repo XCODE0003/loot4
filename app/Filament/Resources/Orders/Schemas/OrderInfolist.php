@@ -26,8 +26,23 @@ class OrderInfolist
                         TextEntry::make('delivery_status')->label('Delivery')->badge(),
                         TextEntry::make('subtotal')->money(fn (Order $r): string => $r->currency ?? 'USD'),
                         TextEntry::make('discount')->money(fn (Order $r): string => $r->currency ?? 'USD'),
+                        TextEntry::make('delivery_fee')->label('Delivery')->money(fn (Order $r): string => $r->currency ?? 'USD'),
                         TextEntry::make('total')->money(fn (Order $r): string => $r->currency ?? 'USD')->weight('bold'),
                         TextEntry::make('created_at')->label('Placed')->dateTime('M j, Y H:i'),
+                    ]),
+
+                Section::make('Billing & Delivery')
+                    ->icon('heroicon-m-truck')
+                    ->columns(3)
+                    ->schema([
+                        TextEntry::make('first_name')->label('First name')->placeholder('—'),
+                        TextEntry::make('last_name')->label('Last name')->placeholder('—'),
+                        TextEntry::make('phone')->copyable()->placeholder('—'),
+                        TextEntry::make('address')->placeholder('—'),
+                        TextEntry::make('town')->label('Town / City')->placeholder('—'),
+                        TextEntry::make('state')->label('State / region')->placeholder('—'),
+                        TextEntry::make('postal_code')->label('Postal code')->placeholder('—'),
+                        TextEntry::make('delivery_method')->label('Delivery method')->badge()->placeholder('—'),
                     ]),
 
                 Section::make('Customer Information')

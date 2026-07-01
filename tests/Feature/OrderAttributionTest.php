@@ -21,6 +21,8 @@ class OrderAttributionTest extends TestCase
 
         $payload = [
             'email' => 'buyer@example.com',
+            'first_name' => 'John', 'last_name' => 'Doe', 'country' => 'US',
+            'town' => 'LA', 'address' => '1 St', 'postal_code' => '90001',
             'items' => [['slug' => 'gta-cash', 'qty' => 1]],
         ];
 

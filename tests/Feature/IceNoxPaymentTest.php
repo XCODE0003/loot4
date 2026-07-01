@@ -7,6 +7,7 @@ use App\Enums\ProductStatus;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Services\Payments\IceNoxGateway;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
@@ -22,7 +23,7 @@ class IceNoxPaymentTest extends TestCase
             'services.icenox.merchant' => '20233',
             'services.icenox.url' => 'https://imp.icenox.com',
         ]);
-        $this->app->forgetInstance(\App\Services\Payments\IceNoxGateway::class);
+        $this->app->forgetInstance(IceNoxGateway::class);
     }
 
     public function test_checkout_redirects_to_icenox_payment_url(): void
@@ -41,6 +42,8 @@ class IceNoxPaymentTest extends TestCase
 
         $response = $this->post('/checkout', [
             'email' => 'buyer@example.com',
+            'first_name' => 'John', 'last_name' => 'Doe', 'country' => 'US',
+            'town' => 'LA', 'address' => '1 St', 'postal_code' => '90001',
             'items' => [['slug' => 'gta-cash', 'qty' => 1]],
             'method' => 'stripe-cards',
         ]);
@@ -67,6 +70,8 @@ class IceNoxPaymentTest extends TestCase
 
         $this->post('/checkout', [
             'email' => 'x@y.com',
+            'first_name' => 'John', 'last_name' => 'Doe', 'country' => 'US',
+            'town' => 'LA', 'address' => '1 St', 'postal_code' => '90001',
             'items' => [['slug' => 'p1', 'qty' => 1]],
             'method' => 'stripe-cards',
         ])->assertSessionHasErrors('payment');
@@ -92,12 +97,14 @@ class IceNoxPaymentTest extends TestCase
     public function test_checkout_without_gateway_falls_back_to_success(): void
     {
         config(['services.icenox.key' => null]);
-        $this->app->forgetInstance(\App\Services\Payments\IceNoxGateway::class);
+        $this->app->forgetInstance(IceNoxGateway::class);
 
         Product::factory()->create(['slug' => 'p2', 'status' => ProductStatus::Active, 'price' => 10]);
 
         $this->post('/checkout', [
             'email' => 'z@z.com',
+            'first_name' => 'John', 'last_name' => 'Doe', 'country' => 'US',
+            'town' => 'LA', 'address' => '1 St', 'postal_code' => '90001',
             'items' => [['slug' => 'p2', 'qty' => 1]],
         ])->assertRedirect();
 

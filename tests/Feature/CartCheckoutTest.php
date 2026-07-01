@@ -17,6 +17,26 @@ class CartCheckoutTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Required billing fields the checkout now expects.
+     *
+     * @param  array<string, mixed>  $overrides
+     * @return array<string, mixed>
+     */
+    private function billing(array $overrides = []): array
+    {
+        return [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'country' => 'US',
+            'state' => 'California',
+            'town' => 'Los Angeles',
+            'address' => '1 Market St',
+            'postal_code' => '90001',
+            ...$overrides,
+        ];
+    }
+
     public function test_coupon_validation_endpoint(): void
     {
         Coupon::factory()->create([
@@ -43,6 +63,7 @@ class CartCheckoutTest extends TestCase
         Product::factory()->create(['slug' => 'gta-cash', 'status' => ProductStatus::Active, 'price' => 20]);
 
         $this->post('/checkout', [
+            ...$this->billing(),
             'email' => 'buyer@example.com',
             'items' => [['slug' => 'gta-cash', 'qty' => 2, 'option' => 'PS4 · $10M']],
             'coupon' => null,
@@ -77,6 +98,7 @@ class CartCheckoutTest extends TestCase
         ]);
 
         $this->post('/checkout', [
+            ...$this->billing(),
             'email' => 'buyer@example.com',
             'items' => [[
                 'slug' => 'gta-cash',
@@ -116,6 +138,7 @@ class CartCheckoutTest extends TestCase
 
         // Bogus selection for a required group → line dropped → no valid items.
         $this->post('/checkout', [
+            ...$this->billing(),
             'email' => 'buyer@example.com',
             'items' => [['slug' => 'gta-cash', 'qty' => 1, 'selections' => ['amount' => 'bogus']]],
         ])->assertSessionHasErrors('items');
@@ -137,6 +160,7 @@ class CartCheckoutTest extends TestCase
         ]);
 
         $this->post('/checkout', [
+            ...$this->billing(),
             'email' => 'a@b.com',
             'items' => [['slug' => 'p1', 'qty' => 1]],
             'coupon' => 'TENOFF',
@@ -160,7 +184,7 @@ class CartCheckoutTest extends TestCase
     public function test_success_page_renders(): void
     {
         Product::factory()->create(['slug' => 'p2', 'status' => ProductStatus::Active, 'price' => 15]);
-        $this->post('/checkout', ['email' => 'c@d.com', 'items' => [['slug' => 'p2', 'qty' => 1]]]);
+        $this->post('/checkout', [...$this->billing(), 'email' => 'c@d.com', 'items' => [['slug' => 'p2', 'qty' => 1]]]);
         $order = Order::where('email', 'c@d.com')->firstOrFail();
 
         $this->get('/checkout/success/'.$order->order_number)
@@ -169,5 +193,72 @@ class CartCheckoutTest extends TestCase
                 ->component('loot4/CheckoutSuccess')
                 ->where('order.number', $order->order_number)
                 ->has('order.items', 1));
+    }
+
+    public function test_checkout_requires_billing_fields(): void
+    {
+        Product::factory()->create(['slug' => 'p3', 'status' => ProductStatus::Active, 'price' => 10]);
+
+        $this->post('/checkout', [
+            'email' => 'buyer@example.com',
+            'items' => [['slug' => 'p3', 'qty' => 1]],
+        ])->assertSessionHasErrors(['first_name', 'last_name', 'country', 'town', 'address', 'postal_code']);
+
+        $this->assertSame(0, Order::where('email', 'buyer@example.com')->count());
+    }
+
+    public function test_billing_details_are_stored_on_the_order(): void
+    {
+        Product::factory()->create(['slug' => 'p4', 'status' => ProductStatus::Active, 'price' => 25]);
+
+        $this->post('/checkout', [
+            ...$this->billing(['first_name' => 'Ada', 'last_name' => 'Lovelace', 'phone' => '+15550001', 'postal_code' => '10001']),
+            'email' => 'ada@example.com',
+            'items' => [['slug' => 'p4', 'qty' => 1]],
+        ])->assertRedirect();
+
+        $order = Order::where('email', 'ada@example.com')->firstOrFail();
+        $this->assertSame('Ada', $order->first_name);
+        $this->assertSame('Lovelace', $order->last_name);
+        $this->assertSame('+15550001', $order->phone);
+        $this->assertSame('US', $order->country);
+        $this->assertSame('California', $order->state);
+        $this->assertSame('Los Angeles', $order->town);
+        $this->assertSame('10001', $order->postal_code);
+    }
+
+    public function test_express_delivery_adds_fee_to_total(): void
+    {
+        Product::factory()->create(['slug' => 'p5', 'status' => ProductStatus::Active, 'price' => 30]);
+        config(['checkout.express_delivery_fee' => 20.99]);
+
+        $this->post('/checkout', [
+            ...$this->billing(),
+            'email' => 'exp@example.com',
+            'items' => [['slug' => 'p5', 'qty' => 1]],
+            'delivery' => 'express',
+        ])->assertRedirect();
+
+        $order = Order::where('email', 'exp@example.com')->firstOrFail();
+        $this->assertSame('express', $order->delivery_method);
+        $this->assertEquals(20.99, (float) $order->delivery_fee);
+        $this->assertEquals(50.99, (float) $order->total); // 30 + 20.99
+    }
+
+    public function test_standard_delivery_is_free(): void
+    {
+        Product::factory()->create(['slug' => 'p6', 'status' => ProductStatus::Active, 'price' => 30]);
+
+        $this->post('/checkout', [
+            ...$this->billing(),
+            'email' => 'std@example.com',
+            'items' => [['slug' => 'p6', 'qty' => 1]],
+            'delivery' => 'standard',
+        ])->assertRedirect();
+
+        $order = Order::where('email', 'std@example.com')->firstOrFail();
+        $this->assertSame('standard', $order->delivery_method);
+        $this->assertEquals(0, (float) $order->delivery_fee);
+        $this->assertEquals(30, (float) $order->total);
     }
 }

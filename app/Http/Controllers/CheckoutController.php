@@ -62,7 +62,9 @@ class CheckoutController extends Controller
 
     public function index(): Response
     {
-        return Inertia::render('loot4/Checkout');
+        return Inertia::render('loot4/Checkout', [
+            'expressFee' => (float) config('checkout.express_delivery_fee'),
+        ]);
     }
 
     /**
@@ -73,6 +75,16 @@ class CheckoutController extends Controller
     {
         $data = $request->validate([
             'email' => ['required', 'email'],
+            // Billing details. State is nullable — many countries have no regions.
+            'first_name' => ['required', 'string', 'max:120'],
+            'last_name' => ['required', 'string', 'max:120'],
+            'phone' => ['nullable', 'string', 'max:40'],
+            'country' => ['required', 'string', 'max:2'],
+            'state' => ['nullable', 'string', 'max:120'],
+            'town' => ['required', 'string', 'max:120'],
+            'address' => ['required', 'string', 'max:255'],
+            'postal_code' => ['required', 'string', 'max:40'],
+            'delivery' => ['nullable', 'string', 'in:standard,express'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.slug' => ['required', 'string'],
             'items.*.qty' => ['required', 'integer', 'min:1'],
@@ -86,6 +98,10 @@ class CheckoutController extends Controller
         ]);
 
         $method = $data['method'] ?? self::PAYMENT_METHODS[0];
+
+        // Delivery fee is server-authoritative — the client only names the choice.
+        $deliveryMethod = ($data['delivery'] ?? 'standard') === 'express' ? 'express' : 'standard';
+        $deliveryFee = $deliveryMethod === 'express' ? (float) config('checkout.express_delivery_fee') : 0.0;
 
         $lines = [];
         $subtotal = 0.0;
@@ -138,10 +154,10 @@ class CheckoutController extends Controller
 
         $coupon = $this->resolveCoupon($data['coupon'] ?? null, $subtotal);
         $discount = $this->discountFor($coupon, $subtotal);
-        $total = max(0, $subtotal - $discount);
+        $total = max(0, $subtotal - $discount) + $deliveryFee;
 
-        // Resolve the country from the IP outside the transaction (cached, fails safe).
-        $country = app(IpCountry::class)->lookup($request->ip());
+        // Prefer the country the customer selected; fall back to IP geolocation.
+        $country = $data['country'] ?? app(IpCountry::class)->lookup($request->ip());
 
         // Normalize the client-captured attribution (utm/gclid/fbclid/...) into
         // order columns; falls back to source=storefront when nothing was captured.
@@ -150,12 +166,21 @@ class CheckoutController extends Controller
             $request->getHost(),
         );
 
-        $order = DB::transaction(function () use ($data, $lines, $subtotal, $discount, $total, $coupon, $request, $method, $country, $attribution): Order {
+        $order = DB::transaction(function () use ($data, $lines, $subtotal, $discount, $total, $coupon, $request, $method, $country, $attribution, $deliveryMethod, $deliveryFee): Order {
             $order = Order::create([
                 'user_id' => $request->user()?->id,
                 'email' => $data['email'],
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'phone' => $data['phone'] ?? null,
                 'ip' => $request->ip(),
                 'country' => $country,
+                'state' => $data['state'] ?? null,
+                'town' => $data['town'],
+                'address' => $data['address'],
+                'postal_code' => $data['postal_code'],
+                'delivery_method' => $deliveryMethod,
+                'delivery_fee' => $deliveryFee,
                 'status' => OrderStatus::Pending,
                 'payment_status' => PaymentStatus::Pending,
                 'delivery_status' => DeliveryStatus::Pending,
