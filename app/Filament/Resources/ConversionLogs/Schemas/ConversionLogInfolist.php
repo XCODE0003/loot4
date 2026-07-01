@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ConversionLogs\Schemas;
 
+use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -27,8 +28,22 @@ class ConversionLogInfolist
                         TextEntry::make('reason')->placeholder('—')->columnSpanFull(),
                     ]),
 
-                Section::make('Request payload')
+                // Human-readable view of what was reported for this conversion
+                // (e.g. the Google Ads / Facebook / TikTok fire), as a key→value
+                // table instead of a raw JSON blob.
+                Section::make('Conversion payload')
+                    ->schema([
+                        KeyValueEntry::make('conversion_payload')
+                            ->hiddenLabel()
+                            ->keyLabel('Field')
+                            ->valueLabel('Value')
+                            ->state(fn ($record): array => self::readablePayload($record))
+                            ->placeholder('—'),
+                    ]),
+
+                Section::make('Raw request payload (debug)')
                     ->collapsible()
+                    ->collapsed()
                     ->schema([
                         TextEntry::make('request_payload')
                             ->hiddenLabel()
@@ -37,8 +52,9 @@ class ConversionLogInfolist
                             ->placeholder('—'),
                     ]),
 
-                Section::make('Response payload')
+                Section::make('Raw response payload (debug)')
                     ->collapsible()
+                    ->collapsed()
                     ->schema([
                         TextEntry::make('response_payload')
                             ->hiddenLabel()
@@ -47,5 +63,30 @@ class ConversionLogInfolist
                             ->placeholder('—'),
                     ]),
             ]);
+    }
+
+    /**
+     * Flatten the stored payload into a readable [field => value] map. Browser
+     * pixels wrap the real fields under `client`; server-side sends store them
+     * at the top level. Booleans/arrays are rendered as friendly strings.
+     *
+     * @return array<string, string>
+     */
+    private static function readablePayload(object $record): array
+    {
+        $payload = is_array($record->request_payload ?? null) ? $record->request_payload : [];
+        $fields = is_array($payload['client'] ?? null) ? $payload['client'] : $payload;
+
+        $readable = [];
+        foreach ($fields as $key => $value) {
+            $readable[(string) $key] = match (true) {
+                is_bool($value) => $value ? 'yes' : 'no',
+                is_scalar($value) => (string) $value,
+                $value === null => '—',
+                default => (string) json_encode($value, JSON_UNESCAPED_SLASHES),
+            };
+        }
+
+        return $readable;
     }
 }
