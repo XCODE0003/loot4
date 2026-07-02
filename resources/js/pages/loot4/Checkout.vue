@@ -1212,6 +1212,24 @@ function placeOrder() {
     margin-bottom: 0;
   }
 
+  /* Compact inputs on mobile — the billing form is tall otherwise. 44px keeps
+     the iOS-friendly tap target while trimming height, padding and row gap. */
+  .co_field {
+    height: 44px;
+    padding: 0 18px;
+    font-size: 14px;
+  }
+  .co_fields {
+    gap: 10px;
+  }
+  .co_section_label {
+    margin-bottom: 8px;
+  }
+  .co_select {
+    padding-right: 40px;
+    background-position: right 16px center;
+  }
+
   .co_orderbox {
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;

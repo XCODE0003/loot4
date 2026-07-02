@@ -56,7 +56,13 @@ class IceNoxPaymentTest extends TestCase
 
         Http::assertSent(fn ($request) => str_contains($request->url(), '/api/payment/create/')
             && $request['paymentmethod'] === 'stripe-cards'
-            && $request->hasHeader('Authorization', 'Bearer test-key'));
+            && $request->hasHeader('Authorization', 'Bearer test-key')
+            // Customer info IceNox needs to create the Stripe Customer (name + email
+            // attached to the transaction). A guest has no account id, so customer_id
+            // falls back to the email — it must never be empty, or no Customer is made.
+            && $request['customer_name'] === 'John Doe'
+            && $request['customer_email'] === 'buyer@example.com'
+            && $request['customer_id'] === 'buyer@example.com');
     }
 
     public function test_checkout_shows_error_when_gateway_fails(): void

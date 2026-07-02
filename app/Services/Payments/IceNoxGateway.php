@@ -51,8 +51,15 @@ class IceNoxGateway
                 'total' => (float) $order->total,
                 'currency' => $order->currency,
                 'product' => 'Loot4you order '.$order->order_number,
+                // IceNox creates a Stripe Customer (name + email attached to the
+                // transaction) only when a non-empty customer_id is sent. Send the
+                // full billing name and a stable merchant id — the account id for
+                // logged-in buyers, the email for guests — so every order shows up
+                // in Stripe. Field names must match IceNox exactly (customer_id,
+                // not customerid, which IceNox ignores).
+                'customer_name' => trim($order->first_name.' '.$order->last_name),
                 'customer_email' => $order->email,
-                'customerid' => (string) ($order->user_id ?? ''),
+                'customer_id' => (string) ($order->user_id ?? $order->email),
                 // Custom integration: status webhook is POSTed to notification_url.
                 'notification_mode' => 'default',
                 'notification_url' => $notificationUrl,

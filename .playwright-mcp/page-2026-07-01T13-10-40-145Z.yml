@@ -1,0 +1,468 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - banner [ref=f2e3]:
+      - generic [ref=f2e5]:
+        - link "Loot4you" [ref=f2e6] [cursor=pointer]:
+          - /url: /
+          - img "Loot4you" [ref=f2e7]
+        - generic [ref=f2e8]:
+          - list [ref=f2e9]:
+            - listitem [ref=f2e10]:
+              - link "Home" [ref=f2e11] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=f2e12]:
+              - button "Choose Game" [ref=f2e13] [cursor=pointer]:
+                - text: Choose Game
+                - img [ref=f2e14]
+            - listitem [ref=f2e16]:
+              - link "Contact Us" [ref=f2e17] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=f2e18]:
+              - link "Sell to Us" [ref=f2e19] [cursor=pointer]:
+                - /url: /sell
+            - listitem [ref=f2e20]:
+              - link "Reviews" [ref=f2e21] [cursor=pointer]:
+                - /url: https://www.trustpilot.com/review/loot4you.gg/
+          - generic [ref=f2e22]:
+            - generic [ref=f2e23]:
+              - button "EN" [ref=f2e25] [cursor=pointer]:
+                - generic [ref=f2e26]: EN
+                - img [ref=f2e27]
+              - button "USD" [ref=f2e30] [cursor=pointer]:
+                - generic [ref=f2e31]: USD
+                - img [ref=f2e32]
+            - button "Open cart" [ref=f2e34] [cursor=pointer]:
+              - img [ref=f2e35]
+              - generic [ref=f2e39]: "1"
+          - link "Login" [ref=f2e40] [cursor=pointer]:
+            - /url: /login
+    - main [ref=f2e41]:
+      - generic [ref=f2e44]:
+        - generic [ref=f2e45]:
+          - heading "Checkout" [level=1] [ref=f2e46]
+          - generic [ref=f2e47]:
+            - paragraph [ref=f2e48]: Customer information
+            - generic [ref=f2e49]:
+              - textbox "First name" [ref=f2e51]:
+                - /placeholder: First name *
+              - textbox "Last name" [ref=f2e53]:
+                - /placeholder: Last name *
+              - textbox "Email" [ref=f2e55]:
+                - /placeholder: Email *
+              - textbox "Phone" [ref=f2e57]:
+                - /placeholder: Phone (optional)
+              - combobox "Country" [ref=f2e59] [cursor=pointer]:
+                - option "Country *" [disabled] [selected]
+                - option "Afghanistan"
+                - option "Åland Islands"
+                - option "Albania"
+                - option "Algeria"
+                - option "American Samoa"
+                - option "Andorra"
+                - option "Angola"
+                - option "Anguilla"
+                - option "Antarctica"
+                - option "Antigua and Barbuda"
+                - option "Argentina"
+                - option "Armenia"
+                - option "Aruba"
+                - option "Australia"
+                - option "Austria"
+                - option "Azerbaijan"
+                - option "Bahamas"
+                - option "Bahrain"
+                - option "Bangladesh"
+                - option "Barbados"
+                - option "Belarus"
+                - option "Belgium"
+                - option "Belize"
+                - option "Benin"
+                - option "Bermuda"
+                - option "Bhutan"
+                - option "Bolivia"
+                - option "Bonaire, Sint Eustatius and Saba"
+                - option "Bosnia and Herzegovina"
+                - option "Botswana"
+                - option "Bouvet Island"
+                - option "Brazil"
+                - option "British Indian Ocean Territory"
+                - option "Brunei Darussalam"
+                - option "Bulgaria"
+                - option "Burkina Faso"
+                - option "Burundi"
+                - option "Cambodia"
+                - option "Cameroon"
+                - option "Canada"
+                - option "Cape Verde"
+                - option "Cayman Islands"
+                - option "Central African Republic"
+                - option "Chad"
+                - option "Chile"
+                - option "China"
+                - option "Christmas Island"
+                - option "Cocos (Keeling) Islands"
+                - option "Colombia"
+                - option "Comoros"
+                - option "Congo, Republic of the (Brazzaville)"
+                - option "Congo, the Democratic Republic of the (Kinshasa)"
+                - option "Cook Islands"
+                - option "Costa Rica"
+                - option "Côte d'Ivoire, Republic of"
+                - option "Croatia"
+                - option "Cuba"
+                - option "Curaçao"
+                - option "Cyprus"
+                - option "Czech Republic"
+                - option "Denmark"
+                - option "Djibouti"
+                - option "Dominica"
+                - option "Dominican Republic"
+                - option "Ecuador"
+                - option "Egypt"
+                - option "El Salvador"
+                - option "Equatorial Guinea"
+                - option "Eritrea"
+                - option "Estonia"
+                - option "Eswatini"
+                - option "Ethiopia"
+                - option "Falkland Islands (Islas Malvinas)"
+                - option "Faroe Islands"
+                - option "Fiji"
+                - option "Finland"
+                - option "France"
+                - option "French Guiana"
+                - option "French Polynesia"
+                - option "French Southern and Antarctic Lands"
+                - option "Gabon"
+                - option "Gambia, The"
+                - option "Georgia"
+                - option "Germany"
+                - option "Ghana"
+                - option "Gibraltar"
+                - option "Greece"
+                - option "Greenland"
+                - option "Grenada"
+                - option "Guadeloupe"
+                - option "Guam"
+                - option "Guatemala"
+                - option "Guernsey"
+                - option "Guinea"
+                - option "Guinea-Bissau"
+                - option "Guyana"
+                - option "Haiti"
+                - option "Heard Island and McDonald Islands"
+                - option "Holy See (Vatican City)"
+                - option "Honduras"
+                - option "Hong Kong"
+                - option "Hungary"
+                - option "Iceland"
+                - option "India"
+                - option "Indonesia"
+                - option "Iran, Islamic Republic of"
+                - option "Iraq"
+                - option "Ireland"
+                - option "Isle of Man"
+                - option "Israel"
+                - option "Italy"
+                - option "Jamaica"
+                - option "Japan"
+                - option "Jersey"
+                - option "Jordan"
+                - option "Kazakhstan"
+                - option "Kenya"
+                - option "Kiribati"
+                - option "Korea, Democratic People's Republic of"
+                - option "Korea, Republic of"
+                - option "Kosovo"
+                - option "Kuwait"
+                - option "Kyrgyzstan"
+                - option "Laos"
+                - option "Latvia"
+                - option "Lebanon"
+                - option "Lesotho"
+                - option "Liberia"
+                - option "Libya"
+                - option "Liechtenstein"
+                - option "Lithuania"
+                - option "Luxembourg"
+                - option "Macao"
+                - option "Macedonia, Republic of"
+                - option "Madagascar"
+                - option "Malawi"
+                - option "Malaysia"
+                - option "Maldives"
+                - option "Mali"
+                - option "Malta"
+                - option "Marshall Islands"
+                - option "Martinique"
+                - option "Mauritania"
+                - option "Mauritius"
+                - option "Mayotte"
+                - option "Mexico"
+                - option "Micronesia, Federated States of"
+                - option "Moldova"
+                - option "Monaco"
+                - option "Mongolia"
+                - option "Montenegro"
+                - option "Montserrat"
+                - option "Morocco"
+                - option "Mozambique"
+                - option "Myanmar"
+                - option "Namibia"
+                - option "Nauru"
+                - option "Nepal"
+                - option "Netherlands"
+                - option "New Caledonia"
+                - option "New Zealand"
+                - option "Nicaragua"
+                - option "Niger"
+                - option "Nigeria"
+                - option "Niue"
+                - option "Norfolk Island"
+                - option "Northern Mariana Islands"
+                - option "Norway"
+                - option "Oman"
+                - option "Pakistan"
+                - option "Palau"
+                - option "Palestine"
+                - option "Panama"
+                - option "Papua New Guinea"
+                - option "Paraguay"
+                - option "Peru"
+                - option "Philippines"
+                - option "Pitcairn"
+                - option "Poland"
+                - option "Portugal"
+                - option "Puerto Rico"
+                - option "Qatar"
+                - option "Réunion"
+                - option "Romania"
+                - option "Russian Federation"
+                - option "Rwanda"
+                - option "Saint Barthélemy"
+                - option "Saint Helena, Ascension and Tristan da Cunha"
+                - option "Saint Kitts and Nevis"
+                - option "Saint Lucia"
+                - option "Saint Martin"
+                - option "Saint Pierre and Miquelon"
+                - option "Saint Vincent and the Grenadines"
+                - option "Samoa"
+                - option "San Marino"
+                - option "Sao Tome and Principe"
+                - option "Saudi Arabia"
+                - option "Senegal"
+                - option "Serbia"
+                - option "Seychelles"
+                - option "Sierra Leone"
+                - option "Singapore"
+                - option "Sint Maarten (Dutch part)"
+                - option "Slovakia"
+                - option "Slovenia"
+                - option "Solomon Islands"
+                - option "Somalia"
+                - option "South Africa"
+                - option "South Georgia and South Sandwich Islands"
+                - option "South Sudan"
+                - option "Spain"
+                - option "Sri Lanka"
+                - option "Sudan"
+                - option "Suriname"
+                - option "Sweden"
+                - option "Switzerland"
+                - option "Syrian Arab Republic"
+                - option "Taiwan"
+                - option "Tajikistan"
+                - option "Tanzania, United Republic of"
+                - option "Thailand"
+                - option "Timor-Leste"
+                - option "Togo"
+                - option "Tokelau"
+                - option "Tonga"
+                - option "Trinidad and Tobago"
+                - option "Tunisia"
+                - option "Turkey"
+                - option "Turkmenistan"
+                - option "Turks and Caicos Islands"
+                - option "Tuvalu"
+                - option "Uganda"
+                - option "Ukraine"
+                - option "United Arab Emirates"
+                - option "United Kingdom"
+                - option "United States"
+                - option "United States Minor Outlying Islands"
+                - option "Uruguay"
+                - option "Uzbekistan"
+                - option "Vanuatu"
+                - option "Venezuela, Bolivarian Republic of"
+                - option "Vietnam"
+                - option "Virgin Islands, British"
+                - option "Virgin Islands, U.S."
+                - option "Wallis and Futuna"
+                - option "Western Sahara"
+                - option "Yemen"
+                - option "Zambia"
+                - option "Zimbabwe"
+              - textbox "State or region" [ref=f2e61]:
+                - /placeholder: State / region
+              - textbox "Town" [ref=f2e63]:
+                - /placeholder: Town / City *
+              - textbox "Postal code" [ref=f2e65]:
+                - /placeholder: Postal code *
+              - textbox "Address" [ref=f2e67]:
+                - /placeholder: Address *
+          - generic [ref=f2e68]:
+            - heading "Delivery" [level=2] [ref=f2e69]
+            - generic [ref=f2e70]:
+              - generic [ref=f2e71] [cursor=pointer]:
+                - radio "Standard 1–24 hours Free" [checked]
+                - generic [ref=f2e73]: Standard 1–24 hours
+                - generic [ref=f2e74]: Free
+              - generic [ref=f2e75] [cursor=pointer]:
+                - radio "Express 1–12 hours $20.99"
+                - generic [ref=f2e77]: Express 1–12 hours
+                - generic [ref=f2e78]: $20.99
+          - generic [ref=f2e79]:
+            - heading "Pay with" [level=2] [ref=f2e80]
+            - generic [ref=f2e81]:
+              - generic [ref=f2e82] [cursor=pointer]:
+                - radio "Credit / Debit Card"
+                - generic [ref=f2e84]: Credit / Debit Card
+              - generic [ref=f2e86] [cursor=pointer]:
+                - radio "Apple Pay"
+                - generic [ref=f2e88]: Apple Pay
+              - generic [ref=f2e90] [cursor=pointer]:
+                - radio "Google Pay"
+                - generic [ref=f2e92]: Google Pay
+              - generic [ref=f2e94] [cursor=pointer]:
+                - radio "Link"
+                - generic [ref=f2e96]: Link
+              - generic [ref=f2e98] [cursor=pointer]:
+                - radio "Klarna"
+                - generic [ref=f2e100]: Klarna
+              - generic [ref=f2e102] [cursor=pointer]:
+                - radio "Amazon Pay"
+                - generic [ref=f2e104]: Amazon Pay
+              - generic [ref=f2e106] [cursor=pointer]:
+                - radio "Bancontact"
+                - generic [ref=f2e108]: Bancontact
+              - generic [ref=f2e110] [cursor=pointer]:
+                - radio "EPS"
+                - generic [ref=f2e112]: EPS
+              - generic [ref=f2e114] [cursor=pointer]:
+                - radio "Revolut Pay"
+                - generic [ref=f2e116]: Revolut Pay
+        - complementary [ref=f2e118]:
+          - generic [ref=f2e120]:
+            - generic [ref=f2e122]:
+              - button "Remove item" [ref=f2e123] [cursor=pointer]:
+                - img [ref=f2e124]
+              - img "Express Item" [ref=f2e126]
+              - generic [ref=f2e127]:
+                - paragraph [ref=f2e128]: Express Item
+                - generic [ref=f2e129]:
+                  - button "Decrease quantity" [ref=f2e130] [cursor=pointer]: −
+                  - generic [ref=f2e131]: "1"
+                  - button "Increase quantity" [ref=f2e132] [cursor=pointer]: +
+              - generic [ref=f2e134]: $29.99
+            - generic [ref=f2e135]:
+              - generic [ref=f2e136]:
+                - generic [ref=f2e137]: Total items
+                - generic [ref=f2e138]: "1"
+              - button "I have a promocode +" [ref=f2e140] [cursor=pointer]:
+                - generic [ref=f2e141]: I have a promocode
+                - generic [ref=f2e142]: +
+              - generic [ref=f2e143]:
+                - generic [ref=f2e144]: Delivery
+                - generic [ref=f2e145]: Free
+              - generic [ref=f2e146]:
+                - generic [ref=f2e147]: Total
+                - generic [ref=f2e148]: $29.99
+          - generic [ref=f2e149]:
+            - generic [ref=f2e150]:
+              - paragraph [ref=f2e151]:
+                - text: Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our
+                - link "privacy policy" [ref=f2e152] [cursor=pointer]:
+                  - /url: /privacy
+                - text: .
+              - generic [ref=f2e153] [cursor=pointer]:
+                - checkbox "I have read and agree to the website terms and conditions*" [checked]
+                - generic [ref=f2e155]:
+                  - text: I have read and agree to the website
+                  - link "terms and conditions" [ref=f2e156]:
+                    - /url: /terms
+                  - text: "*"
+            - button "Pay Now" [ref=f2e157] [cursor=pointer]:
+              - generic [ref=f2e158]: Pay Now
+            - paragraph [ref=f2e159]:
+              - img [ref=f2e160]
+              - text: Your payment is encrypted and secure.
+    - contentinfo [ref=f2e162]:
+      - generic [ref=f2e163]:
+        - generic [ref=f2e164]:
+          - generic [ref=f2e165]:
+            - link "Loot4You" [ref=f2e166] [cursor=pointer]:
+              - /url: /
+              - img "Loot4You" [ref=f2e167]
+            - paragraph [ref=f2e168]: The fastest, safest way to buy gaming credits and coins. Delivered in minutes — every time.
+            - generic [ref=f2e169]:
+              - paragraph [ref=f2e170]: Support
+              - generic [ref=f2e171]:
+                - img [ref=f2e172]
+                - generic [ref=f2e175]:
+                  - generic [ref=f2e176]: Mon – Fri, 9:00 AM – 6:00 PM
+                  - generic [ref=f2e177]: Email responses within 12 hours.
+              - generic [ref=f2e178]:
+                - img [ref=f2e179]
+                - link "support@loot4you.gg" [ref=f2e182] [cursor=pointer]:
+                  - /url: mailto:support@loot4you.gg
+              - generic [ref=f2e183]:
+                - img [ref=f2e184]
+                - link "+44 7455 903679" [ref=f2e186] [cursor=pointer]:
+                  - /url: tel:+447455903679
+              - generic [ref=f2e187]:
+                - img [ref=f2e188]
+                - paragraph [ref=f2e191]:
+                  - text: First Floor Office, 3 Hornton Place,
+                  - text: London, United Kingdom
+            - generic [ref=f2e192]:
+              - link "Discord" [ref=f2e193] [cursor=pointer]:
+                - /url: https://discord.gg/AyTrerusGZ
+                - img [ref=f2e194]
+              - link "Email" [ref=f2e196] [cursor=pointer]:
+                - /url: mailto:support@loot4you.gg
+                - img [ref=f2e197]
+              - link "WhatsApp" [ref=f2e200] [cursor=pointer]:
+                - /url: https://wa.me/380730882668
+                - img [ref=f2e201]
+          - generic [ref=f2e203]:
+            - paragraph [ref=f2e204]: Company
+            - navigation [ref=f2e205]:
+              - link "About Us" [ref=f2e206] [cursor=pointer]:
+                - /url: /about
+              - link "FAQ" [ref=f2e207] [cursor=pointer]:
+                - /url: /faq
+              - link "How It Works" [ref=f2e208] [cursor=pointer]:
+                - /url: /how-it-works
+              - link "Contact Us" [ref=f2e209] [cursor=pointer]:
+                - /url: /contact
+          - generic [ref=f2e210]:
+            - paragraph [ref=f2e211]: Legal
+            - navigation [ref=f2e212]:
+              - link "Privacy Policy" [ref=f2e213] [cursor=pointer]:
+                - /url: /privacy
+              - link "Terms & Conditions" [ref=f2e214] [cursor=pointer]:
+                - /url: /terms
+              - link "Refund Policy" [ref=f2e215] [cursor=pointer]:
+                - /url: /refunds
+              - link "Payment Policy" [ref=f2e216] [cursor=pointer]:
+                - /url: /payment-policy
+              - link "Shipping Policy" [ref=f2e217] [cursor=pointer]:
+                - /url: /shipping-policy
+              - link "Cookies Policy" [ref=f2e218] [cursor=pointer]:
+                - /url: /cookies-policy
+        - generic [ref=f2e220]:
+          - img "Accepted payment methods" [ref=f2e222]
+          - paragraph [ref=f2e223]: © 2026 Loot4You — All rights reserved.
+          - paragraph [ref=f2e224]: Loot4You is an independent platform not affiliated with, endorsed by, or sponsored by any video game developers or publishers, including Rockstar Games, Take-Two Interactive, Riot Games, Activision Blizzard, Electronic Arts, Epic Games, Tencent, Bungie, Grinding Gear Games, Square Enix, Valve, Battlestate Games, Wargaming.net, Amazon, Jagex, Smilegate RPG, Digital Extremes, and Ubisoft. All trademarks, game titles, logos and images featured on this website are property of their respective publishers and owners. The views and opinions expressed by Loot4You do not reflect those of any game developers or publishers.
+  - button "Contact us" [ref=f2e226] [cursor=pointer]:
+    - img [ref=f2e227]
