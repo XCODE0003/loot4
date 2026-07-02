@@ -755,7 +755,7 @@ function back() {
 .pog_price_old {
   margin-right: 4px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.45);
+  color: #ff6b6b;
   text-decoration: line-through;
 }
 .pog_dd_opt_check {

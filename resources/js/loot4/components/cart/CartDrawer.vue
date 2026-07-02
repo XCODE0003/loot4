@@ -293,7 +293,7 @@ async function applyPromo() {
 .cart_item_old {
   display: block;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.4);
+  color: #ff6b6b;
   text-decoration: line-through;
 }
 .cart_item_price {

@@ -1198,7 +1198,7 @@ font-size: 20px;
 line-height: 140%;
 letter-spacing: -0.02em;
 text-decoration: line-through;
-color: rgba(255, 255, 255, 0.5);
+color: #ff6b6b;
 }
 .game_cards_block_bottom_price_new {
   font-family: var(--font-family);
@@ -1648,7 +1648,7 @@ font-weight: 400;
 font-size: 22px;
 line-height: 150%;
 text-decoration: line-through;
-color: rgba(255, 255, 255, 0.25);
+color: #ff6b6b;
 }
 .product_main_section_price_button {
   margin-left: auto;

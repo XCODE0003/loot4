@@ -905,7 +905,7 @@ function placeOrder() {
   white-space: nowrap;
 }
 .co_item_price_old {
-  color: rgba(255, 255, 255, 0.4);
+  color: #ff6b6b;
   font-size: 13px;
   text-decoration: line-through;
 }
