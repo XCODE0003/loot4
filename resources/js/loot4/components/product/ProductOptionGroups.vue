@@ -498,6 +498,20 @@ function back() {
 }
 .pog_list--cols2 .pog_row {
   padding: 11px 12px;
+  /* Narrow 2-col cards can't fit a long label beside the price on one line
+     (it wrapped one word per line). Let the label use the full card width and
+     drop the price onto its own line beneath it. */
+  flex-wrap: wrap;
+  align-items: flex-start;
+  row-gap: 4px;
+}
+.pog_list--cols2 .pog_name {
+  flex: 1 1 auto;
+  line-height: 1.3;
+}
+.pog_list--cols2 .pog_price {
+  flex-basis: 100%;
+  padding-left: 30px; /* align under the label, past the mark (20px) + gap (10px) */
 }
 .pog_row {
   position: relative;
@@ -846,6 +860,10 @@ function back() {
   }
   .pog_list--cols2 .pog_row {
     padding: 7px 9px;
+  }
+  /* Smaller mark (15px) + gap (7px) on phones → tighter price indent. */
+  .pog_list--cols2 .pog_price {
+    padding-left: 22px;
   }
   .pog_mark {
     width: 15px;
