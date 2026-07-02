@@ -8,14 +8,6 @@ import { useLocale } from '@/loot4/composables/useLocale'
 import { asset } from '@/loot4/utils/asset'
 import { countries, regionsFor } from '@/loot4/data/countries'
 
-const props = defineProps({
-  // Delivery settings from the admin (Settings → Delivery), so the displayed
-  // fee/times match what the server charges.
-  expressFee: { type: Number, default: 20.99 },
-  standardTime: { type: String, default: '1–24 hours' },
-  expressTime: { type: String, default: '1–12 hours' },
-})
-
 const { t } = useI18n()
 const { items, subtotal, discount, total, coupon, count, remove, setQty, applyCoupon, clearCoupon, checkoutPayload, hydrate } = useCart()
 const { formatPrice } = useLocale()
@@ -55,20 +47,47 @@ watch(() => billing.value.country, () => {
 
 // Delivery choice — Standard is free, Express adds the server-provided fee.
 // Express is offered only when every item in the cart supports it.
-const delivery = ref('standard')
-const expressAvailable = computed(() => items.value.length > 0 && items.value.every((i) => i.express === true))
-// Express fee/time now come from the products themselves (set per-product in the
-// admin). Total fee = sum of each item's express fee; the props are a fallback
-// for carts saved before per-product pricing existed.
-const expressItems = computed(() => items.value.filter((i) => i.express === true))
-const expressFeeTotal = computed(() =>
-  expressItems.value.reduce((sum, i) => sum + (i.expressFee != null ? Number(i.expressFee) : props.expressFee), 0),
-)
-const expressTimeDisplay = computed(() => {
-  const times = [...new Set(expressItems.value.map((i) => i.expressTime).filter(Boolean))]
-  return times.length === 1 ? times[0] : props.expressTime
+// Delivery options come from the products (set per-product in the admin). One
+// selector for the whole order: we show the options every item offers (matched
+// by label); each option's price is the highest among the items. A single-item
+// cart therefore just shows that product's own options.
+const deliveryOptions = computed(() => {
+  const lists = items.value.map((i) => (Array.isArray(i.deliveryOptions) ? i.deliveryOptions : []))
+  // Any item with no options can't share a delivery choice → offer none (free).
+  if (!lists.length || lists.some((l) => l.length === 0)) return []
+
+  const commonLabels = lists.reduce(
+    (labels, list) => labels.filter((label) => list.some((o) => o.label === label)),
+    lists[0].map((o) => o.label),
+  )
+
+  const seen = new Set()
+  const out = []
+  for (const label of commonLabels) {
+    if (seen.has(label)) continue
+    seen.add(label)
+    const price = Math.max(...lists.map((list) => Number(list.find((o) => o.label === label)?.price) || 0))
+    out.push({ label, price })
+  }
+  return out
 })
-const deliveryFee = computed(() => (delivery.value === 'express' && expressAvailable.value ? expressFeeTotal.value : 0))
+const deliveryAvailable = computed(() => deliveryOptions.value.length > 0)
+const delivery = ref('')
+// Keep a valid selection; default to the cheapest option (usually free) so the
+// customer is never silently charged for delivery.
+watch(
+  deliveryOptions,
+  (opts) => {
+    if (!opts.length) {
+      delivery.value = ''
+    } else if (!opts.some((o) => o.label === delivery.value)) {
+      delivery.value = opts.reduce((min, o) => (o.price < min.price ? o : min), opts[0]).label
+    }
+  },
+  { immediate: true },
+)
+const selectedDelivery = computed(() => deliveryOptions.value.find((o) => o.label === delivery.value) ?? null)
+const deliveryFee = computed(() => selectedDelivery.value?.price ?? 0)
 
 // Collapsible "Order Summary" shutter (mobile only — always expanded on desktop).
 const summaryOpen = ref(false)
@@ -360,26 +379,21 @@ function placeOrder() {
             </div>
           </div>
 
-          <div v-if="expressAvailable" class="co_section co_section--delivery">
+          <div v-if="deliveryAvailable" class="co_section co_section--delivery">
             <h2 class="co_section_title">{{ $t('checkout.deliveryTitle') }}</h2>
             <div class="co_delivery">
-              <label class="co_delivery_opt" :class="{ 'is-active': delivery === 'standard' }">
+              <label
+                v-for="opt in deliveryOptions"
+                :key="opt.label"
+                class="co_delivery_opt"
+                :class="{ 'is-active': delivery === opt.label }"
+              >
                 <span class="co_delivery_top">
-                  <input v-model="delivery" type="radio" name="delivery" value="standard" />
+                  <input v-model="delivery" type="radio" name="delivery" :value="opt.label" />
                   <span class="co_method_radio" aria-hidden="true"></span>
-                  <span class="co_delivery_name">{{ $t('checkout.standard') }}</span>
+                  <span class="co_delivery_name">{{ opt.label }}</span>
                 </span>
-                <span class="co_delivery_time">{{ standardTime }}</span>
-                <span class="co_delivery_price">{{ $t('checkout.free') }}</span>
-              </label>
-              <label class="co_delivery_opt" :class="{ 'is-active': delivery === 'express' }">
-                <span class="co_delivery_top">
-                  <input v-model="delivery" type="radio" name="delivery" value="express" />
-                  <span class="co_method_radio" aria-hidden="true"></span>
-                  <span class="co_delivery_name">{{ $t('checkout.express') }}</span>
-                </span>
-                <span class="co_delivery_time">{{ expressTimeDisplay }}</span>
-                <span class="co_delivery_price">{{ money(expressFeeTotal) }}</span>
+                <span class="co_delivery_price">{{ opt.price > 0 ? money(opt.price) : $t('checkout.free') }}</span>
               </label>
             </div>
           </div>
@@ -495,8 +509,8 @@ function placeOrder() {
               <p v-if="promoError" class="co_promo_err">{{ promoError }}</p>
             </div>
 
-            <div v-if="expressAvailable" class="co_row">
-              <span>{{ $t('checkout.deliveryTitle') }}{{ delivery === 'express' ? ' (' + $t('checkout.express') + ')' : '' }}</span>
+            <div v-if="deliveryAvailable && selectedDelivery" class="co_row">
+              <span>{{ selectedDelivery.label }}</span>
               <span>{{ deliveryFee > 0 ? money(deliveryFee) : $t('checkout.free') }}</span>
             </div>
 

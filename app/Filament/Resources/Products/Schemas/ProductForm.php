@@ -6,6 +6,7 @@ use App\Enums\OptionsLayout;
 use App\Enums\ProductStatus;
 use App\Enums\ProductType;
 use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TagsInput;
@@ -13,7 +14,6 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
@@ -116,23 +116,30 @@ class ProductForm
                     ->columns(2)
                     ->schema([
                         Toggle::make('auto_delivery')->inline(false),
-                        Toggle::make('express_delivery')
-                            ->label('Express delivery')
-                            ->helperText('Offer the paid Express option at checkout. Shown only when every item in the cart offers it.')
-                            ->inline(false)
-                            ->live(),
-                        TextInput::make('express_fee')
-                            ->label('Express fee')
-                            ->helperText('Price added for Express on this product. Leave empty to use the global Settings → Delivery fee.')
-                            ->numeric()
-                            ->minValue(0)
-                            ->prefix('$')
-                            ->visible(fn (Get $get): bool => (bool) $get('express_delivery')),
-                        TextInput::make('express_time')
-                            ->label('Express time')
-                            ->helperText('Delivery time shown for Express (e.g. "1–12 hours"). Leave empty to use the global setting.')
-                            ->placeholder('1–12 hours')
-                            ->visible(fn (Get $get): bool => (bool) $get('express_delivery')),
+                        Repeater::make('delivery_options')
+                            ->label('Delivery options')
+                            ->helperText('Delivery choices shown on this product at checkout — add your own (e.g. "Standard (1–24h)" free, "Express (1–12h)" paid). Set price to 0 for free. Leave empty for no delivery choice.')
+                            ->schema([
+                                TextInput::make('label')
+                                    ->label('Name / time')
+                                    ->placeholder('Express (1–12 hours)')
+                                    ->required()
+                                    ->maxLength(120)
+                                    ->columnSpan(2),
+                                TextInput::make('price')
+                                    ->label('Price')
+                                    ->numeric()
+                                    ->minValue(0)
+                                    ->default(0)
+                                    ->prefix('$')
+                                    ->helperText('0 = free'),
+                            ])
+                            ->columns(3)
+                            ->reorderable()
+                            ->collapsible()
+                            ->itemLabel(fn (array $state): ?string => $state['label'] ?? null)
+                            ->addActionLabel('Add delivery option')
+                            ->columnSpanFull(),
                         Toggle::make('featured')->inline(false),
                         Toggle::make('visibility')->default(true)->inline(false),
                         TextInput::make('sort_order')->numeric()->default(0),

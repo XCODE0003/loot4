@@ -11,7 +11,6 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
-use App\Models\Setting;
 use App\Services\Attribution\AttributionResolver;
 use App\Services\Conversions\ConversionEligibility;
 use App\Services\Geo\IpCountry;
@@ -63,21 +62,55 @@ class CheckoutController extends Controller
 
     public function index(): Response
     {
-        return Inertia::render('loot4/Checkout', [
-            'expressFee' => $this->expressFee(),
-            'standardTime' => (string) (Setting::get('delivery_standard_time') ?: '1–24 hours'),
-            'expressTime' => (string) (Setting::get('delivery_express_time') ?: '1–12 hours'),
-        ]);
+        // Delivery options are per-product now, so they ride along with each cart
+        // item (client-side) — the checkout page needs no delivery props here.
+        return Inertia::render('loot4/Checkout');
     }
 
     /**
-     * The Express delivery surcharge — admin setting first, config default second.
+     * Delivery options shared by every product (matched by label, price = the
+     * highest among them), as a [label => ['label','price']] map. If any product
+     * has no options there is no shared choice, so the result is empty.
+     *
+     * @param  list<Product>  $products
+     * @return array<string, array{label: string, price: float}>
      */
-    private function expressFee(): float
+    private function commonDeliveryOptions(array $products): array
     {
-        $fee = Setting::get('delivery_express_fee');
+        if ($products === []) {
+            return [];
+        }
 
-        return (float) (is_numeric($fee) ? $fee : config('checkout.express_delivery_fee'));
+        $perProduct = array_map(fn (Product $p): array => $p->deliveryOptions(), $products);
+
+        // A product with no options can't share a delivery choice with the others.
+        foreach ($perProduct as $opts) {
+            if ($opts === []) {
+                return [];
+            }
+        }
+
+        $common = [];
+        foreach ($perProduct[0] as $first) {
+            $label = $first['label'];
+            $prices = [];
+            foreach ($perProduct as $opts) {
+                $match = null;
+                foreach ($opts as $o) {
+                    if ($o['label'] === $label) {
+                        $match = $o;
+                        break;
+                    }
+                }
+                if ($match === null) {
+                    continue 2; // not offered by every product → drop this label
+                }
+                $prices[] = (float) $match['price'];
+            }
+            $common[$label] ??= ['label' => $label, 'price' => max($prices)];
+        }
+
+        return $common;
     }
 
     /**
@@ -97,7 +130,8 @@ class CheckoutController extends Controller
             'town' => ['required', 'string', 'max:120'],
             'address' => ['required', 'string', 'max:255'],
             'postal_code' => ['required', 'string', 'max:40'],
-            'delivery' => ['nullable', 'string', 'in:standard,express'],
+            // The chosen delivery option's label; validated against the products' own options below.
+            'delivery' => ['nullable', 'string', 'max:120'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.slug' => ['required', 'string'],
             'items.*.qty' => ['required', 'integer', 'min:1'],
@@ -112,17 +146,13 @@ class CheckoutController extends Controller
 
         $method = $data['method'] ?? self::PAYMENT_METHODS[0];
 
-        // The client only names the delivery choice; whether Express is allowed
-        // and its fee are decided server-side below — every item must offer it.
-        $requestedExpress = ($data['delivery'] ?? 'standard') === 'express';
-        $allExpress = true;
+        // The client only names the chosen delivery option; the option set and its
+        // price are decided server-side below from the products' own options.
+        $requestedDelivery = trim((string) ($data['delivery'] ?? ''));
 
         $lines = [];
         $subtotal = 0.0;
         $incomplete = false;
-        // Express fee is summed from the products (per-product price set in admin,
-        // global Settings as fallback); only charged when every item is eligible.
-        $expressFeeTotal = 0.0;
 
         foreach ($data['items'] as $row) {
             $product = Product::query()
@@ -148,10 +178,6 @@ class CheckoutController extends Controller
             $price = $pricing->linePrice($product, $selections);
             $summary = $pricing->summary($product, $selections);
             $subtotal += $price * $qty;
-            $allExpress = $allExpress && (bool) $product->express_delivery;
-            if ($product->express_delivery) {
-                $expressFeeTotal += $product->effectiveExpressFee();
-            }
 
             $lines[] = [
                 'product' => $product,
@@ -173,11 +199,13 @@ class CheckoutController extends Controller
             return back()->withErrors(['items' => 'No valid items in the cart.']);
         }
 
-        // Express is honoured only when the customer asked for it AND every item
-        // offers it; otherwise the order falls back to free Standard delivery.
-        $expressAllowed = $requestedExpress && $allExpress;
-        $deliveryMethod = $expressAllowed ? 'express' : 'standard';
-        $deliveryFee = $expressAllowed ? round($expressFeeTotal, 2) : 0.0;
+        // Delivery options common to every product (matched by label, price = the
+        // highest among them), recomputed server-side so the fee can't be tampered
+        // with. The chosen label must be one of them; otherwise delivery is free.
+        $deliveryOptions = $this->commonDeliveryOptions(array_map(fn (array $l): Product => $l['product'], $lines));
+        $chosenDelivery = $deliveryOptions[$requestedDelivery] ?? null;
+        $deliveryMethod = $chosenDelivery['label'] ?? 'standard';
+        $deliveryFee = $chosenDelivery ? round((float) $chosenDelivery['price'], 2) : 0.0;
 
         $coupon = $this->resolveCoupon($data['coupon'] ?? null, $subtotal);
         $discount = $this->discountFor($coupon, $subtotal);

@@ -227,99 +227,121 @@ class CartCheckoutTest extends TestCase
         $this->assertSame('10001', $order->postal_code);
     }
 
-    public function test_express_delivery_adds_fee_to_total(): void
-    {
-        Product::factory()->create(['slug' => 'p5', 'status' => ProductStatus::Active, 'price' => 30, 'express_delivery' => true]);
-        config(['checkout.express_delivery_fee' => 20.99]);
-
-        $this->post('/checkout', [
-            ...$this->billing(),
-            'email' => 'exp@example.com',
-            'items' => [['slug' => 'p5', 'qty' => 1]],
-            'delivery' => 'express',
-        ])->assertRedirect();
-
-        $order = Order::where('email', 'exp@example.com')->firstOrFail();
-        $this->assertSame('express', $order->delivery_method);
-        $this->assertEquals(20.99, (float) $order->delivery_fee);
-        $this->assertEquals(50.99, (float) $order->total); // 30 + 20.99
-    }
-
-    public function test_express_is_ignored_when_a_product_does_not_offer_it(): void
-    {
-        // One item offers Express, the other does not → whole order falls back to
-        // free Standard (Express requires every item to support it).
-        Product::factory()->create(['slug' => 'ex-yes', 'status' => ProductStatus::Active, 'price' => 30, 'express_delivery' => true]);
-        Product::factory()->create(['slug' => 'ex-no', 'status' => ProductStatus::Active, 'price' => 10, 'express_delivery' => false]);
-        config(['checkout.express_delivery_fee' => 20.99]);
-
-        $this->post('/checkout', [
-            ...$this->billing(),
-            'email' => 'noexp@example.com',
-            'items' => [['slug' => 'ex-yes', 'qty' => 1], ['slug' => 'ex-no', 'qty' => 1]],
-            'delivery' => 'express',
-        ])->assertRedirect();
-
-        $order = Order::where('email', 'noexp@example.com')->firstOrFail();
-        $this->assertSame('standard', $order->delivery_method);
-        $this->assertEquals(0, (float) $order->delivery_fee);
-        $this->assertEquals(40, (float) $order->total); // 30 + 10, no express fee
-    }
-
-    public function test_express_fee_uses_the_per_product_price(): void
+    public function test_chosen_delivery_option_adds_its_price(): void
     {
         Product::factory()->create([
-            'slug' => 'exp-priced', 'status' => ProductStatus::Active, 'price' => 30,
-            'express_delivery' => true, 'express_fee' => 7.50,
+            'slug' => 'dp1', 'status' => ProductStatus::Active, 'price' => 30,
+            'delivery_options' => [
+                ['label' => 'Standard (1–24h)', 'price' => 0],
+                ['label' => 'Express (1–12h)', 'price' => 9.99],
+            ],
         ]);
-        // Global fallback is different, to prove the per-product value wins over it.
-        config(['checkout.express_delivery_fee' => 20.99]);
 
         $this->post('/checkout', [
             ...$this->billing(),
-            'email' => 'perprod@example.com',
-            'items' => [['slug' => 'exp-priced', 'qty' => 1]],
-            'delivery' => 'express',
+            'email' => 'dopt@example.com',
+            'items' => [['slug' => 'dp1', 'qty' => 1]],
+            'delivery' => 'Express (1–12h)',
         ])->assertRedirect();
 
-        $order = Order::where('email', 'perprod@example.com')->firstOrFail();
-        $this->assertSame('express', $order->delivery_method);
-        $this->assertEquals(7.50, (float) $order->delivery_fee);
-        $this->assertEquals(37.50, (float) $order->total); // 30 + 7.50 (not the 20.99 global)
+        $order = Order::where('email', 'dopt@example.com')->firstOrFail();
+        $this->assertSame('Express (1–12h)', $order->delivery_method);
+        $this->assertEquals(9.99, (float) $order->delivery_fee);
+        $this->assertEquals(39.99, (float) $order->total); // 30 + 9.99
     }
 
-    public function test_express_fee_sums_across_products_once_per_line(): void
+    public function test_free_delivery_option_costs_nothing(): void
     {
-        Product::factory()->create(['slug' => 'exp-a', 'status' => ProductStatus::Active, 'price' => 20, 'express_delivery' => true, 'express_fee' => 5]);
-        Product::factory()->create(['slug' => 'exp-b', 'status' => ProductStatus::Active, 'price' => 10, 'express_delivery' => true, 'express_fee' => 3]);
+        Product::factory()->create([
+            'slug' => 'dp2', 'status' => ProductStatus::Active, 'price' => 30,
+            'delivery_options' => [['label' => 'Standard', 'price' => 0], ['label' => 'Express', 'price' => 5]],
+        ]);
 
         $this->post('/checkout', [
             ...$this->billing(),
-            'email' => 'sum@example.com',
-            // exp-b has qty 2, but its express fee is charged once per line, not per unit.
-            'items' => [['slug' => 'exp-a', 'qty' => 1], ['slug' => 'exp-b', 'qty' => 2]],
-            'delivery' => 'express',
+            'email' => 'freeopt@example.com',
+            'items' => [['slug' => 'dp2', 'qty' => 1]],
+            'delivery' => 'Standard',
         ])->assertRedirect();
 
-        $order = Order::where('email', 'sum@example.com')->firstOrFail();
-        $this->assertSame('express', $order->delivery_method);
-        $this->assertEquals(8, (float) $order->delivery_fee); // 5 + 3
-        $this->assertEquals(48, (float) $order->total); // 20 + 10*2 + 8
+        $order = Order::where('email', 'freeopt@example.com')->firstOrFail();
+        $this->assertSame('Standard', $order->delivery_method);
+        $this->assertEquals(0, (float) $order->delivery_fee);
+        $this->assertEquals(30, (float) $order->total);
     }
 
-    public function test_standard_delivery_is_free(): void
+    public function test_delivery_price_cannot_be_tampered_with(): void
+    {
+        // The product's Express is $5, but the client claims a different amount by
+        // sending an unknown label — the server ignores it and charges $0.
+        Product::factory()->create([
+            'slug' => 'dp3', 'status' => ProductStatus::Active, 'price' => 30,
+            'delivery_options' => [['label' => 'Express', 'price' => 5]],
+        ]);
+
+        $this->post('/checkout', [
+            ...$this->billing(),
+            'email' => 'tamper@example.com',
+            'items' => [['slug' => 'dp3', 'qty' => 1]],
+            'delivery' => 'Free VIP shipping', // not a real option for this product
+        ])->assertRedirect();
+
+        $order = Order::where('email', 'tamper@example.com')->firstOrFail();
+        $this->assertEquals(0, (float) $order->delivery_fee);
+        $this->assertEquals(30, (float) $order->total);
+    }
+
+    public function test_only_options_shared_by_all_items_are_chargeable(): void
+    {
+        // Both share "Express"; only d-a offers "VIP" → VIP isn't a valid order-wide choice.
+        Product::factory()->create(['slug' => 'd-a', 'status' => ProductStatus::Active, 'price' => 20,
+            'delivery_options' => [['label' => 'Express', 'price' => 5], ['label' => 'VIP', 'price' => 50]]]);
+        Product::factory()->create(['slug' => 'd-b', 'status' => ProductStatus::Active, 'price' => 10,
+            'delivery_options' => [['label' => 'Express', 'price' => 8]]]);
+
+        $this->post('/checkout', [
+            ...$this->billing(),
+            'email' => 'shared@example.com',
+            'items' => [['slug' => 'd-a', 'qty' => 1], ['slug' => 'd-b', 'qty' => 1]],
+            'delivery' => 'VIP',
+        ])->assertRedirect();
+
+        $order = Order::where('email', 'shared@example.com')->firstOrFail();
+        $this->assertEquals(0, (float) $order->delivery_fee); // VIP not shared → free
+        $this->assertEquals(30, (float) $order->total);
+    }
+
+    public function test_shared_delivery_option_uses_the_highest_price(): void
+    {
+        Product::factory()->create(['slug' => 'm-a', 'status' => ProductStatus::Active, 'price' => 20,
+            'delivery_options' => [['label' => 'Express', 'price' => 5]]]);
+        Product::factory()->create(['slug' => 'm-b', 'status' => ProductStatus::Active, 'price' => 10,
+            'delivery_options' => [['label' => 'Express', 'price' => 8]]]);
+
+        $this->post('/checkout', [
+            ...$this->billing(),
+            'email' => 'maxprice@example.com',
+            'items' => [['slug' => 'm-a', 'qty' => 1], ['slug' => 'm-b', 'qty' => 1]],
+            'delivery' => 'Express',
+        ])->assertRedirect();
+
+        $order = Order::where('email', 'maxprice@example.com')->firstOrFail();
+        $this->assertSame('Express', $order->delivery_method);
+        $this->assertEquals(8, (float) $order->delivery_fee); // max(5, 8)
+        $this->assertEquals(38, (float) $order->total); // 20 + 10 + 8
+    }
+
+    public function test_product_without_delivery_options_is_free(): void
     {
         Product::factory()->create(['slug' => 'p6', 'status' => ProductStatus::Active, 'price' => 30]);
 
         $this->post('/checkout', [
             ...$this->billing(),
-            'email' => 'std@example.com',
+            'email' => 'noopt@example.com',
             'items' => [['slug' => 'p6', 'qty' => 1]],
-            'delivery' => 'standard',
         ])->assertRedirect();
 
-        $order = Order::where('email', 'std@example.com')->firstOrFail();
-        $this->assertSame('standard', $order->delivery_method);
+        $order = Order::where('email', 'noopt@example.com')->firstOrFail();
         $this->assertEquals(0, (float) $order->delivery_fee);
         $this->assertEquals(30, (float) $order->total);
     }

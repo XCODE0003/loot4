@@ -64,9 +64,7 @@ function buy() {
       selections: selectedSelections.value,
       price: displayPrice.value,
       priceOld: props.data.priceOld,
-      express: props.data.express === true,
-      expressFee: Number(props.data.expressFee) || 0,
-      expressTime: props.data.expressTime ?? null,
+      deliveryOptions: Array.isArray(props.data.deliveryOptions) ? props.data.deliveryOptions : [],
     },
     { open: false },
   )

@@ -180,13 +180,10 @@ class StorefrontController extends Controller
             ],
             'payments' => self::PAYMENT_ICONS,
             'platforms' => $this->platforms($product),
-            // Whether this product offers Express delivery — carried into the cart
-            // so checkout only shows Express when every item offers it. The fee/time
-            // (per-product, with a global fallback) ride along for display; the
-            // charge itself is recomputed server-side at checkout.
-            'express' => (bool) $product->express_delivery,
-            'expressFee' => $product->express_delivery ? $product->effectiveExpressFee() : 0.0,
-            'expressTime' => $product->express_delivery ? $product->effectiveExpressTime() : null,
+            // Admin-defined delivery choices (label + price) for this product,
+            // carried into the cart so checkout can show the delivery selector.
+            // The charge is recomputed server-side at checkout from these.
+            'deliveryOptions' => $product->deliveryOptions(),
             // Displayed/starting price: cheapest selectable option for variant products.
             'price' => $this->pricing->fromPrice($product),
             'priceOld' => ($comparePrice !== null && $comparePrice !== $price) ? $comparePrice : null,

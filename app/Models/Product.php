@@ -57,6 +57,7 @@ class Product extends Model implements HasMedia
         'express_delivery',
         'express_fee',
         'express_time',
+        'delivery_options',
         'delivery_instructions',
         'allowed_payment_methods',
         'visibility',
@@ -79,6 +80,7 @@ class Product extends Model implements HasMedia
             'auto_delivery' => 'boolean',
             'express_delivery' => 'boolean',
             'express_fee' => 'decimal:2',
+            'delivery_options' => 'array',
             'visibility' => 'boolean',
             'featured' => 'boolean',
             'allowed_payment_methods' => 'array',
@@ -88,31 +90,28 @@ class Product extends Model implements HasMedia
     }
 
     /**
-     * The Express delivery fee for this product — the per-product value when set,
-     * otherwise the global Settings → Delivery fee (config default as last resort).
+     * Normalized delivery choices shown on checkout, as a clean list of
+     * ['label' => string, 'price' => float]. Blank rows are dropped and prices
+     * coerced to non-negative floats. A price of 0 means free.
+     *
+     * @return list<array{label: string, price: float}>
      */
-    public function effectiveExpressFee(): float
+    public function deliveryOptions(): array
     {
-        if ($this->express_fee !== null) {
-            return (float) $this->express_fee;
-        }
+        $options = is_array($this->delivery_options) ? $this->delivery_options : [];
 
-        $global = Setting::get('delivery_express_fee');
+        return array_values(array_filter(array_map(function ($opt): ?array {
+            if (! is_array($opt)) {
+                return null;
+            }
 
-        return (float) (is_numeric($global) ? $global : config('checkout.express_delivery_fee'));
-    }
+            $label = trim((string) ($opt['label'] ?? ''));
+            if ($label === '') {
+                return null;
+            }
 
-    /**
-     * The Express delivery time label for this product — the per-product value
-     * when set, otherwise the global Settings → Delivery time.
-     */
-    public function effectiveExpressTime(): string
-    {
-        if (filled($this->express_time)) {
-            return (string) $this->express_time;
-        }
-
-        return (string) (Setting::get('delivery_express_time') ?: '1–12 hours');
+            return ['label' => $label, 'price' => max(0.0, round((float) ($opt['price'] ?? 0), 2))];
+        }, $options)));
     }
 
     /** @return BelongsTo<Game, $this> */
