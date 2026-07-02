@@ -62,6 +62,23 @@ class OrderResourceTest extends TestCase
             ->assertSee('Customer Information');
     }
 
+    public function test_customer_order_history_sums_paid_orders_by_email(): void
+    {
+        $email = 'repeat@buyer.com';
+        // Two paid orders (100.00 + 50.50) + one pending that must NOT count toward spend.
+        $viewed = Order::factory()->create(['email' => $email, 'payment_status' => PaymentStatus::Paid, 'total' => 100.00]);
+        Order::factory()->create(['email' => $email, 'payment_status' => PaymentStatus::Paid, 'total' => 50.50]);
+        Order::factory()->create(['email' => $email, 'payment_status' => PaymentStatus::Pending, 'total' => 999.00]);
+        // A different customer's order must be excluded entirely.
+        Order::factory()->create(['email' => 'someone@else.com', 'payment_status' => PaymentStatus::Paid, 'total' => 777.00]);
+
+        $this->actingAs($this->admin())
+            ->get('/asdgkzxcnjngjasdajsnjzcxnc/admin/orders/'.$viewed->getKey())
+            ->assertOk()
+            ->assertSee('Customer order history')
+            ->assertSee('150.50'); // paid total only — the 999.00 pending order is excluded
+    }
+
     public function test_order_edit_page_renders_with_relation_managers(): void
     {
         $order = $this->makeOrder();

@@ -120,6 +120,9 @@ class CheckoutController extends Controller
         $lines = [];
         $subtotal = 0.0;
         $incomplete = false;
+        // Express fee is summed from the products (per-product price set in admin,
+        // global Settings as fallback); only charged when every item is eligible.
+        $expressFeeTotal = 0.0;
 
         foreach ($data['items'] as $row) {
             $product = Product::query()
@@ -146,6 +149,9 @@ class CheckoutController extends Controller
             $summary = $pricing->summary($product, $selections);
             $subtotal += $price * $qty;
             $allExpress = $allExpress && (bool) $product->express_delivery;
+            if ($product->express_delivery) {
+                $expressFeeTotal += $product->effectiveExpressFee();
+            }
 
             $lines[] = [
                 'product' => $product,
@@ -171,7 +177,7 @@ class CheckoutController extends Controller
         // offers it; otherwise the order falls back to free Standard delivery.
         $expressAllowed = $requestedExpress && $allExpress;
         $deliveryMethod = $expressAllowed ? 'express' : 'standard';
-        $deliveryFee = $expressAllowed ? $this->expressFee() : 0.0;
+        $deliveryFee = $expressAllowed ? round($expressFeeTotal, 2) : 0.0;
 
         $coupon = $this->resolveCoupon($data['coupon'] ?? null, $subtotal);
         $discount = $this->discountFor($coupon, $subtotal);

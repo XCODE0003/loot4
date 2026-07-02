@@ -55,6 +55,8 @@ class Product extends Model implements HasMedia
         'status',
         'auto_delivery',
         'express_delivery',
+        'express_fee',
+        'express_time',
         'delivery_instructions',
         'allowed_payment_methods',
         'visibility',
@@ -76,12 +78,41 @@ class Product extends Model implements HasMedia
             'compare_price' => 'decimal:2',
             'auto_delivery' => 'boolean',
             'express_delivery' => 'boolean',
+            'express_fee' => 'decimal:2',
             'visibility' => 'boolean',
             'featured' => 'boolean',
             'allowed_payment_methods' => 'array',
             'filter_values' => 'array',
             'sort_order' => 'integer',
         ];
+    }
+
+    /**
+     * The Express delivery fee for this product — the per-product value when set,
+     * otherwise the global Settings → Delivery fee (config default as last resort).
+     */
+    public function effectiveExpressFee(): float
+    {
+        if ($this->express_fee !== null) {
+            return (float) $this->express_fee;
+        }
+
+        $global = Setting::get('delivery_express_fee');
+
+        return (float) (is_numeric($global) ? $global : config('checkout.express_delivery_fee'));
+    }
+
+    /**
+     * The Express delivery time label for this product — the per-product value
+     * when set, otherwise the global Settings → Delivery time.
+     */
+    public function effectiveExpressTime(): string
+    {
+        if (filled($this->express_time)) {
+            return (string) $this->express_time;
+        }
+
+        return (string) (Setting::get('delivery_express_time') ?: '1–12 hours');
     }
 
     /** @return BelongsTo<Game, $this> */

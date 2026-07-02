@@ -266,6 +266,47 @@ class CartCheckoutTest extends TestCase
         $this->assertEquals(40, (float) $order->total); // 30 + 10, no express fee
     }
 
+    public function test_express_fee_uses_the_per_product_price(): void
+    {
+        Product::factory()->create([
+            'slug' => 'exp-priced', 'status' => ProductStatus::Active, 'price' => 30,
+            'express_delivery' => true, 'express_fee' => 7.50,
+        ]);
+        // Global fallback is different, to prove the per-product value wins over it.
+        config(['checkout.express_delivery_fee' => 20.99]);
+
+        $this->post('/checkout', [
+            ...$this->billing(),
+            'email' => 'perprod@example.com',
+            'items' => [['slug' => 'exp-priced', 'qty' => 1]],
+            'delivery' => 'express',
+        ])->assertRedirect();
+
+        $order = Order::where('email', 'perprod@example.com')->firstOrFail();
+        $this->assertSame('express', $order->delivery_method);
+        $this->assertEquals(7.50, (float) $order->delivery_fee);
+        $this->assertEquals(37.50, (float) $order->total); // 30 + 7.50 (not the 20.99 global)
+    }
+
+    public function test_express_fee_sums_across_products_once_per_line(): void
+    {
+        Product::factory()->create(['slug' => 'exp-a', 'status' => ProductStatus::Active, 'price' => 20, 'express_delivery' => true, 'express_fee' => 5]);
+        Product::factory()->create(['slug' => 'exp-b', 'status' => ProductStatus::Active, 'price' => 10, 'express_delivery' => true, 'express_fee' => 3]);
+
+        $this->post('/checkout', [
+            ...$this->billing(),
+            'email' => 'sum@example.com',
+            // exp-b has qty 2, but its express fee is charged once per line, not per unit.
+            'items' => [['slug' => 'exp-a', 'qty' => 1], ['slug' => 'exp-b', 'qty' => 2]],
+            'delivery' => 'express',
+        ])->assertRedirect();
+
+        $order = Order::where('email', 'sum@example.com')->firstOrFail();
+        $this->assertSame('express', $order->delivery_method);
+        $this->assertEquals(8, (float) $order->delivery_fee); // 5 + 3
+        $this->assertEquals(48, (float) $order->total); // 20 + 10*2 + 8
+    }
+
     public function test_standard_delivery_is_free(): void
     {
         Product::factory()->create(['slug' => 'p6', 'status' => ProductStatus::Active, 'price' => 30]);

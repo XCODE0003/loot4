@@ -57,7 +57,18 @@ watch(() => billing.value.country, () => {
 // Express is offered only when every item in the cart supports it.
 const delivery = ref('standard')
 const expressAvailable = computed(() => items.value.length > 0 && items.value.every((i) => i.express === true))
-const deliveryFee = computed(() => (delivery.value === 'express' && expressAvailable.value ? props.expressFee : 0))
+// Express fee/time now come from the products themselves (set per-product in the
+// admin). Total fee = sum of each item's express fee; the props are a fallback
+// for carts saved before per-product pricing existed.
+const expressItems = computed(() => items.value.filter((i) => i.express === true))
+const expressFeeTotal = computed(() =>
+  expressItems.value.reduce((sum, i) => sum + (i.expressFee != null ? Number(i.expressFee) : props.expressFee), 0),
+)
+const expressTimeDisplay = computed(() => {
+  const times = [...new Set(expressItems.value.map((i) => i.expressTime).filter(Boolean))]
+  return times.length === 1 ? times[0] : props.expressTime
+})
+const deliveryFee = computed(() => (delivery.value === 'express' && expressAvailable.value ? expressFeeTotal.value : 0))
 
 // Collapsible "Order Summary" shutter (mobile only — always expanded on desktop).
 const summaryOpen = ref(false)
@@ -67,18 +78,20 @@ const promoInput = ref(coupon.value?.code ?? '')
 const promoError = ref('')
 const promoLoading = ref(false)
 
-// IceNox payment-method identifiers (pay.icenox.com/docs).
-const paymentMethods = [
-  { value: 'stripe-cards',       label: 'Credit / Debit Card', icons: ['/payment_methods/cards.svg'] },
-  { value: 'stripe-apple-pay',   label: 'Apple Pay',           icons: ['/payment_methods/apple-pay.svg'] },
-  { value: 'stripe-google-pay',  label: 'Google Pay',          icons: ['/payment_methods/google-pay.svg'] },
-  { value: 'stripe-link',        label: 'Link',                icons: ['/payment_methods/link-white.svg'] },
-  { value: 'stripe-klarna',      label: 'Klarna',              icons: ['/payment_methods/klarna.svg'] },
-  { value: 'stripe-amazon-pay',  label: 'Amazon Pay',          icons: ['/payment_methods/amazon-pay-white.svg'] },
-  { value: 'stripe-bancontact',  label: 'Bancontact',          icons: ['/payment_methods/bancontact.svg'] },
-  { value: 'stripe-eps',         label: 'EPS',                 icons: ['/payment_methods/eps-white.svg'] },
-  { value: 'stripe-revolut-pay', label: 'Revolut Pay',         icons: ['/payment_methods/revolut-white.svg'] },
-]
+// IceNox payment-method identifiers (pay.icenox.com/docs). Computed so the
+// translated "Credit / Debit Card" label re-renders when the locale changes;
+// the rest are brand names that stay as-is in every language.
+const paymentMethods = computed(() => [
+  { value: 'stripe-cards',       label: t('checkout.cardLabel'), icons: ['/payment_methods/cards.svg'] },
+  { value: 'stripe-apple-pay',   label: 'Apple Pay',             icons: ['/payment_methods/apple-pay.svg'] },
+  { value: 'stripe-google-pay',  label: 'Google Pay',            icons: ['/payment_methods/google-pay.svg'] },
+  { value: 'stripe-link',        label: 'Link',                  icons: ['/payment_methods/link-white.svg'] },
+  { value: 'stripe-klarna',      label: 'Klarna',                icons: ['/payment_methods/klarna.svg'] },
+  { value: 'stripe-amazon-pay',  label: 'Amazon Pay',            icons: ['/payment_methods/amazon-pay-white.svg'] },
+  { value: 'stripe-bancontact',  label: 'Bancontact',            icons: ['/payment_methods/bancontact.svg'] },
+  { value: 'stripe-eps',         label: 'EPS',                   icons: ['/payment_methods/eps-white.svg'] },
+  { value: 'stripe-revolut-pay', label: 'Revolut Pay',           icons: ['/payment_methods/revolut-white.svg'] },
+])
 
 // Collapsible "Pay with" dropdown (mobile only). No method is pre-selected, so
 // it starts open with the list shown; choosing a method collapses it (animated)
@@ -87,7 +100,7 @@ const methodsOpen = ref(true)
 const methodError = ref(false)
 const methodsRef = ref(null)
 const selectedMethod = computed(
-  () => paymentMethods.find((m) => m.value === method.value) ?? null,
+  () => paymentMethods.value.find((m) => m.value === method.value) ?? null,
 )
 
 function onMethodPick() {
@@ -141,11 +154,11 @@ function focusEmail() {
 function validateEmail() {
   const value = email.value.trim()
   if (!value) {
-    emailError.value = 'The email field is required.'
+    emailError.value = t('checkout.emailRequired')
     return false
   }
   if (!EMAIL_RE.test(value)) {
-    emailError.value = 'Please enter a valid email address.'
+    emailError.value = t('checkout.emailInvalid')
     return false
   }
   emailError.value = ''
@@ -175,7 +188,7 @@ function placeOrder() {
     return
   }
   if (!validateBilling()) {
-    formError.value = 'Please fill in all required billing fields.'
+    formError.value = t('checkout.fillBilling')
     return
   }
   if (!method.value) {
@@ -185,7 +198,7 @@ function placeOrder() {
     return
   }
   if (!agreed.value) {
-    formError.value = 'Please read and agree to the terms and conditions.'
+    formError.value = t('checkout.agreeError')
     return
   }
   formError.value = ''
@@ -205,7 +218,7 @@ function placeOrder() {
           formError.value = ''
           focusEmail()
         } else {
-          formError.value = errors.items || errors.payment || 'Please check your details'
+          formError.value = errors.items || errors.payment || t('checkout.checkDetails')
         }
       },
       onFinish: () => {
@@ -227,10 +240,10 @@ function placeOrder() {
 
       <div v-else class="co_grid">
         <div class="co_left">
-          <h1 class="co_title">Checkout</h1>
+          <h1 class="co_title">{{ $t('checkout.title') }}</h1>
 
           <div class="co_section co_section--billing">
-            <p class="co_section_label">Customer information</p>
+            <p class="co_section_label">{{ $t('checkout.customerInfo') }}</p>
             <div class="co_fields">
               <div class="co_field_wrap">
                 <input
@@ -238,8 +251,8 @@ function placeOrder() {
                   type="text"
                   class="co_field"
                   :class="{ 'co_field--error': billingErrors.first_name }"
-                  placeholder="First name *"
-                  aria-label="First name"
+                  :placeholder="$t('checkout.firstName') + ' *'"
+                  :aria-label="$t('checkout.firstName')"
                   @input="delete billingErrors.first_name"
                 />
               </div>
@@ -249,8 +262,8 @@ function placeOrder() {
                   type="text"
                   class="co_field"
                   :class="{ 'co_field--error': billingErrors.last_name }"
-                  placeholder="Last name *"
-                  aria-label="Last name"
+                  :placeholder="$t('checkout.lastName') + ' *'"
+                  :aria-label="$t('checkout.lastName')"
                   @input="delete billingErrors.last_name"
                 />
               </div>
@@ -262,8 +275,8 @@ function placeOrder() {
                   type="email"
                   class="co_field"
                   :class="{ 'co_field--error': emailError }"
-                  placeholder="Email *"
-                  aria-label="Email"
+                  :placeholder="$t('checkout.emailField') + ' *'"
+                  :aria-label="$t('checkout.emailField')"
                   :aria-invalid="emailError ? 'true' : 'false'"
                   @input="emailError = ''"
                   @keyup.enter="placeOrder"
@@ -275,8 +288,8 @@ function placeOrder() {
                   v-model="billing.phone"
                   type="tel"
                   class="co_field"
-                  placeholder="Phone (optional)"
-                  aria-label="Phone"
+                  :placeholder="$t('checkout.phone')"
+                  :aria-label="$t('checkout.phone')"
                 />
               </div>
               <div class="co_field_wrap">
@@ -284,9 +297,9 @@ function placeOrder() {
                   v-model="billing.country"
                   class="co_field co_select"
                   :class="{ 'co_field--error': billingErrors.country, 'is-placeholder': !billing.country }"
-                  aria-label="Country"
+                  :aria-label="$t('checkout.country')"
                 >
-                  <option value="" disabled>Country *</option>
+                  <option value="" disabled>{{ $t('checkout.country') }} *</option>
                   <option v-for="c in countries" :key="c.code" :value="c.code">{{ c.name }}</option>
                 </select>
               </div>
@@ -296,10 +309,10 @@ function placeOrder() {
                   v-model="billing.state"
                   class="co_field co_select"
                   :class="{ 'co_field--error': billingErrors.state, 'is-placeholder': !billing.state }"
-                  aria-label="State or region"
+                  :aria-label="$t('checkout.state')"
                   @change="delete billingErrors.state"
                 >
-                  <option value="" disabled>State / region *</option>
+                  <option value="" disabled>{{ $t('checkout.state') }} *</option>
                   <option v-for="r in regions" :key="r.code" :value="r.name">{{ r.name }}</option>
                 </select>
                 <input
@@ -307,8 +320,8 @@ function placeOrder() {
                   v-model="billing.state"
                   type="text"
                   class="co_field"
-                  placeholder="State / region"
-                  aria-label="State or region"
+                  :placeholder="$t('checkout.state')"
+                  :aria-label="$t('checkout.state')"
                 />
               </div>
               <div class="co_field_wrap">
@@ -317,8 +330,8 @@ function placeOrder() {
                   type="text"
                   class="co_field"
                   :class="{ 'co_field--error': billingErrors.town }"
-                  placeholder="Town / City *"
-                  aria-label="Town"
+                  :placeholder="$t('checkout.town') + ' *'"
+                  :aria-label="$t('checkout.town')"
                   @input="delete billingErrors.town"
                 />
               </div>
@@ -328,8 +341,8 @@ function placeOrder() {
                   type="text"
                   class="co_field"
                   :class="{ 'co_field--error': billingErrors.postal_code }"
-                  placeholder="Postal code *"
-                  aria-label="Postal code"
+                  :placeholder="$t('checkout.postalCode') + ' *'"
+                  :aria-label="$t('checkout.postalCode')"
                   @input="delete billingErrors.postal_code"
                 />
               </div>
@@ -339,8 +352,8 @@ function placeOrder() {
                   type="text"
                   class="co_field"
                   :class="{ 'co_field--error': billingErrors.address }"
-                  placeholder="Address *"
-                  aria-label="Address"
+                  :placeholder="$t('checkout.address') + ' *'"
+                  :aria-label="$t('checkout.address')"
                   @input="delete billingErrors.address"
                 />
               </div>
@@ -348,34 +361,34 @@ function placeOrder() {
           </div>
 
           <div v-if="expressAvailable" class="co_section co_section--delivery">
-            <h2 class="co_section_title">Delivery</h2>
+            <h2 class="co_section_title">{{ $t('checkout.deliveryTitle') }}</h2>
             <div class="co_delivery">
               <label class="co_delivery_opt" :class="{ 'is-active': delivery === 'standard' }">
                 <span class="co_delivery_top">
                   <input v-model="delivery" type="radio" name="delivery" value="standard" />
                   <span class="co_method_radio" aria-hidden="true"></span>
-                  <span class="co_delivery_name">Standard</span>
+                  <span class="co_delivery_name">{{ $t('checkout.standard') }}</span>
                 </span>
                 <span class="co_delivery_time">{{ standardTime }}</span>
-                <span class="co_delivery_price">Free</span>
+                <span class="co_delivery_price">{{ $t('checkout.free') }}</span>
               </label>
               <label class="co_delivery_opt" :class="{ 'is-active': delivery === 'express' }">
                 <span class="co_delivery_top">
                   <input v-model="delivery" type="radio" name="delivery" value="express" />
                   <span class="co_method_radio" aria-hidden="true"></span>
-                  <span class="co_delivery_name">Express</span>
+                  <span class="co_delivery_name">{{ $t('checkout.express') }}</span>
                 </span>
-                <span class="co_delivery_time">{{ expressTime }}</span>
-                <span class="co_delivery_price">{{ money(expressFee) }}</span>
+                <span class="co_delivery_time">{{ expressTimeDisplay }}</span>
+                <span class="co_delivery_price">{{ money(expressFeeTotal) }}</span>
               </label>
             </div>
           </div>
 
           <div ref="methodsRef" class="co_section co_section--methods" :class="{ 'is-open': methodsOpen, 'has-error': methodError }">
-            <h2 class="co_section_title">Pay with</h2>
+            <h2 class="co_section_title">{{ $t('checkout.payWith') }}</h2>
             <!-- Mobile-only collapsed header showing the chosen method. -->
             <button type="button" class="co_methods_head" @click="methodsOpen = !methodsOpen">
-              <span class="co_methods_head_label">{{ selectedMethod ? selectedMethod.label : 'Select payment method' }}</span>
+              <span class="co_methods_head_label">{{ selectedMethod ? selectedMethod.label : $t('checkout.selectMethod') }}</span>
               <span v-if="selectedMethod" class="co_method_icons co_methods_head_icons">
                 <img v-for="(icon, idx) in selectedMethod.icons" :key="idx" :src="icon" alt="" />
               </span>
@@ -383,7 +396,7 @@ function placeOrder() {
                 <path d="M1 1.5 6 6.5 11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </button>
-            <p v-if="methodError" class="co_method_err">Please choose a payment method.</p>
+            <p v-if="methodError" class="co_method_err">{{ $t('checkout.methodRequired') }}</p>
             <div class="co_methods">
               <label
                 v-for="m in paymentMethods"
@@ -409,7 +422,7 @@ function placeOrder() {
         <aside class="co_right">
           <div class="co_orderbox" :class="{ 'is-open': summaryOpen }">
             <button type="button" class="co_orderbox_toggle" @click="summaryOpen = !summaryOpen">
-              <span class="co_orderbox_toggle_label">Order Summary</span>
+              <span class="co_orderbox_toggle_label">{{ $t('checkout.summary') }}</span>
               <span class="co_orderbox_toggle_total">{{ money(grandTotal) }}</span>
               <svg class="co_orderbox_chevron" width="13" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 1.5 6 6.5 11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
@@ -449,17 +462,17 @@ function placeOrder() {
 
           <div class="co_summary">
             <div class="co_row">
-              <span>Total items</span>
+              <span>{{ $t('cart.totalItems') }}</span>
               <span>{{ count }}</span>
             </div>
             <div v-if="coupon" class="co_row co_row_neg">
-              <span>Discount ({{ coupon.code }})</span>
+              <span>{{ $t('checkout.discount') }} ({{ coupon.code }})</span>
               <span>−{{ money(discount) }}</span>
             </div>
 
             <div class="co_promo">
               <button type="button" class="co_promo_toggle" @click="promoOpen = !promoOpen">
-                <span>I have a promocode</span>
+                <span>{{ $t('cart.promocode') }}</span>
                 <span class="co_promo_sign">{{ promoOpen ? '−' : '+' }}</span>
               </button>
               <div v-if="promoOpen" class="co_promo_row">
@@ -467,7 +480,7 @@ function placeOrder() {
                   v-model="promoInput"
                   type="text"
                   class="co_field co_promo_input"
-                  placeholder="Promocode"
+                  :placeholder="$t('cart.promocodePlaceholder')"
                   @keyup.enter.prevent="applyPromo"
                 />
                 <button
@@ -476,19 +489,19 @@ function placeOrder() {
                   :disabled="promoLoading"
                   @click="applyPromo"
                 >
-                  {{ promoLoading ? '…' : 'Apply' }}
+                  {{ promoLoading ? '…' : $t('cart.apply') }}
                 </button>
               </div>
               <p v-if="promoError" class="co_promo_err">{{ promoError }}</p>
             </div>
 
             <div v-if="expressAvailable" class="co_row">
-              <span>Delivery{{ delivery === 'express' ? ' (Express)' : '' }}</span>
-              <span>{{ deliveryFee > 0 ? money(deliveryFee) : 'Free' }}</span>
+              <span>{{ $t('checkout.deliveryTitle') }}{{ delivery === 'express' ? ' (' + $t('checkout.express') + ')' : '' }}</span>
+              <span>{{ deliveryFee > 0 ? money(deliveryFee) : $t('checkout.free') }}</span>
             </div>
 
             <div class="co_row co_row_total">
-              <span>Total</span>
+              <span>{{ $t('checkout.total') }}</span>
               <span>{{ money(grandTotal) }}</span>
             </div>
             </div>
@@ -497,17 +510,20 @@ function placeOrder() {
 
           <div class="co_paybox">
             <div class="co_consent">
-              <p class="co_consent_text">
-                Your personal data will be used to process your order, support your experience throughout this
-                website, and for other purposes described in our
-                <a href="/privacy" target="_blank" rel="noopener">privacy policy</a>.
-              </p>
+              <i18n-t keypath="checkout.consent" tag="p" class="co_consent_text" scope="global">
+                <template #privacy>
+                  <a href="/privacy" target="_blank" rel="noopener">{{ $t('checkout.privacyPolicy') }}</a>
+                </template>
+              </i18n-t>
               <label class="co_agree">
                 <input v-model="agreed" type="checkbox" />
                 <span class="co_agree_box" aria-hidden="true"></span>
                 <span class="co_agree_label">
-                  I have read and agree to the website
-                  <a href="/terms" target="_blank" rel="noopener">terms and conditions</a>
+                  <i18n-t keypath="checkout.agree" tag="span" scope="global">
+                    <template #terms>
+                      <a href="/terms" target="_blank" rel="noopener">{{ $t('checkout.terms') }}</a>
+                    </template>
+                  </i18n-t>
                   <span class="co_agree_req">*</span>
                 </span>
               </label>
@@ -521,14 +537,14 @@ function placeOrder() {
               :disabled="processing || !agreed"
               @click="placeOrder"
             >
-              <span>{{ processing ? $t('checkout.processing') : 'Pay Now' }}</span>
+              <span>{{ processing ? $t('checkout.processing') : $t('checkout.payNow') }}</span>
             </button>
 
             <p class="co_secure">
               <svg width="13" height="14" viewBox="0 0 16 18" fill="none" aria-hidden="true">
                 <path d="M8 1l6 2v6c0 4-3 6.5-6 8-3-1.5-6-4-6-8V3l6-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
               </svg>
-              Your payment is encrypted and secure.
+              {{ $t('checkout.secure') }}
             </p>
           </div>
         </aside>

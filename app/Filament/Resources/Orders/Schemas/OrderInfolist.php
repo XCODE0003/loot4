@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Orders\Schemas;
 
+use App\Enums\PaymentStatus;
 use App\Models\Order;
 use App\Services\Geo\IpCountry;
 use Filament\Infolists\Components\KeyValueEntry;
@@ -57,6 +58,37 @@ class OrderInfolist
                             ->state(fn ($record): ?string => $record->country ?: app(IpCountry::class)->lookup($record->ip))
                             ->placeholder('—'),
                         TextEntry::make('user.created_at')->label('Registration date')->dateTime()->placeholder('—'),
+                    ]),
+
+                Section::make('Customer order history')
+                    ->description('All orders placed with this email address')
+                    ->icon('heroicon-m-clock')
+                    ->columns(3)
+                    ->schema([
+                        TextEntry::make('customer_orders_count')
+                            ->label('Orders')
+                            ->state(fn (Order $record): int => Order::query()
+                                ->where('email', $record->email)
+                                ->count())
+                            ->badge(),
+                        TextEntry::make('customer_paid_orders_count')
+                            ->label('Paid orders')
+                            ->state(fn (Order $record): int => Order::query()
+                                ->where('email', $record->email)
+                                ->where('payment_status', PaymentStatus::Paid->value)
+                                ->count())
+                            ->badge()
+                            ->color('success'),
+                        // Money actually received from this customer — paid orders only,
+                        // so pending/failed totals don't inflate the figure.
+                        TextEntry::make('customer_total_spent')
+                            ->label('Total spent')
+                            ->state(fn (Order $record): float => (float) Order::query()
+                                ->where('email', $record->email)
+                                ->where('payment_status', PaymentStatus::Paid->value)
+                                ->sum('total'))
+                            ->money(fn (Order $r): string => $r->currency ?? 'USD')
+                            ->weight('bold'),
                     ]),
 
                 Section::make('Payment Information')

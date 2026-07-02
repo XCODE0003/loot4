@@ -13,6 +13,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
@@ -118,7 +119,20 @@ class ProductForm
                         Toggle::make('express_delivery')
                             ->label('Express delivery')
                             ->helperText('Offer the paid Express option at checkout. Shown only when every item in the cart offers it.')
-                            ->inline(false),
+                            ->inline(false)
+                            ->live(),
+                        TextInput::make('express_fee')
+                            ->label('Express fee')
+                            ->helperText('Price added for Express on this product. Leave empty to use the global Settings → Delivery fee.')
+                            ->numeric()
+                            ->minValue(0)
+                            ->prefix('$')
+                            ->visible(fn (Get $get): bool => (bool) $get('express_delivery')),
+                        TextInput::make('express_time')
+                            ->label('Express time')
+                            ->helperText('Delivery time shown for Express (e.g. "1–12 hours"). Leave empty to use the global setting.')
+                            ->placeholder('1–12 hours')
+                            ->visible(fn (Get $get): bool => (bool) $get('express_delivery')),
                         Toggle::make('featured')->inline(false),
                         Toggle::make('visibility')->default(true)->inline(false),
                         TextInput::make('sort_order')->numeric()->default(0),
