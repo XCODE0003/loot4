@@ -32,12 +32,12 @@ class OrderNotifier
     {
         $order->loadMissing(['items', 'payments']);
 
-        // Guarantee a Conversion Logs row for ad-sourced sales — best-effort, so a
-        // logging hiccup never blocks the payment notification flow.
+        // Record the Purchase conversion for this sale — best-effort, so a logging
+        // hiccup never blocks the payment notification flow.
         try {
-            app(ConversionLogger::class)->seedPendingForPaidOrder($order);
+            app(ConversionLogger::class)->logPaidOrderConversion($order);
         } catch (\Throwable $e) {
-            Log::warning('Conversion log seeding failed', ['order' => $order->order_number, 'message' => $e->getMessage()]);
+            Log::warning('Conversion log write failed', ['order' => $order->order_number, 'message' => $e->getMessage()]);
         }
 
         $this->telegram->send(

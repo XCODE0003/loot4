@@ -109,19 +109,22 @@ class ConversionLogController extends Controller
             ],
         ];
 
-        // A paid ad-sourced order seeds a Pending row per platform on payment.
-        // Confirm that row in place (Pending → Sent/Failed) so the sale is a
-        // single row. Consent/other skips leave it Pending — a real sale stays
-        // visible instead of flipping to a hidden Skipped row.
-        $pending = ConversionLog::query()
+        // One row per order+platform+event. A paid order already carries a
+        // server-logged "Sent" Purchase row (the GTM conversion), so a matching
+        // native-pixel report collapses into it instead of adding a duplicate.
+        // A real outcome (Sent/Failed) upgrades a not-yet-sent row, but a stray
+        // skip or blocked native pixel never downgrades a conversion already
+        // marked Sent — a real sale stays visible.
+        $existing = ConversionLog::query()
             ->where('order_id', $order->id)
             ->where('platform', $data['platform'])
-            ->where('status', ConversionStatus::Pending)
+            ->where('event', $data['event'])
             ->first();
 
-        if ($pending) {
-            if (in_array($status, [ConversionStatus::Sent, ConversionStatus::Failed], true)) {
-                $pending->update($attributes);
+        if ($existing) {
+            if ($existing->status !== ConversionStatus::Sent
+                && in_array($status, [ConversionStatus::Sent, ConversionStatus::Failed], true)) {
+                $existing->update($attributes);
             }
 
             return response()->json(['logged' => true], 200);

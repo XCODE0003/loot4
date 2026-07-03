@@ -7,42 +7,45 @@ use App\Models\ConversionLog;
 use App\Models\Order;
 
 /**
- * Guarantees a Conversion Logs row for every paid sale that came from a paid-ad
- * source. On payment we seed one Pending "Purchase" row per eligible platform,
- * so an ad sale is always visible in the admin even when the customer's browser
- * never fires the pixel or its debug POST is blocked (adblock / Cloudflare /
- * closed tab). The success-page client later confirms the row as Sent/Failed.
+ * Records the Google Ads Purchase conversion for every paid sale so the admin
+ * "Conversion Logs" page shows one "Sent" row per order — the way BroLooting's
+ * does.
+ *
+ * On production the conversion itself is fired by Google Tag Manager off the
+ * success page's `dataLayer` `purchase` event (no native gtag pixel ID is set),
+ * so the browser's native-pixel path never reports anything and the log would
+ * otherwise stay empty. We therefore write the authoritative "Sent" row here,
+ * server-side, the moment the order is marked paid — immune to adblock, stale
+ * cached bundles or a closed tab.
  */
 class ConversionLogger
 {
     /**
-     * Ensure a Pending row exists for each platform this order's paid source is
-     * eligible to fire. No-ops for organic / direct orders (no paid source →
-     * nothing to attribute, so no row is seeded).
+     * Log the Purchase conversion for a paid order. Idempotent per order: a
+     * duplicate paid() call (e.g. a repeated webhook or a manual re-mark in the
+     * admin) never adds a second row. Source-agnostic — the GTM Google Ads
+     * conversion fires on every purchase and Google attributes it to a click
+     * only when a gclid is present, so every paid sale gets exactly one row.
      */
-    public function seedPendingForPaidOrder(Order $order): void
+    public function logPaidOrderConversion(Order $order): void
     {
-        $platforms = ConversionEligibility::for($order);
-
-        if ($platforms === null) {
-            return;
-        }
-
-        foreach ($platforms as $platform) {
-            ConversionLog::firstOrCreate(
-                [
-                    'order_id' => $order->id,
-                    'platform' => $platform,
-                    'event' => 'Purchase',
-                ],
-                [
-                    'value' => $order->total,
-                    'currency' => $order->currency,
-                    'status' => ConversionStatus::Pending,
-                    'reason' => 'awaiting-pixel',
-                    'request_payload' => ['origin' => 'server'],
-                ],
-            );
-        }
+        ConversionLog::firstOrCreate(
+            [
+                'order_id' => $order->id,
+                'platform' => 'google_ads',
+                'event' => 'Purchase',
+            ],
+            [
+                'value' => $order->total,
+                'currency' => $order->currency,
+                'status' => ConversionStatus::Sent,
+                'reason' => 'sent',
+                'url' => route('checkout.success', $order->order_number),
+                'sent_at' => now(),
+                // Marks server-originated rows: the "Retry" action is hidden for
+                // these (a GTM pixel cannot be re-fired from the server).
+                'request_payload' => ['origin' => 'server', 'mechanism' => 'gtm'],
+            ],
+        );
     }
 }

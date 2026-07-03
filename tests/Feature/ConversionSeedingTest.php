@@ -10,9 +10,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * A paid sale that came from a paid-ad source must always leave a Conversion
- * Logs row (Pending), even if the customer's browser never fires/reports the
- * pixel. The success-page client then confirms that row as Sent/Failed.
+ * Every paid sale must leave exactly one "Sent" Google Ads Purchase row in the
+ * Conversion Logs — the GTM conversion that fires on the success page, recorded
+ * server-side so the log is never empty even when the browser's native-pixel
+ * path reports nothing (GTM-only setup, adblock, or a closed tab).
  */
 class ConversionSeedingTest extends TestCase
 {
@@ -23,7 +24,7 @@ class ConversionSeedingTest extends TestCase
         app(OrderNotifier::class)->paid($order);
     }
 
-    public function test_paid_ad_order_seeds_a_pending_row_for_its_platform(): void
+    public function test_paid_order_logs_one_sent_google_ads_purchase_row(): void
     {
         $order = Order::factory()->create([
             'source' => 'google', 'gclid' => 'abc123', 'fbclid' => null, 'ttclid' => null,
@@ -33,42 +34,55 @@ class ConversionSeedingTest extends TestCase
         $this->markPaid($order);
 
         $logs = ConversionLog::where('order_id', $order->id)->get();
-        $this->assertCount(1, $logs, 'exactly one row for the google source');
+        $this->assertCount(1, $logs, 'exactly one conversion row per paid order');
+
         $log = $logs->first();
         $this->assertSame('google_ads', $log->platform->value);
-        $this->assertSame(ConversionStatus::Pending, $log->status);
+        $this->assertSame('Purchase', $log->event);
+        $this->assertSame(ConversionStatus::Sent, $log->status);
+        $this->assertSame('sent', $log->reason);
         $this->assertEquals(42.00, (float) $log->value);
+        $this->assertSame('USD', $log->currency);
+        $this->assertNotNull($log->sent_at);
         $this->assertSame('server', $log->request_payload['origin'] ?? null);
+        $this->assertStringContainsString('/checkout/success/'.$order->order_number, (string) $log->url);
     }
 
-    public function test_paid_organic_order_seeds_nothing(): void
+    public function test_paid_organic_order_is_logged_too(): void
     {
+        // Every paid sale is logged, not just ad-sourced ones — Google attributes
+        // the conversion to a click only when a gclid is present.
         $order = Order::factory()->create([
             'source' => 'direct', 'medium' => 'none', 'gclid' => null, 'fbclid' => null, 'ttclid' => null,
         ]);
 
         $this->markPaid($order);
 
-        $this->assertSame(0, ConversionLog::where('order_id', $order->id)->count());
+        $logs = ConversionLog::where('order_id', $order->id)->get();
+        $this->assertCount(1, $logs);
+        $this->assertSame(ConversionStatus::Sent, $logs->first()->status);
+        $this->assertSame('google_ads', $logs->first()->platform->value);
     }
 
-    public function test_seeding_is_idempotent_across_repeated_paid_calls(): void
+    public function test_logging_is_idempotent_across_repeated_paid_calls(): void
     {
         $order = Order::factory()->create(['source' => 'facebook', 'fbclid' => 'fb1', 'gclid' => null, 'ttclid' => null]);
 
         $this->markPaid($order);
-        $this->markPaid($order); // e.g. a duplicate webhook
+        $this->markPaid($order); // e.g. a duplicate webhook or manual re-mark
 
-        $this->assertSame(1, ConversionLog::where('order_id', $order->id)->where('platform', 'facebook_pixel')->count());
+        $this->assertSame(1, ConversionLog::where('order_id', $order->id)->count());
     }
 
-    public function test_client_send_confirms_the_seeded_pending_row_in_place(): void
+    public function test_client_pixel_report_does_not_duplicate_the_server_row(): void
     {
         $order = Order::factory()->create([
             'source' => 'google', 'gclid' => 'g1', 'fbclid' => null, 'ttclid' => null, 'total' => 30,
         ]);
         $this->markPaid($order);
 
+        // A native Google Ads pixel report (if one is ever configured) collapses
+        // into the existing server row instead of adding a duplicate.
         $this->postJson('/checkout/conversion', [
             'order' => $order->order_number,
             'platform' => 'google_ads',
@@ -78,19 +92,20 @@ class ConversionSeedingTest extends TestCase
         ])->assertOk()->assertJson(['logged' => true]);
 
         $logs = ConversionLog::where('order_id', $order->id)->where('platform', 'google_ads')->get();
-        $this->assertCount(1, $logs, 'confirmed in place, no duplicate row');
+        $this->assertCount(1, $logs, 'no duplicate row');
         $this->assertSame(ConversionStatus::Sent, $logs->first()->status);
         $this->assertNotNull($logs->first()->sent_at);
     }
 
-    public function test_no_consent_skip_leaves_the_seeded_row_pending_and_visible(): void
+    public function test_a_later_skip_never_downgrades_the_sent_row(): void
     {
         $order = Order::factory()->create([
             'source' => 'google', 'gclid' => 'g2', 'fbclid' => null, 'ttclid' => null,
         ]);
         $this->markPaid($order);
 
-        // A "no-consent" skip must not flip a real sale to a hidden Skipped row.
+        // A "no-consent" skip arriving after the sale is logged must not flip a
+        // real, sent conversion to a hidden Skipped row.
         $this->postJson('/checkout/conversion', [
             'order' => $order->order_number,
             'platform' => 'google_ads',
@@ -101,6 +116,6 @@ class ConversionSeedingTest extends TestCase
 
         $logs = ConversionLog::where('order_id', $order->id)->where('platform', 'google_ads')->get();
         $this->assertCount(1, $logs);
-        $this->assertSame(ConversionStatus::Pending, $logs->first()->status);
+        $this->assertSame(ConversionStatus::Sent, $logs->first()->status);
     }
 }
