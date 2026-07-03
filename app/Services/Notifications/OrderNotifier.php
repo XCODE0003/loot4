@@ -100,9 +100,18 @@ class OrderNotifier
             '👤 Customer: '.$order->email,
             '📣 Source: '.$this->sourceLabel($order),
             '💎 Payment: '.$this->paymentLabel($order),
-            '',
-            '🛒 Items Purchased:',
         ];
+
+        // Show the chosen delivery method (skip the plain free "standard" default,
+        // which carries no useful signal for staff).
+        if ($this->hasChosenDelivery($order)) {
+            $fee = (float) $order->delivery_fee;
+            $lines[] = '🚚 Delivery: '.$order->delivery_method
+                .($fee > 0 ? ' ('.number_format($fee, 2).' '.$order->currency.')' : ' (free)');
+        }
+
+        $lines[] = '';
+        $lines[] = '🛒 Items Purchased:';
 
         foreach ($order->items as $item) {
             $lines[] = ' • '.$item->product_name.' (x'.$item->quantity.')';
@@ -167,6 +176,16 @@ class OrderNotifier
     private function sourceLabel(Order $order): string
     {
         return Str::headline((string) ($order->source ?? 'storefront'));
+    }
+
+    /**
+     * Whether the order has a meaningful delivery choice worth showing to staff —
+     * a paid option, or a named option other than the plain free "standard".
+     */
+    private function hasChosenDelivery(Order $order): bool
+    {
+        return (float) $order->delivery_fee > 0
+            || (filled($order->delivery_method) && strtolower((string) $order->delivery_method) !== 'standard');
     }
 
     private function mailTo(?string $address, callable $mailable, string $context): void

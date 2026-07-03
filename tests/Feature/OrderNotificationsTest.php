@@ -63,6 +63,23 @@ class OrderNotificationsTest extends TestCase
         Mail::assertSent(NewOrderMail::class, fn ($m) => $m->hasTo('staff@loot4you.gg'));
     }
 
+    public function test_telegram_shows_the_chosen_delivery_method(): void
+    {
+        Mail::fake();
+        Http::fake(['api.telegram.org/*' => Http::response(['ok' => true])]);
+        Setting::set('telegram_bot_token', 'ORDERS_TOKEN');
+        Setting::set('telegram_chat_id', '12345');
+
+        $order = $this->makeOrder();
+        $order->update(['delivery_method' => 'Express (1–12h)', 'delivery_fee' => 9.99]);
+
+        app(OrderNotifier::class)->paid($order);
+
+        Http::assertSent(fn ($r) => str_contains($r->url(), '/botORDERS_TOKEN/sendMessage')
+            && str_contains($r['text'], 'Delivery: Express (1–12h)')
+            && str_contains($r['text'], '9.99'));
+    }
+
     public function test_failed_order_uses_failed_bot(): void
     {
         Http::fake(['api.telegram.org/*' => Http::response(['ok' => true])]);
