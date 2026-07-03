@@ -42,6 +42,14 @@ class OrderInfolist
                         TextEntry::make('address')->placeholder('—'),
                         TextEntry::make('town')->label('Town / City')->placeholder('—'),
                         TextEntry::make('state')->label('State / region')->placeholder('—'),
+                        // The country the customer chose at checkout, shown by its full
+                        // name (falls back to the stored 2-letter code).
+                        TextEntry::make('billing_country')
+                            ->label('Country')
+                            ->state(fn (Order $r): ?string => filled($r->country)
+                                ? (\Locale::getDisplayRegion('-'.$r->country, 'en') ?: strtoupper($r->country))
+                                : null)
+                            ->placeholder('—'),
                         TextEntry::make('postal_code')->label('Postal code')->placeholder('—'),
                         TextEntry::make('delivery_method')->label('Delivery method')->badge()->placeholder('—'),
                     ]),

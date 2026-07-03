@@ -128,11 +128,16 @@ class ProductForm
                                     ->columnSpan(2),
                                 TextInput::make('price')
                                     ->label('Price')
-                                    ->numeric()
-                                    ->minValue(0)
+                                    // Not ->numeric(): that gives a digits-only mobile keypad and
+                                    // rejects the comma. Accept "19,99" or "19.99" and normalize on save.
+                                    ->inputMode('decimal')
+                                    ->rule('regex:/^\s*(\d+([.,]\d{1,2})?)?\s*$/')
+                                    ->dehydrateStateUsing(fn ($state): float => blank($state)
+                                        ? 0.0
+                                        : round((float) str_replace(',', '.', (string) $state), 2))
                                     ->default(0)
                                     ->prefix('$')
-                                    ->helperText('0 = free'),
+                                    ->helperText('0 = бесплатно · можно вводить через запятую (19,99)'),
                             ])
                             ->columns(3)
                             ->reorderable()

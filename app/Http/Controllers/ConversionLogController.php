@@ -93,10 +93,7 @@ class ConversionLogController extends Controller
             default => ConversionStatus::Failed,
         };
 
-        ConversionLog::create([
-            'order_id' => $order->id,
-            'platform' => $data['platform'],
-            'event' => $data['event'],
+        $attributes = [
             'value' => $order->total,
             'currency' => $order->currency,
             'status' => $status,
@@ -110,7 +107,31 @@ class ConversionLogController extends Controller
                 'client' => $data,
                 'user_agent' => (string) $request->userAgent(),
             ],
-        ]);
+        ];
+
+        // A paid ad-sourced order seeds a Pending row per platform on payment.
+        // Confirm that row in place (Pending → Sent/Failed) so the sale is a
+        // single row. Consent/other skips leave it Pending — a real sale stays
+        // visible instead of flipping to a hidden Skipped row.
+        $pending = ConversionLog::query()
+            ->where('order_id', $order->id)
+            ->where('platform', $data['platform'])
+            ->where('status', ConversionStatus::Pending)
+            ->first();
+
+        if ($pending) {
+            if (in_array($status, [ConversionStatus::Sent, ConversionStatus::Failed], true)) {
+                $pending->update($attributes);
+            }
+
+            return response()->json(['logged' => true], 200);
+        }
+
+        ConversionLog::create([
+            'order_id' => $order->id,
+            'platform' => $data['platform'],
+            'event' => $data['event'],
+        ] + $attributes);
 
         return response()->json(['logged' => true], 201);
     }

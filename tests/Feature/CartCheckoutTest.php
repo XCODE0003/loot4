@@ -331,6 +331,26 @@ class CartCheckoutTest extends TestCase
         $this->assertEquals(38, (float) $order->total); // 20 + 10 + 8
     }
 
+    public function test_delivery_price_accepts_a_comma_decimal(): void
+    {
+        // Admin may save "19,99" (comma separator) — it must charge 19.99, not 19.
+        Product::factory()->create([
+            'slug' => 'dp-comma', 'status' => ProductStatus::Active, 'price' => 30,
+            'delivery_options' => [['label' => 'Express', 'price' => '19,99']],
+        ]);
+
+        $this->post('/checkout', [
+            ...$this->billing(),
+            'email' => 'comma@example.com',
+            'items' => [['slug' => 'dp-comma', 'qty' => 1]],
+            'delivery' => 'Express',
+        ])->assertRedirect();
+
+        $order = Order::where('email', 'comma@example.com')->firstOrFail();
+        $this->assertEquals(19.99, (float) $order->delivery_fee);
+        $this->assertEquals(49.99, (float) $order->total);
+    }
+
     public function test_product_without_delivery_options_is_free(): void
     {
         Product::factory()->create(['slug' => 'p6', 'status' => ProductStatus::Active, 'price' => 30]);

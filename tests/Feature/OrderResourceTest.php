@@ -79,6 +79,20 @@ class OrderResourceTest extends TestCase
             ->assertSee('150.50'); // paid total only — the 999.00 pending order is excluded
     }
 
+    public function test_order_view_shows_billing_country_name(): void
+    {
+        $order = Order::factory()->create([
+            'country' => 'DE',
+            'delivery_status' => DeliveryStatus::Pending,
+            'payment_status' => PaymentStatus::Paid,
+        ]);
+
+        $this->actingAs($this->admin())
+            ->get('/asdgkzxcnjngjasdajsnjzcxnc/admin/orders/'.$order->getKey())
+            ->assertOk()
+            ->assertSee('Germany'); // DE resolved to its full country name in Billing & Delivery
+    }
+
     public function test_order_edit_page_renders_with_relation_managers(): void
     {
         $order = $this->makeOrder();

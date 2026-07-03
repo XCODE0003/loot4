@@ -8,6 +8,7 @@ use App\Mail\OrderConfirmationMail;
 use App\Mail\OrderDeliveredMail;
 use App\Models\Order;
 use App\Models\Setting;
+use App\Services\Conversions\ConversionLogger;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -30,6 +31,14 @@ class OrderNotifier
     public function paid(Order $order): void
     {
         $order->loadMissing(['items', 'payments']);
+
+        // Guarantee a Conversion Logs row for ad-sourced sales — best-effort, so a
+        // logging hiccup never blocks the payment notification flow.
+        try {
+            app(ConversionLogger::class)->seedPendingForPaidOrder($order);
+        } catch (\Throwable $e) {
+            Log::warning('Conversion log seeding failed', ['order' => $order->order_number, 'message' => $e->getMessage()]);
+        }
 
         $this->telegram->send(
             Setting::get('telegram_bot_token'),

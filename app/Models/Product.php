@@ -110,7 +110,10 @@ class Product extends Model implements HasMedia
                 return null;
             }
 
-            return ['label' => $label, 'price' => max(0.0, round((float) ($opt['price'] ?? 0), 2))];
+            // Accept a comma decimal separator (e.g. "19,99") saved from the admin.
+            $price = str_replace(',', '.', (string) ($opt['price'] ?? 0));
+
+            return ['label' => $label, 'price' => max(0.0, round((float) $price, 2))];
         }, $options)));
     }
 
