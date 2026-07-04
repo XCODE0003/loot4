@@ -46,7 +46,13 @@ class IceNoxGateway
                 // Keep our own order number as-is; without this IceNox prefixes it
                 // (e.g. "301-20000-<id>"), which would break webhook matching by orderid.
                 'add_orderid_prefix' => false,
-                'amount' => (float) $order->subtotal,
+                // IceNox validates total == amount - discount, so `amount` is the
+                // full pre-discount charge and MUST include delivery. Without the
+                // fee, a paid delivery method makes total != amount - discount and
+                // IceNox rejects the order ("The parameter [total] is invalid") —
+                // the customer can never start payment. round() guards float drift
+                // (e.g. 29.99 + 9.99) that would re-trigger the same rejection.
+                'amount' => round((float) $order->subtotal + (float) $order->delivery_fee, 2),
                 'discount' => (float) $order->discount,
                 'total' => (float) $order->total,
                 'currency' => $order->currency,

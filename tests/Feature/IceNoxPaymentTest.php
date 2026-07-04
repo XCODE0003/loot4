@@ -65,6 +65,43 @@ class IceNoxPaymentTest extends TestCase
             && $request['customer_id'] === 'buyer@example.com');
     }
 
+    public function test_paid_delivery_fee_is_included_in_icenox_amount(): void
+    {
+        $this->configureGateway();
+        Http::fake([
+            'imp.icenox.com/*' => Http::response([
+                'success' => true, 'paymentid' => 'pay_del', 'orderid' => 'ORD',
+                'url' => 'https://imp.icenox.com/v1/payment/get/pay_del',
+            ], 200),
+        ]);
+
+        // The exact production failure: item 29.99 + Express delivery 9.99 = 39.98.
+        // IceNox validates total == amount - discount; if `amount` omits the fee it
+        // rejects the order ("The parameter [total] is invalid") and payment never
+        // starts, so `amount` must carry the delivery fee.
+        $order = Order::factory()->create([
+            'subtotal' => 29.99,
+            'discount' => 0,
+            'delivery_fee' => 9.99,
+            'total' => 39.98,
+            'currency' => 'USD',
+        ]);
+
+        app(IceNoxGateway::class)->createPayment($order, 'stripe-cards');
+
+        Http::assertSent(function ($request): bool {
+            $amount = (float) $request['amount'];
+            $discount = (float) $request['discount'];
+            $total = (float) $request['total'];
+
+            return str_contains($request->url(), '/api/payment/create/')
+                && abs($amount - 39.98) < 0.001
+                && abs($total - 39.98) < 0.001
+                // The invariant IceNox enforces — must hold exactly.
+                && abs(($amount - $discount) - $total) < 0.001;
+        });
+    }
+
     public function test_checkout_shows_error_when_gateway_fails(): void
     {
         $this->configureGateway();
